@@ -1,8 +1,8 @@
-import { Component } from '@theme/component';
-import { closest, clamp, center, getVisibleElements } from '@theme/utilities';
-import { SlideshowSelectEvent } from '@theme/events';
-import { Scroller } from '@theme/scrolling';
-import { cycleFocus } from '@theme/focus';
+import { Component } from "@theme/component";
+import { closest, clamp, center, getVisibleElements } from "@theme/utilities";
+import { SlideshowSelectEvent } from "@theme/events";
+import { Scroller } from "@theme/scrolling";
+import { cycleFocus } from "@theme/focus";
 
 /**
  * Collection links component
@@ -16,7 +16,7 @@ import { cycleFocus } from '@theme/focus';
  * @extends {Component<Refs>}
  */
 class CollectionLinks extends Component {
-  requiredRefs = ['container'];
+  requiredRefs = ["container"];
 
   /** @type {Scroller} */
   #scroll;
@@ -24,10 +24,15 @@ class CollectionLinks extends Component {
   connectedCallback() {
     super.connectedCallback();
 
-    this.addEventListener('keydown', this.#handleKeydown);
-    this.addEventListener(SlideshowSelectEvent.eventName, this.#handleSlideshowSelect);
+    this.addEventListener("keydown", this.#handleKeydown);
+    this.addEventListener(
+      SlideshowSelectEvent.eventName,
+      this.#handleSlideshowSelect,
+    );
 
-    this.#scroll = new Scroller(this.refs.container, { onScroll: this.#handleScroll });
+    this.#scroll = new Scroller(this.refs.container, {
+      onScroll: this.#handleScroll,
+    });
   }
 
   disconnectedCallback() {
@@ -41,7 +46,9 @@ class CollectionLinks extends Component {
   }
 
   get currentIndex() {
-    return this.links.findIndex((link) => link.getAttribute('aria-current') === 'true');
+    return this.links.findIndex(
+      (link) => link.getAttribute("aria-current") === "true",
+    );
   }
 
   /**
@@ -66,7 +73,10 @@ class CollectionLinks extends Component {
     const selectedIndex = clamp(index, 0, links.length - 1);
 
     for (const [index, link] of links.entries()) {
-      link.setAttribute('aria-current', Boolean(index === selectedIndex).toString());
+      link.setAttribute(
+        "aria-current",
+        Boolean(index === selectedIndex).toString(),
+      );
     }
   }
 
@@ -98,12 +108,12 @@ class CollectionLinks extends Component {
     let modifier = 0;
 
     switch (event.key) {
-      case 'ArrowRight':
-      case 'ArrowDown':
+      case "ArrowRight":
+      case "ArrowDown":
         modifier = 1;
         break;
-      case 'ArrowLeft':
-      case 'ArrowUp':
+      case "ArrowLeft":
+      case "ArrowUp":
         modifier = -1;
         break;
     }
@@ -123,8 +133,8 @@ class CollectionLinks extends Component {
     const visibleLinks = getVisibleElements(this, links, 0.1);
 
     if (visibleLinks.length === 0) return;
-    const centers = visibleLinks.map((link) => center(link, 'x'));
-    const referencePoint = center(container, 'x');
+    const centers = visibleLinks.map((link) => center(link, "x"));
+    const referencePoint = center(container, "x");
     const closestCenter = closest(centers, referencePoint);
     const closestVisibleLink = visibleLinks[centers.indexOf(closestCenter)];
 
@@ -145,13 +155,13 @@ class CollectionLinks extends Component {
 
     // Reset all links to unselected state (opacity will reset via CSS)
     for (const link of links) {
-      link.setAttribute('aria-current', 'false');
+      link.setAttribute("aria-current", "false");
     }
 
     // Hide any revealed images
     if (images) {
       for (const image of images) {
-        image.removeAttribute('reveal');
+        image.removeAttribute("reveal");
       }
     }
   };
@@ -163,7 +173,7 @@ class CollectionLinks extends Component {
    */
   #revealImage(event) {
     if (!(event instanceof PointerEvent)) return;
-    if (event.pointerType === 'touch') return;
+    if (event.pointerType === "touch") return;
 
     const { target } = event;
     if (!(target instanceof HTMLElement)) return;
@@ -193,13 +203,19 @@ class CollectionLinks extends Component {
         const viewportWidth = window.innerWidth;
         const offset = 15;
 
-        const wouldBeCutOff = event.clientY + cachedImageHeight + offset > viewportHeight;
-        const yPos = wouldBeCutOff ? event.clientY - cachedImageHeight - offset : event.clientY + offset;
+        const wouldBeCutOff =
+          event.clientY + cachedImageHeight + offset > viewportHeight;
+        const yPos = wouldBeCutOff
+          ? event.clientY - cachedImageHeight - offset
+          : event.clientY + offset;
 
-        const xPos = Math.min(Math.max(offset, event.clientX + offset), viewportWidth - cachedImageWidth - offset);
+        const xPos = Math.min(
+          Math.max(offset, event.clientX + offset),
+          viewportWidth - cachedImageWidth - offset,
+        );
 
-        selectedImage.style.setProperty('--x', `${xPos}px`);
-        selectedImage.style.setProperty('--y', `${yPos}px`);
+        selectedImage.style.setProperty("--x", `${xPos}px`);
+        selectedImage.style.setProperty("--y", `${yPos}px`);
       });
     };
 
@@ -208,25 +224,25 @@ class CollectionLinks extends Component {
         cancelAnimationFrame(rafId);
         rafId = null;
       }
-      selectedImage.removeAttribute('reveal');
-      target.removeEventListener('mousemove', updateImagePosition);
+      selectedImage.removeAttribute("reveal");
+      target.removeEventListener("mousemove", updateImagePosition);
     };
 
     updateImagePosition(event);
 
     for (const image of images) {
       if (image === selectedImage) {
-        image.setAttribute('reveal', '');
+        image.setAttribute("reveal", "");
       } else {
-        image.removeAttribute('reveal');
+        image.removeAttribute("reveal");
       }
     }
 
-    target.addEventListener('mousemove', updateImagePosition);
-    target.addEventListener('mouseleave', reset, { once: true });
+    target.addEventListener("mousemove", updateImagePosition);
+    target.addEventListener("mouseleave", reset, { once: true });
   }
 }
 
-if (!customElements.get('collection-links-component')) {
-  customElements.define('collection-links-component', CollectionLinks);
+if (!customElements.get("collection-links-component")) {
+  customElements.define("collection-links-component", CollectionLinks);
 }

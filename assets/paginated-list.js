@@ -1,8 +1,8 @@
-import { Component } from '@theme/component';
-import { sectionRenderer } from '@theme/section-renderer';
-import { requestIdleCallback, viewTransition } from '@theme/utilities';
-import { ThemeEvents } from '@theme/events';
-import { PaginatedListAspectRatioHelper } from '@theme/paginated-list-aspect-ratio';
+import { Component } from "@theme/component";
+import { sectionRenderer } from "@theme/section-renderer";
+import { requestIdleCallback, viewTransition } from "@theme/utilities";
+import { ThemeEvents } from "@theme/events";
+import { PaginatedListAspectRatioHelper } from "@theme/paginated-list-aspect-ratio";
 
 /**
  * A custom element that renders a paginated list of items.
@@ -44,12 +44,15 @@ export default class PaginatedList extends Component {
       });
     }
 
-    this.#fetchPage('next');
-    this.#fetchPage('previous');
+    this.#fetchPage("next");
+    this.#fetchPage("previous");
     this.#observeViewMore();
 
     // Listen for filter updates to clear cached pages
-    document.addEventListener(ThemeEvents.FilterUpdate, this.#handleFilterUpdate);
+    document.addEventListener(
+      ThemeEvents.FilterUpdate,
+      this.#handleFilterUpdate,
+    );
   }
 
   disconnectedCallback() {
@@ -58,7 +61,10 @@ export default class PaginatedList extends Component {
       this.infinityScrollObserver.disconnect();
     }
     // Remove the filter update listener
-    document.removeEventListener(ThemeEvents.FilterUpdate, this.#handleFilterUpdate);
+    document.removeEventListener(
+      ThemeEvents.FilterUpdate,
+      this.#handleFilterUpdate,
+    );
   }
 
   #observeViewMore() {
@@ -88,8 +94,8 @@ export default class PaginatedList extends Component {
           }
         },
         {
-          rootMargin: '100px',
-        }
+          rootMargin: "100px",
+        },
       );
     }
 
@@ -113,7 +119,8 @@ export default class PaginatedList extends Component {
     const { grid } = this.refs;
     const lastPage = grid?.dataset.lastPage;
 
-    if (!lastPage || pageInfo.page < 1 || pageInfo.page > Number(lastPage)) return false;
+    if (!lastPage || pageInfo.page < 1 || pageInfo.page > Number(lastPage))
+      return false;
 
     return true;
   }
@@ -126,7 +133,7 @@ export default class PaginatedList extends Component {
 
     // Always resolve the promise, even if we can't fetch the page
     const resolvePromise = () => {
-      if (type === 'next') {
+      if (type === "next") {
         this.#resolveNextPagePromise?.();
         this.#resolveNextPagePromise = null;
       } else {
@@ -154,13 +161,17 @@ export default class PaginatedList extends Component {
 
     if (!url) {
       const newUrl = new URL(window.location.href);
-      newUrl.searchParams.set('page', pageNumber.toString());
-      newUrl.hash = '';
+      newUrl.searchParams.set("page", pageNumber.toString());
+      newUrl.hash = "";
       pageInfo.url = newUrl;
     }
 
     if (!this.#shouldUsePage(pageInfo)) return;
-    const pageContent = await sectionRenderer.getSectionHTML(this.sectionId, true, pageInfo.url);
+    const pageContent = await sectionRenderer.getSectionHTML(
+      this.sectionId,
+      true,
+      pageInfo.url,
+    );
     this.pages.set(pageNumber, pageContent);
   }
 
@@ -169,7 +180,7 @@ export default class PaginatedList extends Component {
 
     if (!grid) return;
 
-    const nextPage = this.#getPage('next');
+    const nextPage = this.#getPage("next");
 
     if (!nextPage || !this.#shouldUsePage(nextPage)) return;
     let nextPageItemElements = this.#getGridForPage(nextPage.page);
@@ -180,7 +191,7 @@ export default class PaginatedList extends Component {
       });
 
       // Trigger the fetch for this page
-      this.#fetchPage('next');
+      this.#fetchPage("next");
 
       await promise;
       nextPageItemElements = this.#getGridForPage(nextPage.page);
@@ -191,10 +202,10 @@ export default class PaginatedList extends Component {
 
     this.#aspectRatioHelper.processNewElements();
 
-    history.pushState('', '', nextPage.url.toString());
+    history.pushState("", "", nextPage.url.toString());
 
     requestIdleCallback(() => {
-      this.#fetchPage('next');
+      this.#fetchPage("next");
     });
   }
 
@@ -203,7 +214,7 @@ export default class PaginatedList extends Component {
 
     if (!grid) return;
 
-    const previousPage = this.#getPage('previous');
+    const previousPage = this.#getPage("previous");
     if (!previousPage || !this.#shouldUsePage(previousPage)) return;
 
     let previousPageItemElements = this.#getGridForPage(previousPage.page);
@@ -213,7 +224,7 @@ export default class PaginatedList extends Component {
       });
 
       // Trigger the fetch for this page
-      this.#fetchPage('previous');
+      this.#fetchPage("previous");
 
       await promise;
       previousPageItemElements = this.#getGridForPage(previousPage.page);
@@ -223,27 +234,30 @@ export default class PaginatedList extends Component {
     // Store the current scroll position and height of the first element
     const scrollTop = window.scrollY;
     const firstElement = grid.firstElementChild;
-    const oldHeight = firstElement ? firstElement.getBoundingClientRect().top + window.scrollY : 0;
+    const oldHeight = firstElement
+      ? firstElement.getBoundingClientRect().top + window.scrollY
+      : 0;
 
     // Prepend the new elements
     grid.prepend(...previousPageItemElements);
 
     this.#aspectRatioHelper.processNewElements();
 
-    history.pushState('', '', previousPage.url.toString());
+    history.pushState("", "", previousPage.url.toString());
 
     // Calculate and adjust scroll position to maintain the same view
     if (firstElement) {
-      const newHeight = firstElement.getBoundingClientRect().top + window.scrollY;
+      const newHeight =
+        firstElement.getBoundingClientRect().top + window.scrollY;
       const heightDiff = newHeight - oldHeight;
       window.scrollTo({
         top: scrollTop + heightDiff,
-        behavior: 'instant',
+        behavior: "instant",
       });
     }
 
     requestIdleCallback(() => {
-      this.#fetchPage('previous');
+      this.#fetchPage("previous");
     });
   }
 
@@ -253,7 +267,7 @@ export default class PaginatedList extends Component {
    */
   #getPage(type) {
     const { cards } = this.refs;
-    const isPrevious = type === 'previous';
+    const isPrevious = type === "previous";
 
     if (!Array.isArray(cards)) return;
 
@@ -265,8 +279,8 @@ export default class PaginatedList extends Component {
     const page = isPrevious ? currentCardPage - 1 : currentCardPage + 1;
 
     const url = new URL(window.location.href);
-    url.searchParams.set('page', page.toString());
-    url.hash = '';
+    url.searchParams.set("page", page.toString());
+    url.hash = "";
 
     return {
       page,
@@ -283,16 +297,16 @@ export default class PaginatedList extends Component {
 
     if (!pageHTML) return;
 
-    const parsedPage = new DOMParser().parseFromString(pageHTML, 'text/html');
+    const parsedPage = new DOMParser().parseFromString(pageHTML, "text/html");
     const gridElement = parsedPage.querySelector('[ref="grid"]');
     if (!gridElement) return;
     return gridElement.querySelectorAll(':scope > [ref="cards[]"]');
   }
 
   get sectionId() {
-    const id = this.getAttribute('section-id');
+    const id = this.getAttribute("section-id");
 
-    if (!id) throw new Error('The section-id attribute is required');
+    if (!id) throw new Error("The section-id attribute is required");
 
     return id;
   }
@@ -331,7 +345,7 @@ export default class PaginatedList extends Component {
         this.#observeViewMore();
 
         // Fetch the next page
-        this.#fetchPage('next');
+        this.#fetchPage("next");
       }
     });
 
@@ -340,7 +354,7 @@ export default class PaginatedList extends Component {
     if (grid) {
       observer.observe(grid, {
         attributes: true,
-        attributeFilter: ['data-last-page'],
+        attributeFilter: ["data-last-page"],
         childList: true, // Also watch for child changes in case the whole grid is replaced
       });
 

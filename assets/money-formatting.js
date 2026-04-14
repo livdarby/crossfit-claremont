@@ -71,7 +71,8 @@ const CURRENCY_DECIMALS = {
  * @returns {number|null} The value in minor units, or null if parsing failed
  */
 export function convertMoneyToMinorUnits(value, currency) {
-  const precision = CURRENCY_DECIMALS[currency.toUpperCase()] ?? DEFAULT_CURRENCY_DECIMALS;
+  const precision =
+    CURRENCY_DECIMALS[currency.toUpperCase()] ?? DEFAULT_CURRENCY_DECIMALS;
   const multiplier = Math.pow(10, precision);
 
   if (!value || !value.trim()) {
@@ -92,19 +93,20 @@ export function convertMoneyToMinorUnits(value, currency) {
   // Examples: "2,000,000.50" USD → ["2","000","000","50"] → last "50" (2 ≤ 2) = decimal
   //           "2,000,000" USD → ["2","000","000"] → last "000" (3 > 2) = thousands
   //           "9,500" KWD (3 dec) → ["9","500"] → last "500" (3 ≤ 3) = decimal
-  const lastPart = parts[parts.length - 1] ?? '';
-  const lastPartIsDecimal = precision > 0 && parts.length > 1 && lastPart.length <= precision;
+  const lastPart = parts[parts.length - 1] ?? "";
+  const lastPartIsDecimal =
+    precision > 0 && parts.length > 1 && lastPart.length <= precision;
 
   let wholeStr, fractionStr;
 
   if (lastPartIsDecimal) {
     // Last part is decimal, everything else is the whole number
     fractionStr = lastPart;
-    wholeStr = parts.slice(0, -1).join('');
+    wholeStr = parts.slice(0, -1).join("");
   } else {
     // All parts are the whole number (no decimal portion)
-    wholeStr = parts.join('');
-    fractionStr = '';
+    wholeStr = parts.join("");
+    fractionStr = "";
   }
 
   const whole = parseInt(wholeStr, 10);
@@ -130,17 +132,26 @@ export function convertMoneyToMinorUnits(value, currency) {
  * @param {number} divisor - The divisor to convert minor units to major units
  * @returns {string} The formatted money value
  */
-function formatCents(moneyValue, thousandsSeparator, decimalSeparator, precision, divisor) {
+function formatCents(
+  moneyValue,
+  thousandsSeparator,
+  decimalSeparator,
+  precision,
+  divisor,
+) {
   const roundedNumber = (moneyValue / divisor).toFixed(precision);
 
-  let [a, b] = roundedNumber.split('.');
-  if (!a) a = '0';
-  if (!b) b = '';
+  let [a, b] = roundedNumber.split(".");
+  if (!a) a = "0";
+  if (!b) b = "";
 
   // Split by groups of 3 digits
-  a = a.replace(/\d(?=(\d\d\d)+(?!\d))/g, (digit) => digit + thousandsSeparator);
+  a = a.replace(
+    /\d(?=(\d\d\d)+(?!\d))/g,
+    (digit) => digit + thousandsSeparator,
+  );
 
-  return precision <= 0 ? a : a + decimalSeparator + b.padEnd(precision, '0');
+  return precision <= 0 ? a : a + decimalSeparator + b.padEnd(precision, "0");
 }
 
 /**
@@ -152,55 +163,62 @@ function formatCents(moneyValue, thousandsSeparator, decimalSeparator, precision
  */
 export function formatMoney(moneyValue, format, currency) {
   // Calculate divisor based on currency's native precision
-  const currencyPrecision = CURRENCY_DECIMALS[currency.toUpperCase()] ?? DEFAULT_CURRENCY_DECIMALS;
+  const currencyPrecision =
+    CURRENCY_DECIMALS[currency.toUpperCase()] ?? DEFAULT_CURRENCY_DECIMALS;
   const divisor = Math.pow(10, currencyPrecision);
 
   return format.replace(/{{\s*(\w+)\s*}}/g, (_, placeholder) => {
-    if (typeof placeholder !== 'string') return '';
-    if (placeholder === 'currency') return currency;
+    if (typeof placeholder !== "string") return "";
+    if (placeholder === "currency") return currency;
 
-    let thousandsSeparator = ',';
-    let decimalSeparator = '.';
+    let thousandsSeparator = ",";
+    let decimalSeparator = ".";
     let precision = currencyPrecision;
 
     switch (placeholder) {
-      case 'amount':
-      // Check first since it's the most common, use defaults.
+      case "amount":
+        // Check first since it's the most common, use defaults.
         break;
-      case 'amount_no_decimals':
+      case "amount_no_decimals":
         precision = 0;
         break;
-      case 'amount_with_comma_separator':
-      thousandsSeparator = '.';
-      decimalSeparator = ',';
-      break;
-      case 'amount_no_decimals_with_comma_separator':
-      // Weirdly, this is correct. It uses amount_with_comma_separator's
-      // behaviour but removes decimals, resulting in an unintuitive
-      // output that can't possibly include commas, despite the name.
-      thousandsSeparator = '.';
-      precision = 0;
-      break;
-    case 'amount_no_decimals_with_space_separator':
-      thousandsSeparator = ' ';
-      precision = 0;
-      break;
-    case 'amount_with_space_separator':
-      thousandsSeparator = ' ';
-      decimalSeparator = ',';
-      break;
-    case 'amount_with_period_and_space_separator':
-      thousandsSeparator = ' ';
-      decimalSeparator = '.';
-      break;
-    case 'amount_with_apostrophe_separator':
-      thousandsSeparator = "'";
-      decimalSeparator = '.';
-      break;
-    default:
-      break;
+      case "amount_with_comma_separator":
+        thousandsSeparator = ".";
+        decimalSeparator = ",";
+        break;
+      case "amount_no_decimals_with_comma_separator":
+        // Weirdly, this is correct. It uses amount_with_comma_separator's
+        // behaviour but removes decimals, resulting in an unintuitive
+        // output that can't possibly include commas, despite the name.
+        thousandsSeparator = ".";
+        precision = 0;
+        break;
+      case "amount_no_decimals_with_space_separator":
+        thousandsSeparator = " ";
+        precision = 0;
+        break;
+      case "amount_with_space_separator":
+        thousandsSeparator = " ";
+        decimalSeparator = ",";
+        break;
+      case "amount_with_period_and_space_separator":
+        thousandsSeparator = " ";
+        decimalSeparator = ".";
+        break;
+      case "amount_with_apostrophe_separator":
+        thousandsSeparator = "'";
+        decimalSeparator = ".";
+        break;
+      default:
+        break;
     }
 
-    return formatCents(moneyValue, thousandsSeparator, decimalSeparator, precision, divisor);
+    return formatCents(
+      moneyValue,
+      thousandsSeparator,
+      decimalSeparator,
+      precision,
+      divisor,
+    );
   });
 }

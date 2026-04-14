@@ -1,5 +1,5 @@
-import { QRCode } from '@theme/qr-code-generator';
-import { Component } from '@theme/component';
+import { QRCode } from "@theme/qr-code-generator";
+import { Component } from "@theme/component";
 /**
  * A custom element that displays a QR code image.
  *
@@ -11,18 +11,22 @@ class QRCodeImage extends Component {
   /** @type {number} */
   #height = 72;
   /** @type {string} */
-  #alt = '';
+  #alt = "";
 
   connectedCallback() {
     super.connectedCallback();
-    const widthAttribute = this.getAttribute('width') ?? '';
-    this.#width = isNaN(parseInt(widthAttribute)) ? this.#width : parseInt(widthAttribute);
-    const heightAttribute = this.getAttribute('height') ?? '';
-    this.#height = isNaN(parseInt(heightAttribute)) ? this.#height : parseInt(heightAttribute);
-    this.#alt = this.getAttribute('alt') ?? this.#alt;
+    const widthAttribute = this.getAttribute("width") ?? "";
+    this.#width = isNaN(parseInt(widthAttribute))
+      ? this.#width
+      : parseInt(widthAttribute);
+    const heightAttribute = this.getAttribute("height") ?? "";
+    this.#height = isNaN(parseInt(heightAttribute))
+      ? this.#height
+      : parseInt(heightAttribute);
+    this.#alt = this.getAttribute("alt") ?? this.#alt;
 
     new QRCode(this, {
-      text: this.getAttribute('data-identifier') || '',
+      text: this.getAttribute("data-identifier") || "",
       width: this.#width,
       height: this.#height,
       alt: this.#alt,
@@ -30,6 +34,6 @@ class QRCodeImage extends Component {
   }
 }
 
-if (!customElements.get('qr-code-image')) {
-  customElements.define('qr-code-image', QRCodeImage);
+if (!customElements.get("qr-code-image")) {
+  customElements.define("qr-code-image", QRCodeImage);
 }

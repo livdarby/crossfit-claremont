@@ -1,4 +1,4 @@
-import { Component } from '@theme/component';
+import { Component } from "@theme/component";
 
 /**
  * A custom element that renders a video background.
@@ -10,7 +10,7 @@ import { Component } from '@theme/component';
  * @extends Component<Refs>
  */
 export class VideoBackgroundComponent extends Component {
-  requiredRefs = ['videoSources', 'videoElement'];
+  requiredRefs = ["videoSources", "videoElement"];
 
   connectedCallback() {
     super.connectedCallback();
@@ -20,13 +20,13 @@ export class VideoBackgroundComponent extends Component {
     for (const source of videoSources) {
       const { videoSource } = source.dataset;
 
-      if (videoSource) source.setAttribute('src', videoSource);
+      if (videoSource) source.setAttribute("src", videoSource);
     }
 
     videoElement.load();
   }
 }
 
-if (!customElements.get('video-background-component')) {
-  customElements.define('video-background-component', VideoBackgroundComponent);
+if (!customElements.get("video-background-component")) {
+  customElements.define("video-background-component", VideoBackgroundComponent);
 }

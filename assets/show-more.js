@@ -1,5 +1,5 @@
-import { Component } from '@theme/component';
-import { isMobileBreakpoint } from '@theme/utilities';
+import { Component } from "@theme/component";
+import { isMobileBreakpoint } from "@theme/utilities";
 
 /**
  * @typedef {Object} ShowMoreRefs
@@ -15,7 +15,7 @@ import { isMobileBreakpoint } from '@theme/utilities';
  */
 
 class ShowMoreComponent extends Component {
-  requiredRefs = ['showMoreButton', 'showMoreItems', 'showMoreContent'];
+  requiredRefs = ["showMoreButton", "showMoreItems", "showMoreContent"];
 
   /**
    * @type {boolean}
@@ -35,13 +35,13 @@ class ShowMoreComponent extends Component {
   /**
    * @type {'mobile:hidden' | 'hidden'}
    */
-  #disabledClass = 'hidden';
+  #disabledClass = "hidden";
 
   /**
    * @type {'MOBILE' | 'DESKTOP'}
    */
   get #currentBreakpoint() {
-    return isMobileBreakpoint() ? 'MOBILE' : 'DESKTOP';
+    return isMobileBreakpoint() ? "MOBILE" : "DESKTOP";
   }
 
   /**
@@ -63,8 +63,8 @@ class ShowMoreComponent extends Component {
    * Updates the current breakpoint and apprpropriate disabled class
    */
   #updateBreakpointState = () => {
-    this.#disableOnDesktop = this.dataset.disableOnDesktop === 'true';
-    this.#disabledClass = this.#disableOnDesktop ? 'mobile:hidden' : 'hidden';
+    this.#disableOnDesktop = this.dataset.disableOnDesktop === "true";
+    this.#disabledClass = this.#disableOnDesktop ? "mobile:hidden" : "hidden";
   };
 
   /**
@@ -77,7 +77,9 @@ class ShowMoreComponent extends Component {
     this.#collapsedHeight = showMoreContent.offsetHeight;
     const startHeight = this.#collapsedHeight;
 
-    showMoreItems?.forEach((item) => item.classList.remove(this.#disabledClass));
+    showMoreItems?.forEach((item) =>
+      item.classList.remove(this.#disabledClass),
+    );
 
     return {
       startHeight,
@@ -105,7 +107,7 @@ class ShowMoreComponent extends Component {
   #animateHeight = (startHeight, endHeight) => {
     const { showMoreContent } = this.refs;
 
-    showMoreContent.style.overflow = 'hidden';
+    showMoreContent.style.overflow = "hidden";
     this.#animation?.cancel();
 
     this.#animation = showMoreContent.animate(
@@ -114,8 +116,8 @@ class ShowMoreComponent extends Component {
       },
       {
         duration: this.#animationSpeed,
-        easing: 'ease-in-out',
-      }
+        easing: "ease-in-out",
+      },
     );
 
     this.#animation.onfinish = () => this.#onAnimationFinish();
@@ -131,8 +133,8 @@ class ShowMoreComponent extends Component {
       showMoreItems.forEach((item) => item.classList.add(this.#disabledClass));
     }
 
-    showMoreContent.style.removeProperty('height');
-    showMoreContent.style.overflow = '';
+    showMoreContent.style.removeProperty("height");
+    showMoreContent.style.overflow = "";
     this.#expanded = !this.#expanded;
   }
 
@@ -146,17 +148,22 @@ class ShowMoreComponent extends Component {
 
     this.#updateBreakpointState();
 
-    if (this.#currentBreakpoint === 'DESKTOP' && this.#disableOnDesktop) return;
+    if (this.#currentBreakpoint === "DESKTOP" && this.#disableOnDesktop) return;
 
-    const { startHeight, endHeight } = !this.#expanded ? this.#expand() : this.#collapse();
+    const { startHeight, endHeight } = !this.#expanded
+      ? this.#expand()
+      : this.#collapse();
 
-    this.dataset.expanded = this.#expanded ? 'false' : 'true';
-    this.refs.showMoreButton.setAttribute('aria-expanded', this.dataset.expanded);
+    this.dataset.expanded = this.#expanded ? "false" : "true";
+    this.refs.showMoreButton.setAttribute(
+      "aria-expanded",
+      this.dataset.expanded,
+    );
 
     this.#animateHeight(startHeight, endHeight);
   };
 }
 
-if (!customElements.get('show-more-component')) {
-  customElements.define('show-more-component', ShowMoreComponent);
+if (!customElements.get("show-more-component")) {
+  customElements.define("show-more-component", ShowMoreComponent);
 }

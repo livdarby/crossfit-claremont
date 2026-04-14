@@ -104,10 +104,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "text_LWt8Pz",
-            "text_f9CFLH"
-          ]
+          "block_order": ["text_LWt8Pz", "text_f9CFLH"]
         },
         "email_signup_crihX7": {
           "type": "email-signup",
@@ -135,10 +132,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "group_H6VpwJ",
-        "email_signup_crihX7"
-      ],
+      "block_order": ["group_H6VpwJ", "email_signup_crihX7"],
       "name": "t:names.footer",
       "settings": {
         "section_width": "page-width",
@@ -204,8 +198,5 @@
       }
     }
   },
-  "order": [
-    "footer_m9NzUG",
-    "footer_utilities_jLGE8U"
-  ]
+  "order": ["footer_m9NzUG", "footer_utilities_jLGE8U"]
 }

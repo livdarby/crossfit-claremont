@@ -6,7 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */ {
   "sections": {
     "main": {
       "type": "main-404",
@@ -79,11 +79,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "text_GqmVFf",
-        "text_Ua9XAW",
-        "button_PAQMwR"
-      ],
+      "block_order": ["text_GqmVFf", "text_Ua9XAW", "button_PAQMwR"],
       "settings": {
         "content_direction": "column",
         "section_width": "page-width",
@@ -159,9 +155,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "text_WJEa9Q"
-          ]
+          "block_order": ["text_WJEa9Q"]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -275,8 +269,5 @@
       }
     }
   },
-  "order": [
-    "main",
-    "product_list_iA96Tq"
-  ]
+  "order": ["main", "product_list_iA96Tq"]
 }

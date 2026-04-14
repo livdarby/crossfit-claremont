@@ -1,6 +1,6 @@
-import { Component } from '@theme/component';
-import { debounce, fetchConfig } from '@theme/utilities';
-import { cartPerformance } from '@theme/performance';
+import { Component } from "@theme/component";
+import { debounce, fetchConfig } from "@theme/utilities";
+import { cartPerformance } from "@theme/performance";
 
 /**
  * A custom element that displays a cart note.
@@ -25,7 +25,7 @@ class CartNote extends Component {
     this.#activeFetch = abortController;
 
     try {
-      const config = fetchConfig('json', {
+      const config = fetchConfig("json", {
         body: JSON.stringify({ note }),
       });
 
@@ -36,11 +36,11 @@ class CartNote extends Component {
     } catch (error) {
     } finally {
       this.#activeFetch = null;
-      cartPerformance.measureFromEvent('note-update:user-action', event);
+      cartPerformance.measureFromEvent("note-update:user-action", event);
     }
   }, 200);
 }
 
-if (!customElements.get('cart-note')) {
-  customElements.define('cart-note', CartNote);
+if (!customElements.get("cart-note")) {
+  customElements.define("cart-note", CartNote);
 }

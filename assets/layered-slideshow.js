@@ -1,5 +1,5 @@
-import { Component } from '@theme/component';
-import { isMobileBreakpoint, mediaQueryLarge } from '@theme/utilities';
+import { Component } from "@theme/component";
+import { isMobileBreakpoint, mediaQueryLarge } from "@theme/utilities";
 
 /**
  * @typedef {Object} LayeredSlideshowRefs
@@ -30,7 +30,7 @@ const FOCUSABLE_SELECTOR =
 
 /** @extends {Component<LayeredSlideshowRefs>} */
 export class LayeredSlideshowComponent extends Component {
-  requiredRefs = ['container'];
+  requiredRefs = ["container"];
   #active = 0;
   /** @type {DragState | null} */
   #drag = null;
@@ -56,11 +56,11 @@ export class LayeredSlideshowComponent extends Component {
 
     this.#active = Math.max(
       0,
-      tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true')
+      tabs.findIndex((t) => t.getAttribute("aria-selected") === "true"),
     );
 
     this.#isMobile = isMobileBreakpoint();
-    mediaQueryLarge.addEventListener('change', this.#handleMediaQueryChange);
+    mediaQueryLarge.addEventListener("change", this.#handleMediaQueryChange);
 
     this.#containerObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
@@ -73,7 +73,9 @@ export class LayeredSlideshowComponent extends Component {
           if (boxSize) {
             size = isMobile ? boxSize.blockSize : boxSize.inlineSize;
           } else {
-            size = isMobile ? entry.contentRect.height : entry.contentRect.width;
+            size = isMobile
+              ? entry.contentRect.height
+              : entry.contentRect.width;
           }
 
           this.#updateGridSizes(size);
@@ -93,32 +95,40 @@ export class LayeredSlideshowComponent extends Component {
     const opts = { signal: this.#abort.signal };
     const { container, tabs } = this.refs;
 
-    this.addEventListener('keydown', (e) => this.#handleKeydown(e), opts);
+    this.addEventListener("keydown", (e) => this.#handleKeydown(e), opts);
 
     for (const [i, tab] of tabs.entries()) {
-      tab.addEventListener('click', (e) => this.#handleTabClick(e, i), opts);
-      tab.addEventListener('focus', (e) => this.#handleTabFocus(e, i), opts);
+      tab.addEventListener("click", (e) => this.#handleTabClick(e, i), opts);
+      tab.addEventListener("focus", (e) => this.#handleTabFocus(e, i), opts);
     }
 
     this.#setupPanelFocusManagement(opts);
 
     if (!this.#isMobile) {
-      container.addEventListener('pointerdown', (e) => this.#startDrag(e), opts);
-      container.addEventListener('click', (e) => this.#preventClickDuringDrag(e), { ...opts, capture: true });
+      container.addEventListener(
+        "pointerdown",
+        (e) => this.#startDrag(e),
+        opts,
+      );
+      container.addEventListener(
+        "click",
+        (e) => this.#preventClickDuringDrag(e),
+        { ...opts, capture: true },
+      );
     }
   }
 
   #handleKeydown(/** @type {KeyboardEvent} */ e) {
     const target = /** @type {HTMLElement} */ (e.target);
-    if (target.getAttribute('role') !== 'tab') return;
+    if (target.getAttribute("role") !== "tab") return;
 
     const { tabs } = this.refs;
     if (!tabs) return;
 
     const i = tabs.indexOf(target);
     const navMap = {
-      [this.#isMobile ? 'ArrowUp' : 'ArrowLeft']: -1,
-      [this.#isMobile ? 'ArrowDown' : 'ArrowRight']: 1,
+      [this.#isMobile ? "ArrowUp" : "ArrowLeft"]: -1,
+      [this.#isMobile ? "ArrowDown" : "ArrowRight"]: 1,
       Home: -i,
       End: tabs.length - 1 - i,
     };
@@ -139,7 +149,7 @@ export class LayeredSlideshowComponent extends Component {
 
   #handleTabFocus(/** @type {FocusEvent} */ e, /** @type {number} */ index) {
     const target = /** @type {HTMLElement} */ (e.target);
-    if (target.matches(':focus-visible')) {
+    if (target.matches(":focus-visible")) {
       this.#activate(index);
     }
   }
@@ -152,7 +162,11 @@ export class LayeredSlideshowComponent extends Component {
     if (!panels) return;
 
     for (const [index, panel] of panels.entries()) {
-      panel.addEventListener('keydown', (event) => this.#handlePanelKeydown(event, index), opts);
+      panel.addEventListener(
+        "keydown",
+        (event) => this.#handlePanelKeydown(event, index),
+        opts,
+      );
     }
   }
 
@@ -161,7 +175,7 @@ export class LayeredSlideshowComponent extends Component {
    * @param {number} index
    */
   #handlePanelKeydown(event, index) {
-    if (event.key !== 'Tab') return;
+    if (event.key !== "Tab") return;
 
     const { panels } = this.refs;
     const panel = /** @type {HTMLElement} */ (event.currentTarget);
@@ -176,7 +190,7 @@ export class LayeredSlideshowComponent extends Component {
       if (isAtStart && index > 0) {
         event.preventDefault();
         this.#activate(index - 1);
-        this.#focusPanelEdge(index - 1, 'end');
+        this.#focusPanelEdge(index - 1, "end");
       }
       return;
     }
@@ -188,7 +202,7 @@ export class LayeredSlideshowComponent extends Component {
     if (isAtEnd && panels && index < panels.length - 1) {
       event.preventDefault();
       this.#activate(index + 1);
-      this.#focusPanelEdge(index + 1, 'start');
+      this.#focusPanelEdge(index + 1, "start");
     }
   }
 
@@ -196,12 +210,13 @@ export class LayeredSlideshowComponent extends Component {
    * @param {number} index
    * @param {'start' | 'end'} [position]
    */
-  #focusPanelEdge(index, position = 'start') {
+  #focusPanelEdge(index, position = "start") {
     const panel = this.refs.panels?.[index];
     if (!panel) return;
 
     const focusable = this.#getFocusableElements(panel);
-    const target = position === 'end' ? focusable[focusable.length - 1] : focusable[0];
+    const target =
+      position === "end" ? focusable[focusable.length - 1] : focusable[0];
 
     requestAnimationFrame(() => (target ?? panel).focus());
   }
@@ -212,7 +227,7 @@ export class LayeredSlideshowComponent extends Component {
    */
   #getFocusableElements(panel) {
     return Array.from(panel.querySelectorAll(FOCUSABLE_SELECTOR))
-      .filter((el) => !el.closest('[inert]'))
+      .filter((el) => !el.closest("[inert]"))
       .map((el) => /** @type {HTMLElement} */ (el));
   }
 
@@ -230,7 +245,7 @@ export class LayeredSlideshowComponent extends Component {
 
     if (wasMobile !== this.#isMobile) {
       const { container } = this.refs;
-      container.setAttribute('data-instant-transitions', '');
+      container.setAttribute("data-instant-transitions", "");
 
       this.#clearHeightStyles();
       // Re-calculate height first so grid calculation has correct container dimensions
@@ -239,7 +254,7 @@ export class LayeredSlideshowComponent extends Component {
       this.#setupEventListeners();
 
       requestAnimationFrame(() => {
-        container.removeAttribute('data-instant-transitions');
+        container.removeAttribute("data-instant-transitions");
       });
     }
   };
@@ -253,7 +268,7 @@ export class LayeredSlideshowComponent extends Component {
     this.#contentObserver = null;
     this.#containerObserver?.disconnect();
     this.#containerObserver = null;
-    mediaQueryLarge.removeEventListener('change', this.#handleMediaQueryChange);
+    mediaQueryLarge.removeEventListener("change", this.#handleMediaQueryChange);
   }
 
   /**
@@ -271,10 +286,11 @@ export class LayeredSlideshowComponent extends Component {
    */
   #activate(index, instant = false) {
     const { container, tabs } = this.refs;
-    if (!tabs || index === this.#active || index < 0 || index >= tabs.length) return;
+    if (!tabs || index === this.#active || index < 0 || index >= tabs.length)
+      return;
 
     if (instant) {
-      container.setAttribute('data-instant-transitions', '');
+      container.setAttribute("data-instant-transitions", "");
     }
 
     this.#active = index;
@@ -284,7 +300,7 @@ export class LayeredSlideshowComponent extends Component {
       // Double rAF to ensure layout is fully settled before re-enabling transitions
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          container.removeAttribute('data-instant-transitions');
+          container.removeAttribute("data-instant-transitions");
         });
       });
     }
@@ -295,16 +311,16 @@ export class LayeredSlideshowComponent extends Component {
 
     for (const [i, tab] of tabs?.entries() ?? []) {
       const isActive = i === this.#active;
-      tab.setAttribute('aria-selected', String(isActive));
-      tab.setAttribute('tabindex', isActive ? '0' : '-1');
+      tab.setAttribute("aria-selected", String(isActive));
+      tab.setAttribute("tabindex", isActive ? "0" : "-1");
     }
 
     for (const [i, panel] of panels?.entries() ?? []) {
       const isActive = i === this.#active;
-      panel.toggleAttribute('inert', !isActive);
-      panel.setAttribute('tabindex', isActive ? '0' : '-1');
+      panel.toggleAttribute("inert", !isActive);
+      panel.setAttribute("tabindex", isActive ? "0" : "-1");
 
-      const video = panel.querySelector('video');
+      const video = panel.querySelector("video");
       if (video) {
         isActive ? video.play() : video.pause();
       }
@@ -322,10 +338,14 @@ export class LayeredSlideshowComponent extends Component {
     const inactiveSize = this.#inactiveSize;
     const size =
       containerSize ??
-      (this.#isMobile ? container.getBoundingClientRect().height : container.getBoundingClientRect().width);
+      (this.#isMobile
+        ? container.getBoundingClientRect().height
+        : container.getBoundingClientRect().width);
     const activeSize = size - inactiveSize * (tabs.length - 1);
-    const sizes = tabs.map((_, i) => (i === this.#active ? `${activeSize}px` : `${inactiveSize}px`));
-    container.style.setProperty('--active-tab', sizes.join(' '));
+    const sizes = tabs.map((_, i) =>
+      i === this.#active ? `${activeSize}px` : `${inactiveSize}px`,
+    );
+    container.style.setProperty("--active-tab", sizes.join(" "));
   }
 
   /**
@@ -375,9 +395,9 @@ export class LayeredSlideshowComponent extends Component {
     const ac = new AbortController();
     const opts = { signal: ac.signal };
 
-    document.addEventListener('pointermove', (e) => this.#handleDrag(e), opts);
-    document.addEventListener('pointerup', () => this.#endDrag(ac), opts);
-    document.addEventListener('pointercancel', () => this.#endDrag(ac), opts);
+    document.addEventListener("pointermove", (e) => this.#handleDrag(e), opts);
+    document.addEventListener("pointerup", () => this.#endDrag(ac), opts);
+    document.addEventListener("pointercancel", () => this.#endDrag(ac), opts);
 
     event.preventDefault();
   }
@@ -407,7 +427,7 @@ export class LayeredSlideshowComponent extends Component {
         }
       }
       this.#drag.dragging = true;
-      container.setAttribute('data-dragging', '');
+      container.setAttribute("data-dragging", "");
     }
 
     if (!this.#drag.dragging) return;
@@ -430,7 +450,7 @@ export class LayeredSlideshowComponent extends Component {
       return `${inactiveSize}px`;
     });
 
-    container.style.setProperty('--active-tab', sizes.join(' '));
+    container.style.setProperty("--active-tab", sizes.join(" "));
     this.#drag.progress = progress;
   }
 
@@ -441,13 +461,16 @@ export class LayeredSlideshowComponent extends Component {
     if (!this.#drag) return;
 
     const { container } = this.refs;
-    container?.removeAttribute('data-dragging');
+    container?.removeAttribute("data-dragging");
 
     if (this.#drag.dragging) {
       this.#drag.prevent = true;
       setTimeout(() => (this.#drag = null), 100);
 
-      if (this.#drag.progress && this.#drag.progress >= DRAG_COMPLETE_THRESHOLD) {
+      if (
+        this.#drag.progress &&
+        this.#drag.progress >= DRAG_COMPLETE_THRESHOLD
+      ) {
         this.#activate(this.#drag.target);
       } else {
         this.#updateActiveTab();
@@ -469,8 +492,8 @@ export class LayeredSlideshowComponent extends Component {
     this.#contentObserver = new MutationObserver(() => this.#syncHeight());
 
     for (const panel of panels ?? []) {
-      const content = panel.querySelector('.layered-slideshow__content');
-      const inner = content?.querySelector('.group-block-content');
+      const content = panel.querySelector(".layered-slideshow__content");
+      const inner = content?.querySelector(".group-block-content");
 
       // Observe all relevant elements for resize
       if (inner) this.#heightObserver.observe(inner);
@@ -493,7 +516,7 @@ export class LayeredSlideshowComponent extends Component {
   #syncHeight() {
     const { container } = this.refs;
     const contentHeight = this.#getMaxContentHeight();
-    const isAuto = container.getAttribute('size') === 'auto';
+    const isAuto = container.getAttribute("size") === "auto";
 
     if (this.#isMobile) {
       this.#syncMobileHeight(contentHeight, isAuto);
@@ -517,7 +540,7 @@ export class LayeredSlideshowComponent extends Component {
     } else {
       // Temporarily clear inline style to measure CSS-defined min-height
       const savedMinHeight = this.style.minHeight;
-      this.style.minHeight = '';
+      this.style.minHeight = "";
       const cssMinHeight = parseFloat(getComputedStyle(this).minHeight) || 0;
       this.style.minHeight = savedMinHeight;
 
@@ -526,8 +549,8 @@ export class LayeredSlideshowComponent extends Component {
         this.style.minHeight = `${contentHeight}px`;
         container.style.height = `${contentHeight}px`;
       } else {
-        this.style.minHeight = '';
-        container.style.height = '';
+        this.style.minHeight = "";
+        container.style.height = "";
       }
     }
   }
@@ -550,23 +573,30 @@ export class LayeredSlideshowComponent extends Component {
       minPanelHeight = 150;
     } else {
       // CSS variable is set on component, try reading from container (inherited) or component directly
-      const inheritedValue = containerStyles.getPropertyValue('--layered-panel-height-mobile');
-      const componentValue = getComputedStyle(this).getPropertyValue('--layered-panel-height-mobile');
+      const inheritedValue = containerStyles.getPropertyValue(
+        "--layered-panel-height-mobile",
+      );
+      const componentValue = getComputedStyle(this).getPropertyValue(
+        "--layered-panel-height-mobile",
+      );
       minPanelHeight = parseFloat(inheritedValue || componentValue) || 260;
     }
 
     const requiredActiveHeight = Math.max(minPanelHeight, contentHeight);
 
-    container.style.setProperty('--active-panel-height', `${requiredActiveHeight}px`);
+    container.style.setProperty(
+      "--active-panel-height",
+      `${requiredActiveHeight}px`,
+    );
     container.style.height = `${requiredActiveHeight + inactiveStackHeight}px`;
   }
 
   #clearHeightStyles() {
     const { container } = this.refs;
 
-    this.style.minHeight = '';
-    container.style.height = '';
-    container.style.removeProperty('--active-panel-height');
+    this.style.minHeight = "";
+    container.style.height = "";
+    container.style.removeProperty("--active-panel-height");
   }
 
   #getMaxContentHeight() {
@@ -574,19 +604,23 @@ export class LayeredSlideshowComponent extends Component {
     let max = 0;
 
     for (const panel of panels ?? []) {
-      const content = panel.querySelector('.layered-slideshow__content');
+      const content = panel.querySelector(".layered-slideshow__content");
       if (!content) continue;
 
-      const inner = /** @type {HTMLElement} */ (content.querySelector('.group-block-content') ?? content);
+      const inner = /** @type {HTMLElement} */ (
+        content.querySelector(".group-block-content") ?? content
+      );
 
       // Temporarily set height to auto for accurate measurement
       // This is needed because height: 100% collapses when parent has no height
       const savedHeight = inner.style.height;
-      inner.style.height = 'auto';
+      inner.style.height = "auto";
 
       const styles = getComputedStyle(content);
-      const paddingTop = parseFloat(styles.paddingBlockStart || styles.paddingTop) || 0;
-      const paddingBottom = parseFloat(styles.paddingBlockEnd || styles.paddingBottom) || 0;
+      const paddingTop =
+        parseFloat(styles.paddingBlockStart || styles.paddingTop) || 0;
+      const paddingBottom =
+        parseFloat(styles.paddingBlockEnd || styles.paddingBottom) || 0;
 
       const height = (inner.scrollHeight || 0) + paddingTop + paddingBottom;
       if (height > max) max = height;
@@ -599,4 +633,4 @@ export class LayeredSlideshowComponent extends Component {
   }
 }
 
-customElements.define('layered-slideshow-component', LayeredSlideshowComponent);
+customElements.define("layered-slideshow-component", LayeredSlideshowComponent);

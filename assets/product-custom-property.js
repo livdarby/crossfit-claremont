@@ -1,5 +1,5 @@
 // assets/product-custom-property.js
-import { Component } from '@theme/component';
+import { Component } from "@theme/component";
 
 /**
  * @typedef {object} ProductCustomPropertyRefs
@@ -21,13 +21,18 @@ class ProductCustomProperty extends Component {
     const currentLength = textInput.value.length;
     const maxLength = textInput.maxLength;
 
-    const template = characterCount.getAttribute('data-template');
+    const template = characterCount.getAttribute("data-template");
     if (!template) return;
 
-    const updatedText = template.replace('[current]', currentLength.toString()).replace('[max]', maxLength.toString());
+    const updatedText = template
+      .replace("[current]", currentLength.toString())
+      .replace("[max]", maxLength.toString());
 
     characterCount.textContent = updatedText;
   }
 }
 
-customElements.define('product-custom-property-component', ProductCustomProperty);
+customElements.define(
+  "product-custom-property-component",
+  ProductCustomProperty,
+);

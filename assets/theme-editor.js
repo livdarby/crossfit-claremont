@@ -1,5 +1,5 @@
 // Theme editor specific logic
-import { updateAllHeaderCustomProperties } from '@theme/utilities';
+import { updateAllHeaderCustomProperties } from "@theme/utilities";
 
 /** @type {{ activeSlideIndex: number | null }} */
 const layeredSlideshowState = {
@@ -19,41 +19,45 @@ const slideshowState = {
 /**
  * @param {Event} event
  */
-document.addEventListener('shopify:block:select', function (event) {
+document.addEventListener("shopify:block:select", function (event) {
   if (event.target instanceof HTMLElement) {
     // Check if the selected element is specifically a product-card block itself
     // Not a child block within the product card
 
     // First, remove data-no-navigation from any previously selected product cards
-    document.querySelectorAll('product-card[data-no-navigation]').forEach((card) => {
-      if (card instanceof HTMLElement) {
-        card.removeAttribute('data-no-navigation');
-      }
-    });
+    document
+      .querySelectorAll("product-card[data-no-navigation]")
+      .forEach((card) => {
+        if (card instanceof HTMLElement) {
+          card.removeAttribute("data-no-navigation");
+        }
+      });
 
-    if (event.target.tagName === 'PRODUCT-CARD') {
-      const section = event.target.closest('.shopify-section');
+    if (event.target.tagName === "PRODUCT-CARD") {
+      const section = event.target.closest(".shopify-section");
 
       if (section) {
-        const productCardsInSection = section.querySelectorAll('product-card');
+        const productCardsInSection = section.querySelectorAll("product-card");
 
         productCardsInSection.forEach((card) => {
           if (card instanceof HTMLElement) {
-            card.setAttribute('data-no-navigation', 'true');
+            card.setAttribute("data-no-navigation", "true");
           }
         });
       }
     }
 
     // Keep track of the selected slide for the slideshow
-    const slide = event.target.closest('slideshow-slide');
+    const slide = event.target.closest("slideshow-slide");
 
     if (slide) {
       /** @type {import('./slideshow').Slideshow | null} */
-      const slideshow = slide.closest('slideshow-component');
+      const slideshow = slide.closest("slideshow-component");
 
       if (slideshow) {
-        const index = Array.from(slide.parentElement?.children ?? []).indexOf(slide);
+        const index = Array.from(slide.parentElement?.children ?? []).indexOf(
+          slide,
+        );
 
         if (index === -1) return;
 
@@ -62,16 +66,18 @@ document.addEventListener('shopify:block:select', function (event) {
         slideshowState.activeSlideIndex = index;
         // Pause autoplay
         slideshow.pause();
-        slideshow.select(index, undefined, { animate: isAlreadyActive ? false : true });
+        slideshow.select(index, undefined, {
+          animate: isAlreadyActive ? false : true,
+        });
       }
     }
 
     // Keep track of the selected slide for the carousel
-    const carouselCard = event.target.closest('[data-carousel-card]');
+    const carouselCard = event.target.closest("[data-carousel-card]");
 
     if (carouselCard) {
       /** @type {import('./slideshow').Slideshow | null} */
-      const slideshow = carouselCard.closest('slideshow-component');
+      const slideshow = carouselCard.closest("slideshow-component");
 
       if (slideshow) {
         const cards = Array.from(carouselCard.parentElement?.children ?? []);
@@ -87,20 +93,29 @@ document.addEventListener('shopify:block:select', function (event) {
         const targetCard = cards[index];
 
         if (targetCard instanceof HTMLElement) {
-          targetCard.scrollIntoView({ behavior: isAlreadyActive ? 'instant' : 'smooth', inline: 'center' });
+          targetCard.scrollIntoView({
+            behavior: isAlreadyActive ? "instant" : "smooth",
+            inline: "center",
+          });
         }
       }
     }
 
     // Keep track of the selected slide for the layered slideshow
-    const layeredSlideshowPanel = event.target.closest('layered-slideshow-component [role="tabpanel"]');
+    const layeredSlideshowPanel = event.target.closest(
+      'layered-slideshow-component [role="tabpanel"]',
+    );
 
     if (layeredSlideshowPanel) {
       /** @type {import('./layered-slideshow').LayeredSlideshowComponent | null} */
-      const layeredSlideshow = layeredSlideshowPanel.closest('layered-slideshow-component');
+      const layeredSlideshow = layeredSlideshowPanel.closest(
+        "layered-slideshow-component",
+      );
       if (!layeredSlideshow) return;
 
-      const index = Array.from(layeredSlideshow.querySelectorAll('[role="tabpanel"]')).indexOf(layeredSlideshowPanel);
+      const index = Array.from(
+        layeredSlideshow.querySelectorAll('[role="tabpanel"]'),
+      ).indexOf(layeredSlideshowPanel);
       if (index === -1) return;
 
       // Compare before updating to detect if same slide is selected again
@@ -113,15 +128,15 @@ document.addEventListener('shopify:block:select', function (event) {
   }
 });
 
-document.addEventListener('shopify:block:deselect', function (event) {
+document.addEventListener("shopify:block:deselect", function (event) {
   if (event.target instanceof HTMLElement) {
     // Remove data-no-navigation when product card is deselected
-    if (event.target.tagName === 'PRODUCT-CARD') {
-      event.target.removeAttribute('data-no-navigation');
+    if (event.target.tagName === "PRODUCT-CARD") {
+      event.target.removeAttribute("data-no-navigation");
     }
 
     /** @type {import('./slideshow').Slideshow | null} */
-    const slideshow = event.target.closest('slideshow-component');
+    const slideshow = event.target.closest("slideshow-component");
 
     if (slideshow) {
       // Resume playback
@@ -130,14 +145,20 @@ document.addEventListener('shopify:block:deselect', function (event) {
   }
 });
 
-document.addEventListener('shopify:section:load', function (event) {
-  if (event.target instanceof HTMLElement && event.target.classList.contains('shopify-section-group-header-group')) {
+document.addEventListener("shopify:section:load", function (event) {
+  if (
+    event.target instanceof HTMLElement &&
+    event.target.classList.contains("shopify-section-group-header-group")
+  ) {
     updateAllHeaderCustomProperties();
   }
 });
 
-document.addEventListener('shopify:section:unload', function (event) {
-  if (event.target instanceof HTMLElement && event.target.classList.contains('shopify-section-group-header-group')) {
+document.addEventListener("shopify:section:unload", function (event) {
+  if (
+    event.target instanceof HTMLElement &&
+    event.target.classList.contains("shopify-section-group-header-group")
+  ) {
     setTimeout(() => {
       updateAllHeaderCustomProperties();
     }, 500);
@@ -154,9 +175,9 @@ document.addEventListener('shopify:section:unload', function (event) {
 // Detect when page is about to unload
 // This helps distinguish between theme editor refreshes (which don't trigger beforeunload)
 // and actual navigation (which does trigger beforeunload)
-window.addEventListener('beforeunload', function (_event) {
+window.addEventListener("beforeunload", function (_event) {
   // Set a flag to indicate that an actual unload is happening (not just a refresh)
-  sessionStorage.setItem('editor-page-unloading', 'true');
+  sessionStorage.setItem("editor-page-unloading", "true");
 });
 
 // Check if the device is iOS as Safari on iOS doesn't support the beforeunload event
@@ -165,17 +186,18 @@ const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 if (window.Shopify?.designMode && !isIOS) {
   // Skip editor state management on iOS devices
   (function editorStateManager() {
-    const EDITOR_PREFIX = 'editor-save-state';
+    const EDITOR_PREFIX = "editor-save-state";
 
     /**
      * Check if the page just unloaded (actual navigation) vs a refresh
      * @returns {boolean}
      */
     function wasPageUnloading() {
-      const unloading = sessionStorage.getItem('editor-page-unloading') === 'true';
+      const unloading =
+        sessionStorage.getItem("editor-page-unloading") === "true";
       // Clear the flag after checking
       if (unloading) {
-        sessionStorage.removeItem('editor-page-unloading');
+        sessionStorage.removeItem("editor-page-unloading");
       }
       return unloading;
     }
@@ -206,29 +228,36 @@ if (window.Shopify?.designMode && !isIOS) {
      * @param {string | undefined} instanceId
      */
     function saveEditorState(name, isOpen, instanceId) {
-      sessionStorage.setItem(`${EDITOR_PREFIX}-${name}`, JSON.stringify({ isOpen, instanceId }));
+      sessionStorage.setItem(
+        `${EDITOR_PREFIX}-${name}`,
+        JSON.stringify({ isOpen, instanceId }),
+      );
     }
 
     /** @type {{name: string, selector: string, matches: (el: Element) => boolean, isOpen: (el: Element) => boolean, open: (el: Element, instanceId?: string) => void, getInstanceId?: (el: Element) => string | undefined}[]} */
     const features = [
       {
-        name: 'account-popover',
-        selector: 'shopify-account',
+        name: "account-popover",
+        selector: "shopify-account",
         matches(el) {
           return !!el.closest(this.selector);
         },
         isOpen: (el) => {
           const shadowRoot = el.shadowRoot;
           if (!shadowRoot) return false;
-          return shadowRoot.querySelector('dialog[open], [popover]:popover-open') != null;
+          return (
+            shadowRoot.querySelector("dialog[open], [popover]:popover-open") !=
+            null
+          );
         },
         async open(el) {
-          await customElements.whenDefined('shopify-account');
+          await customElements.whenDefined("shopify-account");
           const shadowRoot = el.shadowRoot;
           if (shadowRoot) {
             const button =
-              shadowRoot.querySelector('button[popovertarget], button[aria-haspopup]') ??
-              shadowRoot.querySelector('button');
+              shadowRoot.querySelector(
+                "button[popovertarget], button[aria-haspopup]",
+              ) ?? shadowRoot.querySelector("button");
             if (button instanceof HTMLElement) {
               button.click();
               return;
@@ -238,77 +267,77 @@ if (window.Shopify?.designMode && !isIOS) {
         },
       },
       {
-        name: 'localization-dropdown',
-        selector: 'dropdown-localization-component',
+        name: "localization-dropdown",
+        selector: "dropdown-localization-component",
         matches(el) {
           return !!el.closest(this.selector);
         },
-        isOpen: (el) => el.getAttribute('aria-expanded') === 'true',
+        isOpen: (el) => el.getAttribute("aria-expanded") === "true",
         // @ts-ignore
         open: (el) => el.showPanel(),
       },
       {
-        name: 'search-modal',
-        selector: '.search-modal',
+        name: "search-modal",
+        selector: ".search-modal",
         matches(el) {
           return !!el.closest(this.selector);
         },
-        isOpen: (el) => el.getAttribute('open') != null,
+        isOpen: (el) => el.getAttribute("open") != null,
         // @ts-ignore
         open: (el) => el.showDialog(),
       },
       {
-        name: 'cart-drawer',
-        selector: 'cart-drawer-component',
+        name: "cart-drawer",
+        selector: "cart-drawer-component",
         matches(el) {
           return !!el.closest(this.selector);
         },
-        isOpen: (el) => el.getAttribute('open') != null,
+        isOpen: (el) => el.getAttribute("open") != null,
         open: (el) => {
           // @ts-ignore
           el.open();
         },
       },
       {
-        name: 'header-drawer',
-        selector: 'header-drawer',
+        name: "header-drawer",
+        selector: "header-drawer",
         matches(el) {
           return !!el.closest(this.selector);
         },
-        isOpen: (el) => el.getAttribute('open') != null,
+        isOpen: (el) => el.getAttribute("open") != null,
         open: (el) => {
           // @ts-ignore
           el.open();
           // @ts-ignore
-          el.refs.details.setAttribute('open', '');
+          el.refs.details.setAttribute("open", "");
         },
       },
       {
-        name: 'local-pickup-modal',
-        selector: '.pickup-location__dialog',
+        name: "local-pickup-modal",
+        selector: ".pickup-location__dialog",
         matches(el) {
           return el.matches(this.selector);
         },
-        isOpen: (el) => el.getAttribute('open') != null,
+        isOpen: (el) => el.getAttribute("open") != null,
         open: (el) => {
           // @ts-ignore
-          el.closest('dialog-component').toggleDialog();
+          el.closest("dialog-component").toggleDialog();
         },
       },
       {
-        name: 'quick-add-modal',
+        name: "quick-add-modal",
         getInstanceId: (el) => {
           // @ts-ignore
-          return el.querySelector('product-price')?.dataset?.productId;
+          return el.querySelector("product-price")?.dataset?.productId;
         },
-        selector: '.quick-add-modal',
+        selector: ".quick-add-modal",
         matches(el) {
           return el.matches(this.selector);
         },
-        isOpen: (el) => el.getAttribute('open') != null,
+        isOpen: (el) => el.getAttribute("open") != null,
         open: (el, instanceId) => {
           const button = document.querySelector(
-            `product-form-component[data-product-id="${instanceId}"] .quick-add__button--choose`
+            `product-form-component[data-product-id="${instanceId}"] .quick-add__button--choose`,
           );
 
           // @ts-ignore
@@ -316,25 +345,26 @@ if (window.Shopify?.designMode && !isIOS) {
         },
       },
       {
-        name: 'floating-panel-component',
+        name: "floating-panel-component",
         getInstanceId: (el) => {
           return el.id;
         },
-        selector: '.facets__panel',
+        selector: ".facets__panel",
         matches(el) {
           return el.matches(this.selector);
         },
-        isOpen: (el) => el.getAttribute('open') != null,
-        open: (el, instanceId) => document.querySelector(`#${instanceId}`)?.setAttribute('open', ''),
+        isOpen: (el) => el.getAttribute("open") != null,
+        open: (el, instanceId) =>
+          document.querySelector(`#${instanceId}`)?.setAttribute("open", ""),
       },
       {
-        name: 'facets-panel',
-        selector: '.facets--drawer',
+        name: "facets-panel",
+        selector: ".facets--drawer",
         matches(el) {
           return el.matches(this.selector);
         },
-        isOpen: (el) => el.getAttribute('open') != null,
-        open: (el) => el?.setAttribute('open', ''),
+        isOpen: (el) => el.getAttribute("open") != null,
+        open: (el) => el?.setAttribute("open", ""),
       },
     ];
 
@@ -372,13 +402,13 @@ if (window.Shopify?.designMode && !isIOS) {
       saveEditorState(feature.name, isOpen, instanceId);
     };
 
-    const trackedAttributes = ['open', 'aria-expanded'];
+    const trackedAttributes = ["open", "aria-expanded"];
 
     // Track state changes via attribute changes
     const observer = new MutationObserver((list) => {
       for (const mutation of list) {
         if (
-          mutation.type === 'attributes' &&
+          mutation.type === "attributes" &&
           mutation.attributeName &&
           trackedAttributes.includes(mutation.attributeName)
         ) {
@@ -397,8 +427,8 @@ if (window.Shopify?.designMode && !isIOS) {
 
     // To track shopify-account state changes
     (async () => {
-      await customElements.whenDefined('shopify-account');
-      const el = document.querySelector('shopify-account');
+      await customElements.whenDefined("shopify-account");
+      const el = document.querySelector("shopify-account");
       if (!el?.shadowRoot) return;
 
       const shadowObserver = new MutationObserver(() => {
@@ -407,12 +437,12 @@ if (window.Shopify?.designMode && !isIOS) {
 
       shadowObserver.observe(el.shadowRoot, {
         attributes: true,
-        attributeFilter: ['open'],
+        attributeFilter: ["open"],
         subtree: true,
       });
 
       // Popover API's toggle event has composed: true, so it crosses the shadow boundary
-      el.addEventListener('toggle', () => update(el), true);
+      el.addEventListener("toggle", () => update(el), true);
     })();
   })();
 }

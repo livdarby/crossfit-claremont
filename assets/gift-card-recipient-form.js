@@ -1,5 +1,5 @@
-import { Component } from '@theme/component';
-import { ThemeEvents, CartErrorEvent, CartAddEvent } from '@theme/events';
+import { Component } from "@theme/component";
+import { ThemeEvents, CartErrorEvent, CartAddEvent } from "@theme/events";
 
 /**
  * @typedef {Object} GiftCardRecipientFormRefs
@@ -25,8 +25,8 @@ import { ThemeEvents, CartErrorEvent, CartAddEvent } from '@theme/events';
  */
 class GiftCardRecipientForm extends Component {
   static DeliveryMode = {
-    SELF: 'self', // Send to my email
-    RECIPIENT: 'recipient_form', // Send to recipient's email with form
+    SELF: "self", // Send to my email
+    RECIPIENT: "recipient_form", // Send to recipient's email with form
   };
 
   #currentMode = GiftCardRecipientForm.DeliveryMode.SELF;
@@ -40,13 +40,13 @@ class GiftCardRecipientForm extends Component {
   #cartAddEventBound = null;
 
   requiredRefs = [
-    'myEmailButton',
-    'recipientEmailButton',
-    'recipientFields',
-    'recipientEmail',
-    'recipientName',
-    'recipientMessage',
-    'recipientSendOn',
+    "myEmailButton",
+    "recipientEmailButton",
+    "recipientFields",
+    "recipientEmail",
+    "recipientName",
+    "recipientMessage",
+    "recipientSendOn",
   ];
 
   /**
@@ -54,7 +54,12 @@ class GiftCardRecipientForm extends Component {
    * @returns {(HTMLInputElement | HTMLTextAreaElement)[]} Array of input fields
    */
   get #inputFields() {
-    return [this.refs.recipientEmail, this.refs.recipientName, this.refs.recipientMessage, this.refs.recipientSendOn];
+    return [
+      this.refs.recipientEmail,
+      this.refs.recipientName,
+      this.refs.recipientMessage,
+      this.refs.recipientSendOn,
+    ];
   }
 
   connectedCallback() {
@@ -62,11 +67,17 @@ class GiftCardRecipientForm extends Component {
     this.#initializeForm();
 
     this.#updateCharacterCountBound = () => this.#updateCharacterCount();
-    this.refs.recipientMessage.addEventListener('input', this.#updateCharacterCountBound);
+    this.refs.recipientMessage.addEventListener(
+      "input",
+      this.#updateCharacterCountBound,
+    );
 
     this.#displayCartErrorBound = this.#displayCartError.bind(this);
     // @ts-ignore - #displayCartErrorBound is guaranteed to be non-null here
-    document.addEventListener(ThemeEvents.cartError, this.#displayCartErrorBound);
+    document.addEventListener(
+      ThemeEvents.cartError,
+      this.#displayCartErrorBound,
+    );
 
     this.#cartAddEventBound = () => this.#handleCartAdd();
     document.addEventListener(ThemeEvents.cartUpdate, this.#cartAddEventBound);
@@ -76,17 +87,26 @@ class GiftCardRecipientForm extends Component {
     super.disconnectedCallback();
 
     if (this.#updateCharacterCountBound) {
-      this.refs.recipientMessage.removeEventListener('input', this.#updateCharacterCountBound);
+      this.refs.recipientMessage.removeEventListener(
+        "input",
+        this.#updateCharacterCountBound,
+      );
       this.#updateCharacterCountBound = null;
     }
 
     if (this.#displayCartErrorBound) {
-      document.removeEventListener(ThemeEvents.cartError, this.#displayCartErrorBound);
+      document.removeEventListener(
+        ThemeEvents.cartError,
+        this.#displayCartErrorBound,
+      );
       this.#displayCartErrorBound = null;
     }
 
     if (this.#cartAddEventBound) {
-      document.removeEventListener(ThemeEvents.cartUpdate, this.#cartAddEventBound);
+      document.removeEventListener(
+        ThemeEvents.cartUpdate,
+        this.#cartAddEventBound,
+      );
       this.#cartAddEventBound = null;
     }
   }
@@ -113,9 +133,9 @@ class GiftCardRecipientForm extends Component {
     // Validate mode
     if (!Object.values(GiftCardRecipientForm.DeliveryMode).includes(mode)) {
       throw new Error(
-        `Invalid delivery mode: ${mode}. Must be one of: ${Object.values(GiftCardRecipientForm.DeliveryMode).join(
-          ', '
-        )}`
+        `Invalid delivery mode: ${mode}. Must be one of: ${Object.values(
+          GiftCardRecipientForm.DeliveryMode,
+        ).join(", ")}`,
       );
     }
 
@@ -144,7 +164,8 @@ class GiftCardRecipientForm extends Component {
       // Announce to screen readers
       if (this.refs.liveRegion) {
         this.refs.liveRegion.textContent =
-          Theme.translations?.recipient_form_fields_visible || 'Recipient form fields are now visible';
+          Theme.translations?.recipient_form_fields_visible ||
+          "Recipient form fields are now visible";
       }
 
       // Focus first field for accessibility
@@ -156,18 +177,19 @@ class GiftCardRecipientForm extends Component {
       // Announce to screen readers
       if (this.refs.liveRegion) {
         this.refs.liveRegion.textContent =
-          Theme.translations?.recipient_form_fields_hidden || 'Recipient form fields are now hidden';
+          Theme.translations?.recipient_form_fields_hidden ||
+          "Recipient form fields are now hidden";
       }
     }
 
     this.dispatchEvent(
-      new CustomEvent('recipient:toggle', {
+      new CustomEvent("recipient:toggle", {
         detail: {
           mode: this.#currentMode,
           recipientFormVisible: isRecipientMode,
         },
         bubbles: true,
-      })
+      }),
     );
   }
 
@@ -202,7 +224,7 @@ class GiftCardRecipientForm extends Component {
    */
   #clearRecipientFields() {
     for (const field of this.#inputFields) {
-      field.value = '';
+      field.value = "";
     }
 
     this.#updateCharacterCount();
@@ -215,20 +237,22 @@ class GiftCardRecipientForm extends Component {
   #disableRecipientFields() {
     for (const field of this.#inputFields) {
       field.disabled = true;
-      field.removeAttribute('required');
-      field.removeAttribute('aria-invalid');
-      field.removeAttribute('aria-describedby');
+      field.removeAttribute("required");
+      field.removeAttribute("aria-invalid");
+      field.removeAttribute("aria-describedby");
     }
 
     // Remove control field when sending to self
-    const controlFlag = this.querySelector('input[name="properties[__shopify_send_gift_card_to_recipient]"]');
+    const controlFlag = this.querySelector(
+      'input[name="properties[__shopify_send_gift_card_to_recipient]"]',
+    );
     if (controlFlag) {
       controlFlag.remove();
     }
 
     if (this.refs.timezoneOffset) {
       this.refs.timezoneOffset.disabled = true;
-      this.refs.timezoneOffset.value = '';
+      this.refs.timezoneOffset.value = "";
     }
 
     this.#clearErrorMessages();
@@ -241,24 +265,28 @@ class GiftCardRecipientForm extends Component {
     for (const field of this.#inputFields) {
       field.disabled = false;
       if (field === this.refs.recipientEmail) {
-        field.setAttribute('required', 'required');
+        field.setAttribute("required", "required");
       }
     }
 
     // Add control field when sending to recipient
-    let controlFlag = this.querySelector('input[name="properties[__shopify_send_gift_card_to_recipient]"]');
+    let controlFlag = this.querySelector(
+      'input[name="properties[__shopify_send_gift_card_to_recipient]"]',
+    );
     if (!controlFlag) {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = 'properties[__shopify_send_gift_card_to_recipient]';
-      input.value = 'on';
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = "properties[__shopify_send_gift_card_to_recipient]";
+      input.value = "on";
       this.appendChild(input);
     }
 
     // Enable and set timezone offset
     if (this.refs.timezoneOffset) {
       this.refs.timezoneOffset.disabled = false;
-      this.refs.timezoneOffset.value = new Date().getTimezoneOffset().toString();
+      this.refs.timezoneOffset.value = new Date()
+        .getTimezoneOffset()
+        .toString();
     }
 
     // Set date constraints when enabling fields
@@ -274,10 +302,12 @@ class GiftCardRecipientForm extends Component {
     const currentLength = this.refs.recipientMessage.value.length;
     const maxLength = this.refs.recipientMessage.maxLength;
 
-    const template = this.refs.characterCount.getAttribute('data-template');
+    const template = this.refs.characterCount.getAttribute("data-template");
     if (!template) return;
 
-    const updatedText = template.replace('[current]', currentLength.toString()).replace('[max]', maxLength.toString());
+    const updatedText = template
+      .replace("[current]", currentLength.toString())
+      .replace("[max]", maxLength.toString());
 
     this.refs.characterCount.textContent = updatedText;
   }
@@ -298,13 +328,13 @@ class GiftCardRecipientForm extends Component {
      */
     const formatDate = (date) => {
       const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     };
 
-    this.refs.recipientSendOn.setAttribute('min', formatDate(today));
-    this.refs.recipientSendOn.setAttribute('max', formatDate(maxDate));
+    this.refs.recipientSendOn.setAttribute("min", formatDate(today));
+    this.refs.recipientSendOn.setAttribute("max", formatDate(maxDate));
   }
 
   /**
@@ -316,8 +346,8 @@ class GiftCardRecipientForm extends Component {
       const { message, errors, description } = event.detail.data;
 
       // Display the error message
-      if (errors && typeof errors === 'object') {
-        this.#displayErrorMessage(message || 'There was an error', errors);
+      if (errors && typeof errors === "object") {
+        this.#displayErrorMessage(message || "There was an error", errors);
       } else if (message) {
         this.#displayErrorMessage(message, description);
       }
@@ -332,13 +362,13 @@ class GiftCardRecipientForm extends Component {
   #displayErrorMessage(title, body) {
     this.#clearErrorMessages();
 
-    if (typeof body === 'object' && body !== null) {
+    if (typeof body === "object" && body !== null) {
       /** @type {Record<string, {inputRef: string, errorRef: string}>} */
       const fieldMap = {
-        email: { inputRef: 'recipientEmail', errorRef: 'emailError' },
-        name: { inputRef: 'recipientName', errorRef: 'nameError' },
-        message: { inputRef: 'recipientMessage', errorRef: 'messageError' },
-        send_on: { inputRef: 'recipientSendOn', errorRef: 'sendOnError' },
+        email: { inputRef: "recipientEmail", errorRef: "emailError" },
+        name: { inputRef: "recipientName", errorRef: "nameError" },
+        message: { inputRef: "recipientMessage", errorRef: "messageError" },
+        send_on: { inputRef: "recipientSendOn", errorRef: "sendOnError" },
       };
 
       for (const [field, errorMessages] of Object.entries(body)) {
@@ -350,20 +380,22 @@ class GiftCardRecipientForm extends Component {
         const inputElement = this.refs[inputRef];
 
         if (errorContainer && errorContainer instanceof HTMLElement) {
-          const errorTextElement = errorContainer.querySelector('span');
+          const errorTextElement = errorContainer.querySelector("span");
           if (errorTextElement) {
-            const message = Array.isArray(errorMessages) ? errorMessages.join(', ') : errorMessages;
+            const message = Array.isArray(errorMessages)
+              ? errorMessages.join(", ")
+              : errorMessages;
             errorTextElement.textContent = `${message}.`;
           }
 
-          errorContainer.classList.remove('hidden');
+          errorContainer.classList.remove("hidden");
         }
 
         if (inputElement && inputElement instanceof HTMLElement) {
           // Set ARIA attributes for accessibility
-          inputElement.setAttribute('aria-invalid', 'true');
-          const errorId = `RecipientForm-${field}-error-${this.dataset.sectionId || 'default'}`;
-          inputElement.setAttribute('aria-describedby', errorId);
+          inputElement.setAttribute("aria-invalid", "true");
+          const errorId = `RecipientForm-${field}-error-${this.dataset.sectionId || "default"}`;
+          inputElement.setAttribute("aria-describedby", errorId);
         }
       }
     }
@@ -371,7 +403,9 @@ class GiftCardRecipientForm extends Component {
     // Announce errors to screen readers
     if (this.refs.liveRegion) {
       this.refs.liveRegion.textContent =
-        title || Theme.translations?.recipient_form_error || 'There was an error with the form submission';
+        title ||
+        Theme.translations?.recipient_form_error ||
+        "There was an error with the form submission";
     }
   }
 
@@ -380,28 +414,33 @@ class GiftCardRecipientForm extends Component {
    */
   #clearErrorMessages() {
     // List of error container refs
-    const errorRefs = ['emailError', 'nameError', 'messageError', 'sendOnError'];
+    const errorRefs = [
+      "emailError",
+      "nameError",
+      "messageError",
+      "sendOnError",
+    ];
 
     for (const errorRef of errorRefs) {
       const errorContainer = this.refs[errorRef];
       if (errorContainer && errorContainer instanceof HTMLElement) {
-        errorContainer.classList.add('hidden');
-        const errorTextElement = errorContainer.querySelector('span');
+        errorContainer.classList.add("hidden");
+        const errorTextElement = errorContainer.querySelector("span");
         if (errorTextElement) {
-          errorTextElement.textContent = '';
+          errorTextElement.textContent = "";
         }
       }
     }
 
     // Remove ARIA attributes from all input fields
     for (const field of this.#inputFields) {
-      field.removeAttribute('aria-invalid');
-      field.removeAttribute('aria-describedby');
+      field.removeAttribute("aria-invalid");
+      field.removeAttribute("aria-describedby");
     }
 
     // Clear live region announcement
     if (this.refs.liveRegion) {
-      this.refs.liveRegion.textContent = '';
+      this.refs.liveRegion.textContent = "";
     }
   }
 
@@ -411,4 +450,4 @@ class GiftCardRecipientForm extends Component {
 }
 
 // Register the custom element
-customElements.define('gift-card-recipient-form', GiftCardRecipientForm);
+customElements.define("gift-card-recipient-form", GiftCardRecipientForm);

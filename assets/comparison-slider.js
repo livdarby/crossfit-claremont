@@ -1,5 +1,5 @@
-import { Component } from '@theme/component';
-import { oncePerEditorSession } from '@theme/utilities';
+import { Component } from "@theme/component";
+import { oncePerEditorSession } from "@theme/utilities";
 
 /**
  * Comparison slider component for comparing two images
@@ -14,7 +14,7 @@ import { oncePerEditorSession } from '@theme/utilities';
  * @property {string[]} requiredRefs - Required refs: 'mediaWrapper', 'slider', and 'afterImage'
  */
 export class ComparisonSliderComponent extends Component {
-  requiredRefs = ['mediaWrapper', 'slider', 'afterImage'];
+  requiredRefs = ["mediaWrapper", "slider", "afterImage"];
 
   constructor() {
     super();
@@ -31,7 +31,7 @@ export class ComparisonSliderComponent extends Component {
     const { mediaWrapper } = this.refs;
 
     // Get orientation from media wrapper
-    this.orientation = mediaWrapper.dataset.orientation || 'horizontal';
+    this.orientation = mediaWrapper.dataset.orientation || "horizontal";
 
     // Initialize the position
     this.sync();
@@ -48,11 +48,13 @@ export class ComparisonSliderComponent extends Component {
     // Skip sync during animation to prevent lag
     if (this.isAnimating) return;
 
-    const val = (Number(slider.value) - Number(slider.min)) / (Number(slider.max) - Number(slider.min));
+    const val =
+      (Number(slider.value) - Number(slider.min)) /
+      (Number(slider.max) - Number(slider.min));
     const compareValue = Math.round(val * 100);
 
     // Set the CSS custom property on the media wrapper
-    mediaWrapper.style.setProperty('--compare', String(compareValue));
+    mediaWrapper.style.setProperty("--compare", String(compareValue));
   }
 
   /**
@@ -88,26 +90,26 @@ export class ComparisonSliderComponent extends Component {
     this.isAnimating = true;
 
     // Enable transition for smooth animation
-    mediaWrapper.style.setProperty('--transition-duration', '0.5s');
+    mediaWrapper.style.setProperty("--transition-duration", "0.5s");
 
     // Create a subtle sliding animation by only setting CSS property
     setTimeout(() => {
-      mediaWrapper.style.setProperty('--compare', '40');
+      mediaWrapper.style.setProperty("--compare", "40");
     }, 100);
 
     setTimeout(() => {
-      mediaWrapper.style.setProperty('--compare', '60');
+      mediaWrapper.style.setProperty("--compare", "60");
     }, 600);
 
     setTimeout(() => {
-      mediaWrapper.style.setProperty('--compare', '50');
+      mediaWrapper.style.setProperty("--compare", "50");
     }, 1100);
 
     setTimeout(() => {
       // Remove transition after animation and sync slider value
-      mediaWrapper.style.setProperty('--transition-duration', '0s');
+      mediaWrapper.style.setProperty("--transition-duration", "0s");
       // Sync the slider value to match the final position
-      slider.value = '50';
+      slider.value = "50";
       this.isAnimating = false;
     }, 1600);
   }
@@ -120,11 +122,14 @@ export class ComparisonSliderComponent extends Component {
 
     const options = {
       root: null,
-      rootMargin: '0px',
+      rootMargin: "0px",
       threshold: 0.5, // Trigger when 50% of the component is visible
     };
 
-    this.intersectionObserver = new IntersectionObserver(this.boundHandleIntersection, options);
+    this.intersectionObserver = new IntersectionObserver(
+      this.boundHandleIntersection,
+      options,
+    );
     this.intersectionObserver.observe(this);
   }
 
@@ -152,6 +157,9 @@ export class ComparisonSliderComponent extends Component {
 }
 
 // Register the custom element
-if (!customElements.get('comparison-slider-component')) {
-  customElements.define('comparison-slider-component', ComparisonSliderComponent);
+if (!customElements.get("comparison-slider-component")) {
+  customElements.define(
+    "comparison-slider-component",
+    ComparisonSliderComponent,
+  );
 }

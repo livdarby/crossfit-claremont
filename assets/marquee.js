@@ -1,5 +1,5 @@
-import { Component } from '@theme/component';
-import { debounce } from '@theme/utilities';
+import { Component } from "@theme/component";
+import { debounce } from "@theme/utilities";
 
 const ANIMATION_OPTIONS = {
   duration: 500,
@@ -16,7 +16,7 @@ const ANIMATION_OPTIONS = {
  * @extends Component<Refs>
  */
 class MarqueeComponent extends Component {
-  requiredRefs = ['wrapper', 'content', 'marqueeItems'];
+  requiredRefs = ["wrapper", "content", "marqueeItems"];
 
   async connectedCallback() {
     super.connectedCallback();
@@ -33,16 +33,16 @@ class MarqueeComponent extends Component {
 
     this.#setSpeed(speed);
 
-    window.addEventListener('resize', this.#handleResize);
-    this.addEventListener('pointerenter', this.#slowDown);
-    this.addEventListener('pointerleave', this.#speedUp);
+    window.addEventListener("resize", this.#handleResize);
+    this.addEventListener("pointerenter", this.#slowDown);
+    this.addEventListener("pointerleave", this.#speedUp);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    window.removeEventListener('resize', this.#handleResize);
-    this.removeEventListener('pointerenter', this.#slowDown);
-    this.removeEventListener('pointerleave', this.#speedUp);
+    window.removeEventListener("resize", this.#handleResize);
+    this.removeEventListener("pointerenter", this.#slowDown);
+    this.removeEventListener("pointerleave", this.#speedUp);
   }
 
   /**
@@ -105,7 +105,7 @@ class MarqueeComponent extends Component {
    * @param {number} value
    */
   #setSpeed(value) {
-    this.style.setProperty('--marquee-speed', `${value}s`);
+    this.style.setProperty("--marquee-speed", `${value}s`);
   }
 
   async #queryNumberOfCopies() {
@@ -114,7 +114,10 @@ class MarqueeComponent extends Component {
     return new Promise((resolve) => {
       if (!marqueeItems[0]) {
         // Wrapping the resolve in a setTimeout here and below splits each marquee reflow into a separate task.
-        return setTimeout(() => resolve({ numberOfCopies: 1, isHorizontalResize: true }), 0);
+        return setTimeout(
+          () => resolve({ numberOfCopies: 1, isHorizontalResize: true }),
+          0,
+        );
       }
 
       const intersectionObserver = new IntersectionObserver(
@@ -131,12 +134,15 @@ class MarqueeComponent extends Component {
 
           setTimeout(() => {
             resolve({
-              numberOfCopies: marqueeItemsWidth === 0 ? 1 : Math.ceil(marqueeWidth / marqueeItemsWidth),
+              numberOfCopies:
+                marqueeItemsWidth === 0
+                  ? 1
+                  : Math.ceil(marqueeWidth / marqueeItemsWidth),
               isHorizontalResize,
             });
           }, 0);
         },
-        { root: this }
+        { root: this },
       );
       intersectionObserver.observe(marqueeItems[0]);
     });
@@ -146,7 +152,7 @@ class MarqueeComponent extends Component {
    * @param {number} numberOfCopies
    */
   #calculateSpeed(numberOfCopies) {
-    const speedFactor = Number(this.getAttribute('data-speed-factor'));
+    const speedFactor = Number(this.getAttribute("data-speed-factor"));
     const speed = Math.sqrt(numberOfCopies) * speedFactor;
 
     return speed;
@@ -154,7 +160,8 @@ class MarqueeComponent extends Component {
 
   #handleResize = debounce(async () => {
     const { marqueeItems } = this.refs;
-    const { newNumberOfCopies, isHorizontalResize } = await this.#queryNumberOfCopies();
+    const { newNumberOfCopies, isHorizontalResize } =
+      await this.#queryNumberOfCopies();
 
     // opt out of marquee manipulation on vertical resizes
     if (!isHorizontalResize) return;
@@ -186,10 +193,12 @@ class MarqueeComponent extends Component {
   #duplicateContent() {
     this.clonedContent?.remove();
 
-    const clone = /** @type {HTMLElement} */ (this.refs.content.cloneNode(true));
+    const clone = /** @type {HTMLElement} */ (
+      this.refs.content.cloneNode(true)
+    );
 
-    clone.setAttribute('aria-hidden', 'true');
-    clone.removeAttribute('ref');
+    clone.setAttribute("aria-hidden", "true");
+    clone.removeAttribute("ref");
 
     this.refs.wrapper.appendChild(clone);
   }
@@ -234,7 +243,14 @@ class MarqueeComponent extends Component {
  * @param {function(number): number} [params.easing] - The easing function.
  * @param {function(): void} [params.onComplete] - The function to call when the animation completes.
  */
-function animateValue({ from, to, duration, onUpdate, easing = (t) => t * t * (3 - 2 * t), onComplete }) {
+function animateValue({
+  from,
+  to,
+  duration,
+  onUpdate,
+  easing = (t) => t * t * (3 - 2 * t),
+  onComplete,
+}) {
   const startTime = performance.now();
   let cancelled = false;
   let currentValue = from;
@@ -254,7 +270,7 @@ function animateValue({ from, to, duration, onUpdate, easing = (t) => t * t * (3
 
     if (progress < 1) {
       requestAnimationFrame(animate);
-    } else if (typeof onComplete === 'function') {
+    } else if (typeof onComplete === "function") {
       onComplete();
     }
   }
@@ -271,6 +287,6 @@ function animateValue({ from, to, duration, onUpdate, easing = (t) => t * t * (3
   };
 }
 
-if (!customElements.get('marquee-component')) {
-  customElements.define('marquee-component', MarqueeComponent);
+if (!customElements.get("marquee-component")) {
+  customElements.define("marquee-component", MarqueeComponent);
 }

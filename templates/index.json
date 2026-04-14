@@ -6,8 +6,17 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
+    "homepage_top_ReVV94": {
+      "type": "homepage-top",
+      "name": "Homepage Top Section",
+      "settings": {
+        "background_img": "shopify://shop_images/762bc03c342037679eaf248483551bb8fb382cef.png",
+        "color_scheme": "scheme-1"
+      }
+    },
     "hero_jVaWmY": {
       "type": "hero",
       "blocks": {
@@ -65,6 +74,7 @@
         "custom_mobile_media": false,
         "media_type_1_mobile": "image",
         "media_type_2_mobile": "image",
+        "link": "",
         "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -284,6 +294,7 @@
     }
   },
   "order": [
+    "homepage_top_ReVV94",
     "hero_jVaWmY",
     "product_list_fa6P9H"
   ]

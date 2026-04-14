@@ -1,4 +1,4 @@
-import { QuantitySelectorComponent } from '@theme/component-quantity-selector';
+import { QuantitySelectorComponent } from "@theme/component-quantity-selector";
 
 /**
  * A custom element that allows the user to select a quantity in the cart.
@@ -33,6 +33,9 @@ class CartQuantitySelectorComponent extends QuantitySelectorComponent {
   }
 }
 
-if (!customElements.get('cart-quantity-selector-component')) {
-  customElements.define('cart-quantity-selector-component', CartQuantitySelectorComponent);
+if (!customElements.get("cart-quantity-selector-component")) {
+  customElements.define(
+    "cart-quantity-selector-component",
+    CartQuantitySelectorComponent,
+  );
 }

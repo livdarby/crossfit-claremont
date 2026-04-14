@@ -36,7 +36,7 @@ class ThemePerformance {
    * @returns {void}
    */
   measureFromMarker(startMarker) {
-    const metricName = startMarker.name.replace(/:start$/, '');
+    const metricName = startMarker.name.replace(/:start$/, "");
     const endMarker = performance.mark(`${metricName}:end`);
 
     performance.measure(metricName, startMarker.name, endMarker.name);
@@ -55,8 +55,12 @@ class ThemePerformance {
 
     performance.mark(`${metricName}:end`);
 
-    performance.measure(benchmarkName, `${metricName}:start`, `${metricName}:end`);
+    performance.measure(
+      benchmarkName,
+      `${metricName}:start`,
+      `${metricName}:end`,
+    );
   }
 }
 
-export const cartPerformance = new ThemePerformance('cart-performance');
+export const cartPerformance = new ThemePerformance("cart-performance");

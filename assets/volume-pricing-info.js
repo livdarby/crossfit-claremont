@@ -1,4 +1,4 @@
-import { Component } from '@theme/component';
+import { Component } from "@theme/component";
 
 /**
  * Displays volume pricing information in a popover.
@@ -16,7 +16,7 @@ class VolumePricingInfoComponent extends Component {
    */
   connectedCallback() {
     super.connectedCallback();
-    const anchoredPopover = this.closest('anchored-popover-component');
+    const anchoredPopover = this.closest("anchored-popover-component");
     if (anchoredPopover instanceof Component && anchoredPopover.isConnected) {
       try {
         anchoredPopover.updatedCallback();
@@ -37,7 +37,7 @@ class VolumePricingInfoComponent extends Component {
    */
   updatedCallback() {
     super.updatedCallback();
-    const anchoredPopover = this.closest('anchored-popover-component');
+    const anchoredPopover = this.closest("anchored-popover-component");
     if (anchoredPopover instanceof Component) {
       anchoredPopover.updatedCallback();
     }
@@ -48,22 +48,30 @@ class VolumePricingInfoComponent extends Component {
    * @param {number} quantity - The current quantity
    */
   updateActiveTier(quantity) {
-    const anchoredPopover = this.closest('anchored-popover-component');
-    const popover = anchoredPopover instanceof Component ? anchoredPopover.refs?.popover : null;
-    const rows = popover?.querySelectorAll('.volume-pricing-info__row[data-quantity]');
+    const anchoredPopover = this.closest("anchored-popover-component");
+    const popover =
+      anchoredPopover instanceof Component
+        ? anchoredPopover.refs?.popover
+        : null;
+    const rows = popover?.querySelectorAll(
+      ".volume-pricing-info__row[data-quantity]",
+    );
     if (!rows) return;
 
     let activeTier = null;
     for (const row of rows) {
-      row.classList.remove('volume-pricing-info__row--active');
-      if (row instanceof HTMLElement && quantity >= parseInt(row.dataset.quantity || '0')) {
+      row.classList.remove("volume-pricing-info__row--active");
+      if (
+        row instanceof HTMLElement &&
+        quantity >= parseInt(row.dataset.quantity || "0")
+      ) {
         activeTier = row;
       }
     }
-    activeTier?.classList.add('volume-pricing-info__row--active');
+    activeTier?.classList.add("volume-pricing-info__row--active");
   }
 }
 
-if (!customElements.get('volume-pricing-info')) {
-  customElements.define('volume-pricing-info', VolumePricingInfoComponent);
+if (!customElements.get("volume-pricing-info")) {
+  customElements.define("volume-pricing-info", VolumePricingInfoComponent);
 }

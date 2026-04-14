@@ -6,7 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */ {
   "sections": {
     "main": {
       "type": "main-blog",
@@ -99,9 +99,7 @@
           "block_order": []
         }
       },
-      "block_order": [
-        "title"
-      ],
+      "block_order": ["title"],
       "settings": {
         "color_scheme": "",
         "padding-block-start": 0,
@@ -109,7 +107,5 @@
       }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }

@@ -1,9 +1,17 @@
-import { Component } from '@theme/component';
-import { debounce, onAnimationEnd, prefersReducedMotion } from '@theme/utilities';
-import { sectionRenderer } from '@theme/section-renderer';
-import { morph } from '@theme/morph';
-import { RecentlyViewed } from '@theme/recently-viewed-products';
-import { DialogCloseEvent, DialogOpenEvent, DialogComponent } from '@theme/dialog';
+import { Component } from "@theme/component";
+import {
+  debounce,
+  onAnimationEnd,
+  prefersReducedMotion,
+} from "@theme/utilities";
+import { sectionRenderer } from "@theme/section-renderer";
+import { morph } from "@theme/morph";
+import { RecentlyViewed } from "@theme/recently-viewed-products";
+import {
+  DialogCloseEvent,
+  DialogOpenEvent,
+  DialogComponent,
+} from "@theme/dialog";
 
 /**
  * A custom element that allows the user to search for resources available on the store.
@@ -19,7 +27,7 @@ import { DialogCloseEvent, DialogOpenEvent, DialogComponent } from '@theme/dialo
  * @extends {Component<Refs>}
  */
 class PredictiveSearchComponent extends Component {
-  requiredRefs = ['searchInput', 'predictiveSearchResults', 'resetButton'];
+  requiredRefs = ["searchInput", "predictiveSearchResults", "resetButton"];
 
   #controller = new AbortController();
 
@@ -35,7 +43,7 @@ class PredictiveSearchComponent extends Component {
    * @returns {DialogComponent | null} The dialog component.
    */
   get dialog() {
-    return this.closest('dialog-component');
+    return this.closest("dialog-component");
   }
 
   connectedCallback() {
@@ -49,11 +57,21 @@ class PredictiveSearchComponent extends Component {
     }
 
     if (dialog) {
-      document.addEventListener('keydown', this.#handleKeyboardShortcut, { signal });
-      dialog.addEventListener(DialogCloseEvent.eventName, this.#handleDialogClose, { signal });
-      dialog.addEventListener(DialogOpenEvent.eventName, this.#handleDialogOpen, { signal, once: true });
+      document.addEventListener("keydown", this.#handleKeyboardShortcut, {
+        signal,
+      });
+      dialog.addEventListener(
+        DialogCloseEvent.eventName,
+        this.#handleDialogClose,
+        { signal },
+      );
+      dialog.addEventListener(
+        DialogOpenEvent.eventName,
+        this.#handleDialogOpen,
+        { signal, once: true },
+      );
 
-      this.addEventListener('click', this.#handleModalClick, { signal });
+      this.addEventListener("click", this.#handleModalClick, { signal });
     }
 
     if (RecentlyViewed.getProducts().length > 0) {
@@ -73,9 +91,9 @@ class PredictiveSearchComponent extends Component {
       target instanceof HTMLButtonElement ||
       target instanceof HTMLAnchorElement ||
       target instanceof HTMLInputElement ||
-      target.closest('button') ||
-      target.closest('a') ||
-      target.closest('input');
+      target.closest("button") ||
+      target.closest("a") ||
+      target.closest("input");
 
     if (!isInteractiveElement && this.refs.searchInput) {
       this.refs.searchInput.focus();
@@ -92,7 +110,7 @@ class PredictiveSearchComponent extends Component {
    * @param {KeyboardEvent} event - The keyboard event.
    */
   #handleKeyboardShortcut = (event) => {
-    if (event.metaKey && event.key === 'k') {
+    if (event.metaKey && event.key === "k") {
       this.dialog?.toggleDialog();
     }
   };
@@ -119,18 +137,28 @@ class PredictiveSearchComponent extends Component {
   get #allResultsItems() {
     const containers = Array.from(
       this.querySelectorAll(
-        '.predictive-search-results__wrapper-queries, ' +
-          '.predictive-search-results__wrapper-products, ' +
-          '.predictive-search-results__list'
-      )
+        ".predictive-search-results__wrapper-queries, " +
+          ".predictive-search-results__wrapper-products, " +
+          ".predictive-search-results__list",
+      ),
     );
 
     const allItems = containers
       .flatMap((container) => {
-        if (container.classList.contains('predictive-search-results__wrapper-products')) {
-          return Array.from(container.querySelectorAll('.predictive-search-results__card'));
+        if (
+          container.classList.contains(
+            "predictive-search-results__wrapper-products",
+          )
+        ) {
+          return Array.from(
+            container.querySelectorAll(".predictive-search-results__card"),
+          );
         }
-        return Array.from(container.querySelectorAll('[ref="resultsItems[]"], .predictive-search-results__card'));
+        return Array.from(
+          container.querySelectorAll(
+            '[ref="resultsItems[]"], .predictive-search-results__card',
+          ),
+        );
       })
       .filter((item) => item instanceof HTMLElement);
 
@@ -144,7 +172,11 @@ class PredictiveSearchComponent extends Component {
   #isKeyboardNavigation = false;
 
   get #currentIndex() {
-    return this.#allResultsItems?.findIndex((item) => item.getAttribute('aria-selected') === 'true') ?? -1;
+    return (
+      this.#allResultsItems?.findIndex(
+        (item) => item.getAttribute("aria-selected") === "true",
+      ) ?? -1
+    );
   }
 
   set #currentIndex(index) {
@@ -153,22 +185,25 @@ class PredictiveSearchComponent extends Component {
     let activeItem = null;
 
     this.#allResultsItems.forEach((item) => {
-      item.classList.remove('keyboard-focus');
+      item.classList.remove("keyboard-focus");
     });
 
     for (const [itemIndex, item] of this.#allResultsItems.entries()) {
       if (itemIndex === index) {
-        item.setAttribute('aria-selected', 'true');
+        item.setAttribute("aria-selected", "true");
         if (this.#isKeyboardNavigation) {
-          item.classList.add('keyboard-focus');
+          item.classList.add("keyboard-focus");
         }
         activeItem = item;
       } else {
-        item.removeAttribute('aria-selected');
+        item.removeAttribute("aria-selected");
       }
     }
 
-    activeItem?.scrollIntoView({ behavior: prefersReducedMotion() ? 'instant' : 'smooth', block: 'nearest' });
+    activeItem?.scrollIntoView({
+      behavior: prefersReducedMotion() ? "instant" : "smooth",
+      block: "nearest",
+    });
     this.refs.searchInput.focus();
   }
 
@@ -181,12 +216,16 @@ class PredictiveSearchComponent extends Component {
    * @param {KeyboardEvent} event - The keyboard event.
    */
   onSearchKeyDown = (event) => {
-    if (event.key === 'Escape') {
+    if (event.key === "Escape") {
       this.#resetSearch();
       return;
     }
 
-    if (!this.#allResultsItems?.length || event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+    if (
+      !this.#allResultsItems?.length ||
+      event.key === "ArrowLeft" ||
+      event.key === "ArrowRight"
+    ) {
       return;
     }
 
@@ -194,33 +233,43 @@ class PredictiveSearchComponent extends Component {
     const totalItems = this.#allResultsItems.length;
 
     switch (event.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         this.#isKeyboardNavigation = true;
         event.preventDefault();
-        this.#currentIndex = currentIndex < totalItems - 1 ? currentIndex + 1 : 0;
+        this.#currentIndex =
+          currentIndex < totalItems - 1 ? currentIndex + 1 : 0;
         break;
 
-      case 'Tab':
+      case "Tab":
         if (event.shiftKey) {
           this.#isKeyboardNavigation = true;
           event.preventDefault();
-          this.#currentIndex = currentIndex > 0 ? currentIndex - 1 : totalItems - 1;
+          this.#currentIndex =
+            currentIndex > 0 ? currentIndex - 1 : totalItems - 1;
         } else {
           this.#isKeyboardNavigation = true;
           event.preventDefault();
-          this.#currentIndex = currentIndex < totalItems - 1 ? currentIndex + 1 : 0;
+          this.#currentIndex =
+            currentIndex < totalItems - 1 ? currentIndex + 1 : 0;
         }
         break;
 
-      case 'ArrowUp':
+      case "ArrowUp":
         this.#isKeyboardNavigation = true;
         event.preventDefault();
-        this.#currentIndex = currentIndex > 0 ? currentIndex - 1 : totalItems - 1;
+        this.#currentIndex =
+          currentIndex > 0 ? currentIndex - 1 : totalItems - 1;
         break;
 
-      case 'Enter': {
-        const singleResultContainer = this.refs.predictiveSearchResults.querySelector('[data-single-result-url]');
-        if (singleResultContainer instanceof HTMLElement && singleResultContainer.dataset.singleResultUrl) {
+      case "Enter": {
+        const singleResultContainer =
+          this.refs.predictiveSearchResults.querySelector(
+            "[data-single-result-url]",
+          );
+        if (
+          singleResultContainer instanceof HTMLElement &&
+          singleResultContainer.dataset.singleResultUrl
+        ) {
           event.preventDefault();
           window.location.href = singleResultContainer.dataset.singleResultUrl;
           return;
@@ -228,10 +277,10 @@ class PredictiveSearchComponent extends Component {
 
         if (this.#currentIndex >= 0) {
           event.preventDefault();
-          this.#currentItem?.querySelector('a')?.click();
+          this.#currentItem?.querySelector("a")?.click();
         } else {
           const searchUrl = new URL(Theme.routes.search_url, location.origin);
-          searchUrl.searchParams.set('q', this.refs.searchInput.value);
+          searchUrl.searchParams.set("q", this.refs.searchInput.value);
           window.location.href = searchUrl.toString();
         }
         break;
@@ -248,16 +297,20 @@ class PredictiveSearchComponent extends Component {
 
     RecentlyViewed.clearProducts();
 
-    const { recentlyViewedItems, recentlyViewedTitle, recentlyViewedWrapper } = this.refs;
+    const { recentlyViewedItems, recentlyViewedTitle, recentlyViewedWrapper } =
+      this.refs;
 
-    const allRecentlyViewedElements = [...(recentlyViewedItems || []), ...(recentlyViewedTitle || [])];
+    const allRecentlyViewedElements = [
+      ...(recentlyViewedItems || []),
+      ...(recentlyViewedTitle || []),
+    ];
 
     if (allRecentlyViewedElements.length === 0) {
       return;
     }
 
     if (recentlyViewedWrapper) {
-      recentlyViewedWrapper.classList.add('removing');
+      recentlyViewedWrapper.classList.add("removing");
 
       onAnimationEnd(recentlyViewedWrapper, () => {
         recentlyViewedWrapper.remove();
@@ -301,8 +354,10 @@ class PredictiveSearchComponent extends Component {
    */
   #resetScrollPositions() {
     requestAnimationFrame(() => {
-      this.refs.predictiveSearchResults.querySelector('.predictive-search-results__inner')?.scrollTo(0, 0);
-      this.querySelector('.predictive-search-form__content')?.scrollTo(0, 0);
+      this.refs.predictiveSearchResults
+        .querySelector(".predictive-search-results__inner")
+        ?.scrollTo(0, 0);
+      this.querySelector(".predictive-search-form__content")?.scrollTo(0, 0);
     });
   }
 
@@ -314,8 +369,8 @@ class PredictiveSearchComponent extends Component {
     if (!this.dataset.sectionId) return;
 
     const url = new URL(Theme.routes.predictive_search_url, location.origin);
-    url.searchParams.set('q', searchTerm);
-    url.searchParams.set('resources[limit_scope]', 'each');
+    url.searchParams.set("q", searchTerm);
+    url.searchParams.set("resources[limit_scope]", "each");
 
     const { predictiveSearchResults } = this.refs;
 
@@ -349,8 +404,13 @@ class PredictiveSearchComponent extends Component {
     if (viewedProducts.length === 0) return null;
 
     const url = new URL(Theme.routes.search_url, location.origin);
-    url.searchParams.set('q', viewedProducts.map(/** @param {string} id */ (id) => `id:${id}`).join(' OR '));
-    url.searchParams.set('resources[type]', 'product');
+    url.searchParams.set(
+      "q",
+      viewedProducts
+        .map(/** @param {string} id */ (id) => `id:${id}`)
+        .join(" OR "),
+    );
+    url.searchParams.set("resources[type]", "product");
 
     return sectionRenderer.getSectionHTML(this.dataset.sectionId, false, url);
   }
@@ -378,42 +438,54 @@ class PredictiveSearchComponent extends Component {
 
   #resetSearch = async () => {
     const { predictiveSearchResults, searchInput } = this.refs;
-    const emptySectionId = 'predictive-search-empty';
+    const emptySectionId = "predictive-search-empty";
 
     this.#currentIndex = -1;
-    searchInput.value = '';
+    searchInput.value = "";
     this.#hideResetButton();
 
     const abortController = this.#createAbortController();
     const url = new URL(window.location.href);
-    url.searchParams.delete('page');
+    url.searchParams.delete("page");
 
-    const emptySectionMarkup = await sectionRenderer.getSectionHTML(emptySectionId, false, url);
+    const emptySectionMarkup = await sectionRenderer.getSectionHTML(
+      emptySectionId,
+      false,
+      url,
+    );
     const parsedEmptySectionMarkup = new DOMParser()
-      .parseFromString(emptySectionMarkup, 'text/html')
-      .querySelector('.predictive-search-empty-section');
+      .parseFromString(emptySectionMarkup, "text/html")
+      .querySelector(".predictive-search-empty-section");
 
-    if (!parsedEmptySectionMarkup) throw new Error('No empty section markup found');
+    if (!parsedEmptySectionMarkup)
+      throw new Error("No empty section markup found");
 
     /** This needs to be awaited and not .then so the DOM is already morphed
      * when #closeResults is called and therefore the height is animated */
     const viewedProducts = RecentlyViewed.getProducts();
 
     if (viewedProducts.length > 0) {
-      const recentlyViewedMarkup = await this.#getRecentlyViewedProductsMarkup();
+      const recentlyViewedMarkup =
+        await this.#getRecentlyViewedProductsMarkup();
       if (!recentlyViewedMarkup) return;
 
-      const parsedRecentlyViewedMarkup = new DOMParser().parseFromString(recentlyViewedMarkup, 'text/html');
-      const recentlyViewedProductsHtml = parsedRecentlyViewedMarkup.getElementById('predictive-search-products');
+      const parsedRecentlyViewedMarkup = new DOMParser().parseFromString(
+        recentlyViewedMarkup,
+        "text/html",
+      );
+      const recentlyViewedProductsHtml =
+        parsedRecentlyViewedMarkup.getElementById("predictive-search-products");
       if (!recentlyViewedProductsHtml) return;
 
       for (const child of recentlyViewedProductsHtml.children) {
         if (child instanceof HTMLElement) {
-          child.setAttribute('ref', 'recentlyViewedWrapper');
+          child.setAttribute("ref", "recentlyViewedWrapper");
         }
       }
 
-      const collectionElement = parsedEmptySectionMarkup.querySelector('#predictive-search-products');
+      const collectionElement = parsedEmptySectionMarkup.querySelector(
+        "#predictive-search-products",
+      );
       if (!collectionElement) return;
       collectionElement.prepend(...recentlyViewedProductsHtml.children);
     }
@@ -425,6 +497,9 @@ class PredictiveSearchComponent extends Component {
   };
 }
 
-if (!customElements.get('predictive-search-component')) {
-  customElements.define('predictive-search-component', PredictiveSearchComponent);
+if (!customElements.get("predictive-search-component")) {
+  customElements.define(
+    "predictive-search-component",
+    PredictiveSearchComponent,
+  );
 }

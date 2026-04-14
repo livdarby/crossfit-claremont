@@ -1,4 +1,4 @@
-import { requestIdleCallback } from '@theme/utilities';
+import { requestIdleCallback } from "@theme/utilities";
 
 /*
  * Declarative shadow DOM is only initialized on the initial render of the page.
@@ -8,11 +8,13 @@ import { requestIdleCallback } from '@theme/utilities';
 export class DeclarativeShadowElement extends HTMLElement {
   connectedCallback() {
     if (!this.shadowRoot) {
-      const template = this.querySelector(':scope > template[shadowrootmode="open"]');
+      const template = this.querySelector(
+        ':scope > template[shadowrootmode="open"]',
+      );
 
       if (!(template instanceof HTMLTemplateElement)) return;
 
-      const shadow = this.attachShadow({ mode: 'open' });
+      const shadow = this.attachShadow({ mode: "open" });
       shadow.append(template.content.cloneNode(true));
     }
   }
@@ -77,7 +79,7 @@ export class Component extends DeclarativeShadowElement {
           childList: true,
           subtree: true,
           attributes: true,
-          attributeFilter: ['ref'],
+          attributeFilter: ["ref"],
           attributeOldValue: true,
         });
       }
@@ -109,7 +111,7 @@ export class Component extends DeclarativeShadowElement {
   #updateRefs() {
     const refs = /** @type any */ ({});
     const elements = this.roots.reduce((acc, root) => {
-      for (const element of root.querySelectorAll('[ref]')) {
+      for (const element of root.querySelectorAll("[ref]")) {
         if (!this.#isDescendant(element)) continue;
         acc.add(element);
       }
@@ -118,8 +120,8 @@ export class Component extends DeclarativeShadowElement {
     }, /** @type {Set<Element>} */ (new Set()));
 
     for (const ref of elements) {
-      const refName = ref.getAttribute('ref') ?? '';
-      const isArray = refName.endsWith('[]');
+      const refName = ref.getAttribute("ref") ?? "";
+      const isArray = refName.endsWith("[]");
       const path = isArray ? refName.slice(0, -2) : refName;
 
       if (isArray) {
@@ -152,8 +154,9 @@ export class Component extends DeclarativeShadowElement {
     if (
       mutations.some(
         (m) =>
-          (m.type === 'attributes' && this.#isDescendant(m.target)) ||
-          (m.type === 'childList' && [...m.addedNodes, ...m.removedNodes].some(this.#isDescendant))
+          (m.type === "attributes" && this.#isDescendant(m.target)) ||
+          (m.type === "childList" &&
+            [...m.addedNodes, ...m.removedNodes].some(this.#isDescendant)),
       )
     ) {
       this.#updateRefs();
@@ -193,7 +196,11 @@ function getAncestor(node) {
 function getClosestComponent(node) {
   if (!node) return null;
   if (node instanceof Component) return node;
-  if (node instanceof HTMLElement && node.tagName.toLowerCase().endsWith('-component')) return node;
+  if (
+    node instanceof HTMLElement &&
+    node.tagName.toLowerCase().endsWith("-component")
+  )
+    return node;
 
   const ancestor = getAncestor(node);
   if (ancestor) return getClosestComponent(ancestor);
@@ -213,9 +220,20 @@ function registerEventListeners() {
   if (initialized) return;
   initialized = true;
 
-  const events = ['click', 'change', 'select', 'focus', 'blur', 'submit', 'input', 'keydown', 'keyup', 'toggle'];
-  const shouldBubble = ['focus', 'blur'];
-  const expensiveEvents = ['pointerenter', 'pointerleave'];
+  const events = [
+    "click",
+    "change",
+    "select",
+    "focus",
+    "blur",
+    "submit",
+    "input",
+    "keydown",
+    "keyup",
+    "toggle",
+  ];
+  const shouldBubble = ["focus", "blur"];
+  const expensiveEvents = ["pointerenter", "pointerleave"];
 
   for (const eventName of [...events, ...expensiveEvents]) {
     const attribute = `on:${eventName}`;
@@ -231,11 +249,11 @@ function registerEventListeners() {
           event.target !== element
             ? new Proxy(event, {
                 get(target, property) {
-                  if (property === 'target') return element;
+                  if (property === "target") return element;
 
                   const value = Reflect.get(target, property);
 
-                  if (typeof value === 'function') {
+                  if (typeof value === "function") {
                     return value.bind(target);
                   }
 
@@ -244,25 +262,25 @@ function registerEventListeners() {
               })
             : event;
 
-        const value = element.getAttribute(attribute) ?? '';
-        let [selector, method] = value.split('/');
+        const value = element.getAttribute(attribute) ?? "";
+        let [selector, method] = value.split("/");
         // Extract the last segment of the attribute value delimited by `?` or `/`
         // Do not use lookback for Safari 16.0 compatibility
         const matches = value.match(/([\/\?][^\/\?]+)([\/\?][^\/\?]+)$/);
         const data = matches ? matches[2] : null;
         const instance = selector
-          ? selector.startsWith('#')
+          ? selector.startsWith("#")
             ? document.querySelector(selector)
             : element.closest(selector)
           : getClosestComponent(element);
 
         if (!(instance instanceof Component) || !method) return;
 
-        method = method.replace(/\?.*/, '');
+        method = method.replace(/\?.*/, "");
 
         const callback = /** @type {any} */ (instance)[method];
 
-        if (typeof callback === 'function') {
+        if (typeof callback === "function") {
           try {
             /** @type {(Event | Data)[]} */
             const args = [proxiedEvent];
@@ -275,7 +293,7 @@ function registerEventListeners() {
           }
         }
       },
-      { capture: true }
+      { capture: true },
     );
   }
 
@@ -293,7 +311,9 @@ function registerEventListeners() {
       return null;
     }
 
-    return event.bubbles || shouldBubble.includes(event.type) ? target.closest(`[on\\:${event.type}]`) : null;
+    return event.bubbles || shouldBubble.includes(event.type)
+      ? target.closest(`[on\\:${event.type}]`)
+      : null;
   }
 }
 
@@ -307,9 +327,12 @@ function parseData(str) {
   const delimiter = str[0];
   const data = str.slice(1);
 
-  return delimiter === '?'
+  return delimiter === "?"
     ? Object.fromEntries(
-        Array.from(new URLSearchParams(data).entries()).map(([key, value]) => [key, parseValue(value)])
+        Array.from(new URLSearchParams(data).entries()).map(([key, value]) => [
+          key,
+          parseValue(value),
+        ]),
       )
     : parseValue(data);
 }
@@ -325,11 +348,11 @@ function parseData(str) {
  * @returns {Data} The parsed value.
  */
 function parseValue(str) {
-  if (str === 'true') return true;
-  if (str === 'false') return false;
+  if (str === "true") return true;
+  if (str === "false") return false;
 
   const maybeNumber = Number(str);
-  if (!isNaN(maybeNumber) && str.trim() !== '') return maybeNumber;
+  if (!isNaN(maybeNumber) && str.trim() !== "") return maybeNumber;
 
   return str;
 }
@@ -343,6 +366,8 @@ class MissingRefError extends Error {
    * @param {Component} component
    */
   constructor(ref, component) {
-    super(`Required ref "${ref}" not found in component ${component.tagName.toLowerCase()}`);
+    super(
+      `Required ref "${ref}" not found in component ${component.tagName.toLowerCase()}`,
+    );
   }
 }

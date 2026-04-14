@@ -1,5 +1,5 @@
-import { ThemeEvents, VariantUpdateEvent } from '@theme/events';
-import { Component } from '@theme/component';
+import { ThemeEvents, VariantUpdateEvent } from "@theme/events";
+import { Component } from "@theme/component";
 
 /**
  * @typedef {Object} ProductPriceRefs
@@ -19,16 +19,22 @@ import { Component } from '@theme/component';
 class ProductPrice extends Component {
   connectedCallback() {
     super.connectedCallback();
-    const closestSection = this.closest('.shopify-section, dialog');
+    const closestSection = this.closest(".shopify-section, dialog");
     if (!closestSection) return;
-    closestSection.addEventListener(ThemeEvents.variantUpdate, this.updatePrice);
+    closestSection.addEventListener(
+      ThemeEvents.variantUpdate,
+      this.updatePrice,
+    );
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    const closestSection = this.closest('.shopify-section, dialog');
+    const closestSection = this.closest(".shopify-section, dialog");
     if (!closestSection) return;
-    closestSection.removeEventListener(ThemeEvents.variantUpdate, this.updatePrice);
+    closestSection.removeEventListener(
+      ThemeEvents.variantUpdate,
+      this.updatePrice,
+    );
   }
 
   /**
@@ -38,14 +44,17 @@ class ProductPrice extends Component {
   updatePrice = (event) => {
     if (event.detail.data.newProduct) {
       this.dataset.productId = event.detail.data.newProduct.id;
-    } else if (event.target instanceof HTMLElement && event.target.dataset.productId !== this.dataset.productId) {
+    } else if (
+      event.target instanceof HTMLElement &&
+      event.target.dataset.productId !== this.dataset.productId
+    ) {
       return;
     }
 
     const { priceContainer, volumePricingNote } = this.refs;
     // Find the new product-price element in the updated HTML
     const newProductPrice = event.detail.data.html.querySelector(
-      `product-price[data-block-id="${this.dataset.blockId}"]`
+      `product-price[data-block-id="${this.dataset.blockId}"]`,
     );
     if (!newProductPrice) return;
 
@@ -62,21 +71,26 @@ class ProductPrice extends Component {
       volumePricingNote?.remove();
     } else if (!volumePricingNote) {
       // Use newPrice since priceContainer was just replaced and now points to the detached element
-      newPrice?.insertAdjacentElement('afterend', /** @type {Element} */ (newNote.cloneNode(true)));
+      newPrice?.insertAdjacentElement(
+        "afterend",
+        /** @type {Element} */ (newNote.cloneNode(true)),
+      );
     } else {
       volumePricingNote.replaceWith(newNote);
     }
 
     // Update installments (SPI banner) variant ID to trigger payment terms re-render
     const input_selector = `#product-form-installment-${this.dataset.blockId} input[name="id"]`;
-    const installmentsInput = /** @type {HTMLInputElement|null} */ (this.querySelector(input_selector));
+    const installmentsInput = /** @type {HTMLInputElement|null} */ (
+      this.querySelector(input_selector)
+    );
     if (installmentsInput) {
-      installmentsInput.value = event.detail.resource?.id ?? '';
-      installmentsInput.dispatchEvent(new Event('change', { bubbles: true }));
+      installmentsInput.value = event.detail.resource?.id ?? "";
+      installmentsInput.dispatchEvent(new Event("change", { bubbles: true }));
     }
   };
 }
 
-if (!customElements.get('product-price')) {
-  customElements.define('product-price', ProductPrice);
+if (!customElements.get("product-price")) {
+  customElements.define("product-price", ProductPrice);
 }
