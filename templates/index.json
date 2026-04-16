@@ -11,10 +11,57 @@
   "sections": {
     "homepage_top_ReVV94": {
       "type": "homepage-top",
+      "blocks": {
+        "button_XyxQQH": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Book Your 3 Class Trial",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        },
+        "button_rQQdnD": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "See Programs",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button-secondary",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "button_XyxQQH",
+        "button_rQQdnD"
+      ],
       "name": "Homepage Top Section",
       "settings": {
         "background_img": "shopify://shop_images/762bc03c342037679eaf248483551bb8fb382cef.png",
-        "color_scheme": "scheme-1"
+        "color_scheme": "scheme-1",
+        "heading": "Train Hard. Get Strong. Join the Community.",
+        "subheading": "At CrossFit Claremont, we help people of all ages and fitness levels become stronger, fitter, and more confident through expert coaching and supportive group training."
+      }
+    },
+    "about_us_tr6TAg": {
+      "type": "about-us",
+      "name": "About Us",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "heading": "Train Hard. Get Strong. Join the Community.",
+        "subheading": "At CrossFit Claremont, we help people of all ages and fitness levels become stronger, fitter, and more confident through expert coaching and supportive group training."
       }
     },
     "hero_jVaWmY": {
@@ -295,6 +342,7 @@
   },
   "order": [
     "homepage_top_ReVV94",
+    "about_us_tr6TAg",
     "hero_jVaWmY",
     "product_list_fa6P9H"
   ]

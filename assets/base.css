@@ -567,10 +567,9 @@ p:empty {
   .grid {
     display: grid;
     gap: 0;
-    grid-template-columns: var(--margin-4xl) repeat(
-        var(--centered-column-number),
-        minmax(0, 1fr)
-      ) var(--margin-4xl);
+    grid-template-columns:
+      var(--margin-4xl) repeat(var(--centered-column-number), minmax(0, 1fr))
+      var(--margin-4xl);
     grid-template-areas: "column-0 column-1 column-2 column-3 column-4 column-5 column-6 column-7 column-8 column-9 column-10 column-11 column-12 column-13";
   }
 }
@@ -1334,8 +1333,10 @@ button.shopify-payment-button__button--unbranded {
 
 .button {
   font-family: var(--button-font-family-primary);
+  font-size: 20px;
   text-transform: var(--button-text-case-primary);
   border-radius: var(--style-border-radius-buttons-primary);
+  height: var(--button-height) !important;
 }
 
 .button:not(.button-secondary, .button-unstyled) {
@@ -1343,7 +1344,9 @@ button.shopify-payment-button__button--unbranded {
 }
 
 .button-secondary {
+  height: var(--button-height) !important;
   font-family: var(--button-font-family-secondary);
+  font-size: 20px;
   text-transform: var(--button-text-case-secondary);
   border-radius: var(--style-border-radius-buttons-secondary);
 }
@@ -3447,10 +3450,9 @@ fly-to-cart.fly-to-cart--sticky {
   ):has(.collection-wrapper--full-width) {
   @media screen and (min-width: 750px) {
     grid-column: 1 / -1;
-    grid-template-columns: 0fr repeat(
-        var(--centered-column-number),
-        minmax(0, 1fr)
-      ) 0fr;
+    grid-template-columns:
+      0fr repeat(var(--centered-column-number), minmax(0, 1fr))
+      0fr;
   }
 }
 

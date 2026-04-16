@@ -1,0 +1,95 @@
+{%- stylesheet -%}
+  .homepage-header__section {
+    max-width: 100%;
+    overflow: hidden;
+    height: 556px;
+    position: relative;
+  }
+
+  .homepage-background__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .homepage-header__section h1 {
+    color: var(--color-foreground-heading);
+  }
+
+  .homepage-headings {
+    padding: 0 2rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .homepage-headings h3 {
+    color: var(--color-foreground);
+  }
+{%- endstylesheet -%}
+
+<div class="homepage-header__section color-{{ section.settings.color_scheme }}">
+  {%- if section.settings.background_img != blank -%}
+    {{
+      section.settings.background_img
+      | image_url: width: 904, height: 556
+      | image_tag: class: 'homepage-background__img', loading: 'eager'
+    }}
+  {%- endif -%}
+
+  <div class="homepage-headings">
+    {%- if section.settings.heading != blank -%}
+      <h1>
+        {{ section.settings.heading }}
+      </h1>
+    {%- endif -%}
+
+    <p>{{ section.settings.subheading }}</p>
+
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About Us",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_img",
+      "label": "Background Image"
+    },
+    {
+      "type": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "id": "color_scheme"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text",
+      "default": "Train Hard. Get Strong. Join the Community."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading Text",
+      "default": "At CrossFit Claremont, we help people of all ages and fitness levels become stronger, fitter, and more confident through expert coaching and supportive group training."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "button"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Us"
+    }
+  ]
+}
+{% endschema %}
