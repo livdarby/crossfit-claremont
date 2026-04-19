@@ -1,4 +1,19 @@
-{% content_for 'blocks' %}
+{%- stylesheet -%}
+  .list-item {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    column-gap: 12px;
+    row-gap: 12px;
+  }
+
+  .list-item .icon-block {
+    grid-row: span 2;
+    display: flex;
+    align-items: flex-start;
+  }
+{%- endstylesheet -%}
+
+<div class="list-item">{% content_for 'blocks' %}</div>
 
 {% schema %}
 {

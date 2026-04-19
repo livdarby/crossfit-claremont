@@ -202,22 +202,34 @@
           "name": "List Item",
           "settings": {},
           "blocks": {
+            "icon_X63RK9": {
+              "type": "icon",
+              "name": "t:names.icon",
+              "settings": {
+                "icon": "check_box",
+                "image_upload": "shopify://shop_images/Group_1171275718.svg",
+                "width": 30,
+                "link": "",
+                "open_in_new_tab": false
+              },
+              "blocks": {}
+            },
             "text_tzqPCe": {
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>New arrivals</h2>",
+                "text": "<h5>Expert Coaching</h5>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "rte",
+                "type_preset": "h4",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "color": "var(--color-foreground)",
+                "color": "var(--color-foreground-heading)",
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
@@ -232,7 +244,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+                "text": "<p>Every class is led by experienced coaches who guide you through workouts safely and effectively.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -253,23 +265,240 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
-            },
-            "icon_X63RK9": {
+            }
+          },
+          "block_order": [
+            "icon_X63RK9",
+            "text_tzqPCe",
+            "text_jbFqhW"
+          ]
+        },
+        "list_item_ytk8cr": {
+          "type": "_list-item",
+          "name": "List Item",
+          "settings": {},
+          "blocks": {
+            "icon_PeJKwC": {
               "type": "icon",
               "name": "t:names.icon",
               "settings": {
-                "icon": "price_tag",
-                "width": 24,
+                "icon": "check_box",
+                "image_upload": "shopify://shop_images/Group_1171275718.svg",
+                "width": 30,
                 "link": "",
                 "open_in_new_tab": false
+              },
+              "blocks": {}
+            },
+            "text_XeQMi9": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h5>Supportive Community</h5>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground-heading)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_yBhKdj": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>Train alongside a welcoming group of members who support and motivate each other.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "text_tzqPCe",
-            "text_jbFqhW",
-            "icon_X63RK9"
+            "icon_PeJKwC",
+            "text_XeQMi9",
+            "text_yBhKdj"
+          ]
+        },
+        "list_item_LxYEdV": {
+          "type": "_list-item",
+          "name": "List Item",
+          "settings": {},
+          "blocks": {
+            "icon_dimTaX": {
+              "type": "icon",
+              "name": "t:names.icon",
+              "settings": {
+                "icon": "check_box",
+                "image_upload": "shopify://shop_images/Group_1171275718.svg",
+                "width": 30,
+                "link": "",
+                "open_in_new_tab": false
+              },
+              "blocks": {}
+            },
+            "text_X99Ge8": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h5>Programs for All Levels</h5>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground-heading)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_LEiRxM": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>Whether you're a beginner or experienced athlete, our workouts are scalable for everyone.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "icon_dimTaX",
+            "text_X99Ge8",
+            "text_LEiRxM"
+          ]
+        },
+        "list_item_4G6ame": {
+          "type": "_list-item",
+          "name": "List Item",
+          "settings": {},
+          "blocks": {
+            "icon_AQ3tC7": {
+              "type": "icon",
+              "name": "t:names.icon",
+              "settings": {
+                "icon": "check_box",
+                "image_upload": "shopify://shop_images/Group_1171275718.svg",
+                "width": 30,
+                "link": "",
+                "open_in_new_tab": false
+              },
+              "blocks": {}
+            },
+            "text_ttyrLc": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h5>Results That Matter</h5>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground-heading)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_DwTBJ7": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>Build strength, improve fitness, and feel better in everyday life.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "icon_AQ3tC7",
+            "text_ttyrLc",
+            "text_DwTBJ7"
           ]
         }
       },
@@ -280,7 +509,10 @@
         "button_WUKNFr",
         "image_T3eEwD",
         "text_gmjV7b",
-        "list_item_Ab8q8m"
+        "list_item_Ab8q8m",
+        "list_item_ytk8cr",
+        "list_item_LxYEdV",
+        "list_item_4G6ame"
       ],
       "name": "About Us",
       "settings": {
