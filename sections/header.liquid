@@ -1,5 +1,3 @@
-
-
 {% liquid
   assign order = 'logo,menu,localization,search,drawer_search,actions'
 
@@ -332,6 +330,7 @@
   {%- if request.page_type == 'index' -%}
     <h1 class="visually-hidden">{{ shop.name }}</h1>
   {%- endif -%}
+
   {% for row in rows %}
     {% liquid
       assign scheme = 'color_scheme_' | append: row
@@ -429,7 +428,9 @@
     .button-secondary,
     .header-actions__action {
       /* reset style from base.css */
-      transition: color var(--header-content-transition-timing), border-color var(--header-content-transition-timing);
+      transition:
+        color var(--header-content-transition-timing),
+        border-color var(--header-content-transition-timing);
     }
   }
 
@@ -733,6 +734,7 @@
   }
 
   .header__columns {
+    order: -1;
     /* Three column layout */
     --header-left: 1fr;
     --header-center: auto;
@@ -1112,6 +1114,36 @@
   .dropdown-localization:not(dropdown-localization-component) .language-selector {
     font-family: var(--menu-localization-font);
     font-size: var(--menu-localization-font-size);
+  }
+
+  @media screen and (max-width: 749px) {
+    .header__row.header__row--top {
+      display: flex;
+    }
+
+    .header__columns {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      width: 100%;
+      padding-top: 20px;
+      padding-block-start: 20px !important;
+    }
+
+    .header-logo {
+      margin-left: 0;
+      margin-right: auto;
+      padding-left: 32px !important;
+    }
+
+    .header__column--left {
+      width: 100vw;
+      height: 100px;
+    }
+
+    .header__column--right {
+      width: 0;
+    }
   }
 {% endstylesheet %}
 

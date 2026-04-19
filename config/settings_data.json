@@ -9,8 +9,10 @@
  */
 {
   "current": {
+    "logo": "shopify://shop_images/logo.png",
     "logo_height": 36,
-    "logo_height_mobile": 28,
+    "logo_height_mobile": 44,
+    "favicon": "shopify://shop_images/308174502_521732123286214_325152853899408542_n.png",
     "type_body_font": "dm_sans_n4",
     "type_subheading_font": "inter_n5",
     "type_heading_font": "oswald_n5",
