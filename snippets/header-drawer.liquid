@@ -847,13 +847,13 @@
 
   .menu-drawer {
     position: fixed;
-    transform: translateX(-100%);
+    transform: translateX(100%);
     visibility: hidden;
     height: var(--drawer-height);
     width: var(--drawer-width);
     max-width: var(--drawer-max-width);
     z-index: var(--layer-menu-drawer);
-    left: 0;
+    right: 0;
     top: 0;
     padding: 0;
     background-color: var(--color-background);
@@ -891,7 +891,9 @@
 
   .menu-drawer,
   details[open] > .menu-drawer__submenu {
-    transition: transform var(--drawer-animation-speed) ease, visibility var(--drawer-animation-speed) ease,
+    transition:
+      transform var(--drawer-animation-speed) ease,
+      visibility var(--drawer-animation-speed) ease,
       opacity var(--drawer-animation-speed) ease;
   }
 
@@ -902,6 +904,7 @@
     opacity: 1;
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
   }
 
   .menu-drawer__inner-container {
