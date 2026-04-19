@@ -1,0 +1,74 @@
+{%- style %}
+  .our-offer__section {
+    padding: {{ section.settings.padding_vertical }}px {{ section.settings.padding_horizontal }}px;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.row_gap }}px;
+  }
+{%- endstyle %}
+
+<div class="our-offer__section color-{{ section.settings.color_scheme }}">
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "What We Offer",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "id": "color_scheme"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "t:settings.padding_vertical",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "t:settings.padding_horizontal",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "t:settings.horizontal_gap",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "button"
+    },
+    {
+      "type": "_list-item"
+    }
+  ],
+  "presets": [
+    {
+      "name": "What We Offer"
+    }
+  ]
+}
+{% endschema %}

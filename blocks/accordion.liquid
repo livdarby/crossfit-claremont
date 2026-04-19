@@ -1,5 +1,3 @@
-
-
 {% assign block_settings = block.settings %}
 <div
   class="accordion accordion--{{ block.id }} accordion--{{ block_settings.icon }} border-style spacing-style{% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}{% if block_settings.dividers %} accordion--dividers{% endif %}"
@@ -24,7 +22,7 @@
     width: 100%;
   }
 
-  .accordion--dividers accordion-custom:not(:first-child) .details {
+  .accordion--dividers accordion-custom:not(:first-of-type) .details {
     border-block-start: var(--style-border-width) solid var(--color-border);
   }
 

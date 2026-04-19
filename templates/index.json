@@ -23,7 +23,9 @@
             "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fit-content",
-            "custom_width_mobile": 100
+            "custom_width_mobile": 100,
+            "padding-block-start": 0,
+            "padding-block-end": 0
           },
           "blocks": {}
         },
@@ -38,7 +40,9 @@
             "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fit-content",
-            "custom_width_mobile": 100
+            "custom_width_mobile": 100,
+            "padding-block-start": 0,
+            "padding-block-end": 0
           },
           "blocks": {}
         }
@@ -144,7 +148,9 @@
             "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fit-content",
-            "custom_width_mobile": 100
+            "custom_width_mobile": 100,
+            "padding-block-start": 0,
+            "padding-block-end": 0
           },
           "blocks": {}
         },
@@ -522,6 +528,637 @@
         "row_gap": 36
       }
     },
+    "what_we_offer_H4UTfA": {
+      "type": "what-we-offer",
+      "blocks": {
+        "text_jnCcRH": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>What We Offer</h2>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 20,
+            "padding-block-end": 22,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "image_Qb6MRA": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/image_73_2.png",
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_JtWCUL": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<h5>Expert Coaching</h5>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h4",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_EAxTrM": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Every class is led by experienced coaches who guide you through workouts safely and effectively.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_NDYWi6": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Learn More",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "link",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "padding-block-start": 0,
+            "padding-block-end": 24
+          },
+          "blocks": {}
+        },
+        "image_qqyiTW": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/image_73_3.png",
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_QQzqpD": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Weightlifting & Strength Training </p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h4",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_9eR3Ua": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Improve technique and build serious strength with structured lifting sessions.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_JQKwch": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Learn More",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "link",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "padding-block-start": 0,
+            "padding-block-end": 24
+          },
+          "blocks": {}
+        },
+        "image_DrcE7q": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/image_73_4.png",
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_pMxAaN": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Gymnastics Skills</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h4",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_emX6CL": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Develop body control, flexibility, and advanced movement skills.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_DQQ9nH": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Learn More",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "link",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "padding-block-start": 0,
+            "padding-block-end": 24
+          },
+          "blocks": {}
+        },
+        "image_V7ACLh": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/image_73_5.png",
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_nbCJmL": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Personal Training</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h4",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_TTN8aT": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>One-on-one coaching tailored to your goals and fitness level.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_3F98zE": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Learn More",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "link",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "padding-block-start": 0,
+            "padding-block-end": 24
+          },
+          "blocks": {}
+        },
+        "image_Up78LG": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/image_73_6.png",
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_Um6Xi4": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Open Gym</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h4",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_jXmyE9": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Train at your own pace while still being part of the community.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_iHkGFB": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Learn More",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "link",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "padding-block-start": 0,
+            "padding-block-end": 48
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_jnCcRH",
+        "image_Qb6MRA",
+        "text_JtWCUL",
+        "text_EAxTrM",
+        "button_NDYWi6",
+        "image_qqyiTW",
+        "text_QQzqpD",
+        "text_9eR3Ua",
+        "button_JQKwch",
+        "image_DrcE7q",
+        "text_pMxAaN",
+        "text_emX6CL",
+        "button_DQQ9nH",
+        "image_V7ACLh",
+        "text_nbCJmL",
+        "text_TTN8aT",
+        "button_3F98zE",
+        "image_Up78LG",
+        "text_Um6Xi4",
+        "text_jXmyE9",
+        "button_iHkGFB"
+      ],
+      "name": "What We Offer",
+      "settings": {
+        "color_scheme": "scheme-5",
+        "padding_vertical": 24,
+        "padding_horizontal": 20,
+        "row_gap": 16
+      }
+    },
+    "what_we_offer_73T7wm": {
+      "type": "what-we-offer",
+      "blocks": {
+        "image_wU8QGc": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/image_83.png",
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_rdJnK8": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>Coaches Who Care About Your Progress</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h3",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_NizKtw": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>They are passionate about helping members move better, train smarter, and achieve results.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_kDEG8i": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Meet the Coaches",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "padding-block-start": 0,
+            "padding-block-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "image_wU8QGc",
+        "text_rdJnK8",
+        "text_NizKtw",
+        "button_kDEG8i"
+      ],
+      "name": "Meet The Coaches",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "padding_vertical": 48,
+        "padding_horizontal": 20,
+        "row_gap": 20
+      }
+    },
     "hero_jVaWmY": {
       "type": "hero",
       "blocks": {
@@ -529,7 +1166,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>Browse our latest products</p>",
+            "text": "<p>Fitness Is Better Together</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -551,29 +1188,59 @@
           },
           "blocks": {}
         },
+        "text_xUCiNy": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>From in-house competitions and community workouts to social events and beach training sessions, CrossFit Claremont is built around connection and fun.<br/>You’ll find an environment where members support each other, celebrate progress, and enjoy the journey.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "button_H9gpTf": {
           "type": "button",
           "name": "t:names.button",
           "settings": {
-            "label": "Shop all",
+            "label": "See Our Community",
             "link": "shopify://collections/all",
             "open_in_new_tab": false,
-            "style_class": "button-secondary",
+            "style_class": "button",
             "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fit-content",
-            "custom_width_mobile": 100
+            "custom_width_mobile": 100,
+            "padding-block-start": 0,
+            "padding-block-end": 0
           },
           "blocks": {}
         }
       },
       "block_order": [
         "text_YLPk4p",
+        "text_xUCiNy",
         "button_H9gpTf"
       ],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
+        "image_1": "shopify://shop_images/image_82.png",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": false,
@@ -586,13 +1253,13 @@
         "horizontal_alignment": "space-between",
         "vertical_alignment": "flex-end",
         "align_baseline": true,
-        "horizontal_alignment_flex_direction_column": "center",
+        "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "flex-end",
         "gap": 24,
         "section_width": "page-width",
         "section_height": "medium",
         "section_height_custom": 50,
-        "color_scheme": "scheme-6",
+        "color_scheme": "scheme-1",
         "toggle_overlay": true,
         "overlay_color": "#12121266",
         "overlay_style": "solid",
@@ -601,6 +1268,260 @@
         "reflection_opacity": 75,
         "padding-block-start": 100,
         "padding-block-end": 72
+      }
+    },
+    "section_6jpG3M": {
+      "type": "section",
+      "blocks": {
+        "text_AARD87": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>Frequently Asked Questions</h2>",
+            "width": "100%",
+            "max_width": "narrow",
+            "alignment": "center",
+            "type_preset": "h3",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "accordion_YUB7QC": {
+          "type": "accordion",
+          "name": "t:names.accordion",
+          "settings": {
+            "icon": "plus",
+            "dividers": true,
+            "type_preset": "h4",
+            "inherit_color_scheme": true,
+            "color_scheme": "scheme-4",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 7,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "accordion_row_THaL3M": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "Do I need to be fit before starting CrossFit?",
+                "open_by_default": false,
+                "background": "#f8f7f7",
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_RfdWUg": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Not at all. Our workouts are scalable and designed for all fitness levels.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#f8f7f7",
+                    "corner_radius": 7,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_RfdWUg"
+              ]
+            },
+            "accordion_row_zNGa9y": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "How long are the classes?",
+                "open_by_default": false,
+                "background": "",
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_i7X3zL": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>We are unable to accept returns on certain items. These will be carefully marked before purchase.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_i7X3zL"
+              ]
+            },
+            "accordion_row_Q33cra": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_row",
+              "settings": {
+                "heading": "What should I bring to my first session?",
+                "open_by_default": false,
+                "background": "",
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_9KhGbU": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>We will work quickly to ship your order as soon as possible. Once your order has shipped, you will receive an email with further information. Delivery times vary depending on your location.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_9KhGbU"
+              ]
+            },
+            "accordion_row_BQyMfc": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_row",
+              "settings": {
+                "heading": "Can beginners join?",
+                "open_by_default": false,
+                "background": "",
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_6rnwTF": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>Our products are manufactured both locally and globally. We carefully select our manufacturing partners to ensure our products are high quality and a fair value.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_6rnwTF"
+              ]
+            }
+          },
+          "block_order": [
+            "accordion_row_THaL3M",
+            "accordion_row_zNGa9y",
+            "accordion_row_Q33cra",
+            "accordion_row_BQyMfc"
+          ]
+        }
+      },
+      "block_order": [
+        "text_AARD87",
+        "accordion_YUB7QC"
+      ],
+      "name": "t:names.faq_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 32,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-2",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     },
     "product_list_fa6P9H": {
@@ -801,7 +1722,10 @@
   "order": [
     "homepage_top_ReVV94",
     "about_us_tr6TAg",
+    "what_we_offer_H4UTfA",
+    "what_we_offer_73T7wm",
     "hero_jVaWmY",
+    "section_6jpG3M",
     "product_list_fa6P9H"
   ]
 }

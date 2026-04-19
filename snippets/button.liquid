@@ -10,6 +10,13 @@
 
 {% assign block_settings = block.settings %}
 
+{%- style -%}
+  .{{ block_settings.style_class }}--{{ block.id }} {
+    padding-top: {{ block.settings.padding-block-start | default: 0 }}px;
+    padding-bottom: {{ block.settings.padding-block-end | default: 0 }}px;
+  }
+{%- endstyle -%}
+
 <a
   {% if link == blank %}
     role="link"

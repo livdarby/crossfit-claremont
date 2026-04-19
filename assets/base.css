@@ -694,8 +694,8 @@ p:empty {
 }
 
 .svg-wrapper > svg {
-  width: var(--icon-size-sm);
-  height: var(--icon-size-sm);
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
 }
 
 .relative {
@@ -1481,6 +1481,8 @@ button.shopify-payment-button__button--unbranded:hover:not([disabled]) {
 .link {
   display: inline-block;
   text-align: center;
+  font-family: var(--font-h1--family);
+  font-size: 18px;
 }
 
 shopify-accelerated-checkout,
@@ -1527,8 +1529,8 @@ summary:hover {
 
 summary .svg-wrapper {
   margin-inline-start: auto;
-  height: var(--icon-size-xs);
-  width: var(--icon-size-xs);
+  height: var(--icon-size-lg);
+  min-width: var(--icon-size-lg);
   transition: transform var(--animation-speed) var(--animation-easing);
 }
 
