@@ -14,17 +14,43 @@
     "footer_m9NzUG": {
       "type": "footer",
       "blocks": {
+        "text_fDHnyq": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h3>Reclaim your Fitness</h3>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "2.5rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "group_H6VpwJ": {
           "type": "group",
           "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
+            "content_direction": "row",
+            "vertical_on_mobile": false,
             "horizontal_alignment": "flex-start",
             "vertical_alignment": "center",
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-start",
             "vertical_alignment_flex_direction_column": "center",
-            "gap": 6,
+            "gap": 15,
             "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
@@ -53,14 +79,26 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_LWt8Pz": {
+            "icon_Cggfba": {
+              "type": "icon",
+              "name": "t:names.icon",
+              "settings": {
+                "icon": "price_tag",
+                "image_upload": "shopify://shop_images/Group_1686556166.svg",
+                "width": 46,
+                "link": "",
+                "open_in_new_tab": false
+              },
+              "blocks": {}
+            },
+            "text_f9CFLH": {
               "type": "text",
               "settings": {
-                "text": "<h2>Join our email list</h2>",
+                "text": "<p><a href=\"mailto:info@crossfitclaremont.com.au\" target=\"_blank\" title=\"mailto:info@crossfitclaremont.com.au\">info@crossfitclaremont.com.au</a></p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "h4",
+                "type_preset": "custom",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -77,11 +115,68 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            }
+          },
+          "block_order": [
+            "icon_Cggfba",
+            "text_f9CFLH"
+          ]
+        },
+        "group_qaBmX4": {
+          "type": "group",
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 15,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "icon_7xhCAU": {
+              "type": "icon",
+              "name": "t:names.icon",
+              "settings": {
+                "icon": "price_tag",
+                "image_upload": "shopify://shop_images/Group_1686556165.svg",
+                "width": 46,
+                "link": "",
+                "open_in_new_tab": false
+              },
+              "blocks": {}
             },
-            "text_f9CFLH": {
+            "text_HQ9QYt": {
               "type": "text",
               "settings": {
-                "text": "<p>Get exclusive deals and early access to new products.</p>",
+                "text": "<p>0439 347 514</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
@@ -104,17 +199,167 @@
               "blocks": {}
             }
           },
-          "block_order": ["text_LWt8Pz", "text_f9CFLH"]
+          "block_order": [
+            "icon_7xhCAU",
+            "text_HQ9QYt"
+          ]
+        },
+        "group_rpqPdG": {
+          "type": "group",
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 15,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "icon_KpUUr8": {
+              "type": "icon",
+              "name": "t:names.icon",
+              "settings": {
+                "icon": "price_tag",
+                "image_upload": "shopify://shop_images/Group_1686556164.svg",
+                "width": 46,
+                "link": "",
+                "open_in_new_tab": false
+              },
+              "blocks": {}
+            },
+            "group_RaqDGc": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 0,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_AThWR8": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>Gate 8, Ashton Avenue<br/>Milton Isbister Pavillion<br/>Claremont Showgrounds<br/>Claremont  WA 6010</p>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "button_rLgnqm": {
+                  "type": "button",
+                  "name": "t:names.button",
+                  "settings": {
+                    "label": "Get Directions",
+                    "link": "shopify://collections/all",
+                    "open_in_new_tab": false,
+                    "style_class": "link",
+                    "width": "fit-content",
+                    "custom_width": 100,
+                    "width_mobile": "fit-content",
+                    "custom_width_mobile": 100,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_AThWR8",
+                "button_rLgnqm"
+              ]
+            }
+          },
+          "block_order": [
+            "icon_KpUUr8",
+            "group_RaqDGc"
+          ]
         },
         "email_signup_crihX7": {
           "type": "email-signup",
+          "disabled": true,
           "settings": {
             "width": "fill",
             "custom_width": 100,
             "inherit_color_scheme": true,
+            "color_scheme": "",
             "heading": "",
             "heading_preset": "h3",
-            "color_scheme": "",
             "border_style": "all",
             "border_width": 1,
             "border_radius": 100,
@@ -132,12 +377,18 @@
           "blocks": {}
         }
       },
-      "block_order": ["group_H6VpwJ", "email_signup_crihX7"],
+      "block_order": [
+        "text_fDHnyq",
+        "group_H6VpwJ",
+        "group_qaBmX4",
+        "group_rpqPdG",
+        "email_signup_crihX7"
+      ],
       "name": "t:names.footer",
       "settings": {
         "section_width": "page-width",
         "gap": 20,
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-2",
         "padding-block-start": 30,
         "padding-block-end": 30
       }
@@ -145,19 +396,11 @@
     "footer_utilities_jLGE8U": {
       "type": "footer-utilities",
       "blocks": {
-        "footer_copyright_jweRK8": {
-          "type": "footer-copyright",
-          "settings": {
-            "show_powered_by": true,
-            "font_size": "0.75rem",
-            "case": "none"
-          },
-          "blocks": {}
-        },
         "footer_policy_list_VCdnpa": {
           "type": "footer-policy-list",
           "settings": {
-            "font_size": "0.75rem",
+            "hover": false,
+            "font_size": "1rem",
             "case": "none"
           },
           "blocks": {}
@@ -165,11 +408,11 @@
         "social_links_Ew63Kq": {
           "type": "social-links",
           "settings": {
-            "facebook_url": "https://www.facebook.com/",
-            "instagram_url": "https://www.instagram.com/",
-            "youtube_url": "https://www.youtube.com/",
-            "tiktok_url": "https://www.tiktok.com/",
-            "twitter_url": "https://x.com/",
+            "facebook_url": "https://www.facebook.com/cfclaremont/",
+            "instagram_url": "https://www.instagram.com/crossfitclaremont/",
+            "youtube_url": "",
+            "tiktok_url": "",
+            "twitter_url": "",
             "threads_url": "",
             "linkedin_url": "",
             "bluesky_url": "",
@@ -180,23 +423,35 @@
             "custom_url": ""
           },
           "blocks": {}
+        },
+        "footer_copyright_jweRK8": {
+          "type": "footer-copyright",
+          "settings": {
+            "show_powered_by": false,
+            "font_size": "1rem",
+            "case": "none"
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "footer_copyright_jweRK8",
         "footer_policy_list_VCdnpa",
-        "social_links_Ew63Kq"
+        "social_links_Ew63Kq",
+        "footer_copyright_jweRK8"
       ],
       "name": "t:names.utilities",
       "settings": {
         "section_width": "page-width",
         "gap": 24,
         "divider_thickness": 0,
-        "color_scheme": "",
+        "color_scheme": "scheme-2",
         "padding-block-start": 20,
         "padding-block-end": 48
       }
     }
   },
-  "order": ["footer_m9NzUG", "footer_utilities_jLGE8U"]
+  "order": [
+    "footer_m9NzUG",
+    "footer_utilities_jLGE8U"
+  ]
 }

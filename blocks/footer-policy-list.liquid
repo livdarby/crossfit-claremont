@@ -1,46 +1,72 @@
-
 {% if shop.policies.size > 0 %}
-  <anchored-popover-component
-    data-hover-triggered="true"
-  >
-    <button
-      class="policy-list-trigger button-unstyled"
-      popovertarget="terms-policies-popover"
-      popovertargetaction="toggle"
-      ref="trigger"
+  {% if block.settings.hover %}
+    <anchored-popover-component
+      data-hover-triggered="true"
+    >
+      <button
+        class="policy-list-trigger button-unstyled"
+        popovertarget="terms-policies-popover"
+        popovertargetaction="toggle"
+        ref="trigger"
+        style="{% render 'typography-style', preset: 'custom', settings: block.settings %}"
+        {{ block.shopify_attributes }}
+      >
+        {{ 'content.terms_and_policies' | t }}
+      </button>
+      <div
+        class="terms-policies-popover color-{{ settings.popover_color_scheme }}"
+        id="terms-policies-popover"
+        popover="auto"
+        ref="popover"
+      >
+        <ul
+          class="
+            policy_list list-unstyled
+            custom-typography
+            {% if block.settings.font_size != "" %}custom-font-size{% endif %}
+          "
+        >
+          {%- for policy in shop.policies -%}
+            {%- if policy != blank -%}
+              <li>
+                <a
+                  href="{{ policy.url }}"
+                  class="footer-utilities__text"
+                >
+                  {{- policy.title | escape -}}
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    </anchored-popover-component>
+  {% else %}
+    <ul
+      class="
+        policy-list-inline
+        policy_list
+        list-unstyled
+        custom-typography
+        {% if block.settings.font_size != "" %}custom-font-size{% endif %}
+      "
       style="{% render 'typography-style', preset: 'custom', settings: block.settings %}"
       {{ block.shopify_attributes }}
     >
-      {{ 'content.terms_and_policies' | t }}
-    </button>
-    <div
-      class="terms-policies-popover color-{{ settings.popover_color_scheme }}"
-      id="terms-policies-popover"
-      popover="auto"
-      ref="popover"
-    >
-      <ul
-        class="
-          policy_list list-unstyled
-          custom-typography
-          {% if block.settings.font_size != "" %}custom-font-size{% endif %}
-        "
-      >
-        {%- for policy in shop.policies -%}
-          {%- if policy != blank -%}
-            <li>
-              <a
-                href="{{ policy.url }}"
-                class="footer-utilities__text"
-              >
-                {{- policy.title | escape -}}
-              </a>
-            </li>
-          {%- endif -%}
-        {%- endfor -%}
-      </ul>
-    </div>
-  </anchored-popover-component>
+      {%- for policy in shop.policies -%}
+        {%- if policy != blank -%}
+          <li>
+            <a
+              href="{{ policy.url }}"
+              class="footer-utilities__text"
+            >
+              {{- policy.title | escape -}}
+            </a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  {% endif %}
 {% endif %}
 
 {% stylesheet %}
@@ -72,14 +98,38 @@
     }
   }
 
+  .policy-list-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .policy-list-inline li {
+    border-radius: 0;
+  }
+
+  .policy-list-inline li:not(:first-of-type) {
+    border-left: 1px solid var(--color-border);
+    padding-left: 12px;
+  }
+
+  .policy-list-inline li a {
+    padding: 0;
+    width: auto;
+  }
+
+  .policy-list-inline li:is(:hover, :focus-within) {
+    background: transparent;
+  }
+
   .terms-policies-popover {
     position-anchor: --terms-policies-trigger;
     inset: unset;
     bottom: calc(anchor(top) + 1rem);
     left: anchor(left);
     border-radius: var(--style-border-radius-popover);
-    background: linear-gradient(var(--color-background) 0 100%),
-      linear-gradient(rgb(var(--color-background-rgb) / 0.15) 0 100%);
+    background:
+      linear-gradient(var(--color-background) 0 100%), linear-gradient(rgb(var(--color-background-rgb) / 0.15) 0 100%);
     background-clip: padding-box, border-box;
     border: 1px solid #0000;
     box-shadow: var(--shadow-popover);
@@ -149,6 +199,12 @@
     {
       "type": "paragraph",
       "content": "t:content.manage_policies"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover",
+      "label": "t:settings.hover_text",
+      "default": true
     },
     {
       "type": "select",
