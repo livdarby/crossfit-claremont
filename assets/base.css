@@ -890,6 +890,44 @@ h6,
   }
 }
 
+@media screen and (min-width: 750px) {
+  h1,
+  .h1.h1,
+  .text-block.h1 > *,
+  .text-block.h1 :is(h1, h2, h3, h4, h5, h6) {
+    font-size: calc(var(--font-h1--size) * 3);
+  }
+
+  body,
+  .paragraph:not(.button),
+  .paragraph > *,
+  .text-block.paragraph :is(h1, h2, h3, h4, h5, h6) {
+    font-size: calc((var(--font-paragraph--size)) * 1.125);
+  }
+
+  h2,
+  .h2.h2,
+  .text-block.h2 > *,
+  .text-block.h2 :is(h1, h2, h3, h4, h5, h6) {
+    font-size: calc(var(--font-h2--size) * 2.5);
+  }
+
+  h3,
+  .h3,
+  .h3.h3,
+  .text-block.h3 > *,
+  .text-block.h3 :is(h1, h2, h3, h4, h5, h6) {
+    font-size: calc(var(--font-h2--size) * 2.5);
+  }
+
+  h4,
+  .h4.h4,
+  .text-block.h4 > *,
+  .text-block.h4 :is(h1, h2, h3, h4, h5, h6) {
+    font-size: calc(var(--font-h4--size) * 1.25);
+  }
+}
+
 :first-child:is(.h1, .h2, .h3, .h4, .h5, .h6) {
   margin-block-start: 0;
 }
@@ -1483,6 +1521,12 @@ button.shopify-payment-button__button--unbranded:hover:not([disabled]) {
   text-align: center;
   font-family: var(--font-h1--family);
   font-size: 18px;
+}
+
+@media screen and (min-width: 750px) {
+  .link {
+    font-size: 20px;
+  }
 }
 
 shopify-accelerated-checkout,
@@ -2707,6 +2751,12 @@ form.payment-terms {
   display: flex;
   gap: var(--gap);
   height: 100%;
+}
+
+@media screen and (min-width: 750px) {
+  .layout-panel-flex {
+    gap: calc(var(--gap) * 2);
+  }
 }
 
 .layout-panel-flex--row {

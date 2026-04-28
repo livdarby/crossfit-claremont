@@ -5,9 +5,34 @@
     flex-direction: column;
     gap: {{ section.settings.row_gap }}px;
   }
+
+  @media screen and (min-width: 750px) {
+    .our-offer__section {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      padding: {{ section.settings.padding_vertical | times: 2  }}px {{ section.settings.padding_horizontal | times: 6 }}px;
+      gap: {{ section.settings.row_gap | times: 2 }}px;
+    }
+
+    .our-offer__section rte-formatter:first-of-type {
+      grid-column: 1 / -1;
+    }
+
+    .our-offer__section > .group-block {
+      grid-column: span 2;
+    }
+
+    .our-offer__section > .group-block:nth-last-child(2):nth-child(3n + 2) {
+      grid-column: 2 / span 2;
+    }
+
+    .our-offer__section .link {
+      padding-bottom: 24px;
+    }
+  }
 {%- endstyle %}
 
-<div class="our-offer__section color-{{ section.settings.color_scheme }}">
+<div class="our-offer__section {{ section.settings.name }} color-{{ section.settings.color_scheme }}">
   {% content_for 'blocks' %}
 </div>
 
@@ -60,6 +85,9 @@
     },
     {
       "type": "button"
+    },
+    {
+      "type": "group"
     },
     {
       "type": "_list-item"

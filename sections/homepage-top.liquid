@@ -15,13 +15,14 @@
 
   .homepage-header__section h1 {
     color: var(--color-foreground-heading);
+    margin-bottom: 0;
   }
 
   .homepage-headings {
     padding: 0 2rem;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 48px;
+    /* transform: translateY(-50%); */
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -29,6 +30,29 @@
 
   .homepage-headings h3 {
     color: var(--color-foreground);
+  }
+
+  .homepage-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .homepage-buttons {
+      flex-direction: row;
+    }
+
+    .homepage-header__section {
+      height: 887px;
+    }
+
+    .homepage-headings {
+      padding: 0;
+      margin-left: 120px;
+      bottom: 120px;
+      max-width: 714px;
+    }
   }
 {%- endstylesheet -%}
 
@@ -50,7 +74,7 @@
 
     <p>{{ section.settings.subheading }}</p>
 
-    {% content_for 'blocks' %}
+    <div class="homepage-buttons">{% content_for 'blocks' %}</div>
   </div>
 </div>
 

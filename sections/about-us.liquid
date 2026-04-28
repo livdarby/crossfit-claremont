@@ -1,13 +1,44 @@
 {%- style %}
-  .about-us__section {
+  .{{ section.settings.section_name}}__section {
     padding: {{ section.settings.padding_vertical }}px {{ section.settings.padding_horizontal }}px;
     display: flex;
     flex-direction: column;
     gap: {{ section.settings.row_gap }}px;
   }
+
+  @media screen and (min-width: 750px) {
+    .{{ section.settings.section_name}}__section {
+      padding: {{ section.settings.padding_vertical | times: 2  }}px {{ section.settings.padding_horizontal | times: 6 }}px;
+    }
+
+    .{{ section.settings.section_name}}__section .image-block {
+      max-height: 600px;
+    }
+
+    .{{ section.settings.section_name}}__section .group-block-content .group-block {
+      /* max-width: 584px; */
+    }
+
+    .meet-the-coaches__section {
+      padding: 0;
+    }
+
+    .meet-the-coaches__section .image-block {
+      /* max-width: 689px; */
+      max-height: 689px;
+    }
+
+    .meet-the-coaches__section .group-block-content .group-block {
+      max-width: 640px;
+    }
+
+    .meet-the-coaches__section .group-block-content {
+      gap: {{ section.settings.row_gap | times: 2.5 }}px;
+    }
+  }
 {%- endstyle %}
 
-<div class="about-us__section color-{{ section.settings.color_scheme }}">
+<div class="{{ section.settings.section_name}}__section color-{{ section.settings.color_scheme }}">
   {% content_for 'blocks' %}
 </div>
 
@@ -15,6 +46,13 @@
 {
   "name": "About Us",
   "settings": [
+    {
+      "type": "text",
+      "label": "Section Name",
+      "id": "section_name",
+      "info": "Used for custom CSS",
+      "default": "about-us"
+    },
     {
       "type": "color_scheme",
       "label": "t:settings.color_scheme",
@@ -60,6 +98,9 @@
     },
     {
       "type": "button"
+    },
+    {
+      "type": "group"
     },
     {
       "type": "_list-item"
