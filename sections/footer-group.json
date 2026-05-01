@@ -45,13 +45,14 @@
           "settings": {
             "content_direction": "row",
             "vertical_on_mobile": false,
+            "desktop_horizontal_direction": "row",
             "horizontal_alignment": "flex-start",
             "vertical_alignment": "center",
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-start",
             "vertical_alignment_flex_direction_column": "center",
             "gap": 15,
-            "width": "fill",
+            "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
@@ -95,7 +96,7 @@
               "type": "text",
               "settings": {
                 "text": "<p><a href=\"mailto:info@crossfitclaremont.com.au\" target=\"_blank\" title=\"mailto:info@crossfitclaremont.com.au\">info@crossfitclaremont.com.au</a></p>",
-                "width": "100%",
+                "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
                 "type_preset": "custom",
@@ -127,6 +128,7 @@
           "settings": {
             "content_direction": "row",
             "vertical_on_mobile": false,
+            "desktop_horizontal_direction": "row",
             "horizontal_alignment": "flex-start",
             "vertical_alignment": "center",
             "align_baseline": false,
@@ -209,6 +211,7 @@
           "settings": {
             "content_direction": "row",
             "vertical_on_mobile": false,
+            "desktop_horizontal_direction": "row",
             "horizontal_alignment": "flex-start",
             "vertical_alignment": "center",
             "align_baseline": false,
@@ -261,6 +264,7 @@
               "settings": {
                 "content_direction": "column",
                 "vertical_on_mobile": true,
+                "desktop_horizontal_direction": "row",
                 "horizontal_alignment": "flex-start",
                 "vertical_alignment": "center",
                 "align_baseline": false,
@@ -384,6 +388,9 @@
         "group_rpqPdG",
         "email_signup_crihX7"
       ],
+      "custom_css": [
+        "@media screen and (min-width: 750px) {.footer-content {grid-template-columns: repeat(3, auto); max-width: 1200px; margin: 0 auto; } .text-block {grid-column-start: 1; grid-column-end: 4; } .group-block-content {align-items: flex-start; } .group-block-content .text-block {margin: auto 0; } .footer-content h3 {font-size: 140px; }}"
+      ],
       "name": "t:names.footer",
       "settings": {
         "section_width": "page-width",
@@ -391,6 +398,20 @@
         "color_scheme": "scheme-2",
         "padding-block-start": 30,
         "padding-block-end": 30
+      }
+    },
+    "divider_yayYB7": {
+      "type": "divider",
+      "name": "t:names.divider_section",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "section_width": "full-width",
+        "thickness": 1,
+        "corner_radius": "square",
+        "width_percent": 80,
+        "alignment_horizontal": "center",
+        "padding-block-start": 8,
+        "padding-block-end": 8
       }
     },
     "footer_utilities_jLGE8U": {
@@ -452,6 +473,7 @@
   },
   "order": [
     "footer_m9NzUG",
+    "divider_yayYB7",
     "footer_utilities_jLGE8U"
   ]
 }

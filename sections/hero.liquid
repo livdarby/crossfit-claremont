@@ -458,6 +458,23 @@
     --hero-border-width: {{ section.settings.border_width }}px;
     --hero-border-opacity: {{ section.settings.border_opacity }}%;
     --blur-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
+    --hero-media-border-radius: {{ section.settings.media_border_radius }}px;
+    --hero-content-padding-block-start: {{ section.settings.content_padding_block_start }}px;
+    --hero-content-padding-block-end: {{ section.settings.content_padding_block_end }}px;
+    --hero-content-padding-inline-start: {{ section.settings.content_padding_inline_start }}px;
+    --hero-content-padding-inline-end: {{ section.settings.content_padding_inline_end }}px;
+    {% if section.settings.desktop_container_height > 0 %}
+      --hero-desktop-container-height: {{ section.settings.desktop_container_height }}px;
+      --hero-desktop-container-min-height: {{ section.settings.desktop_container_height }}px;
+    {% else %}
+      --hero-desktop-container-height: auto;
+      --hero-desktop-container-min-height: inherit;
+    {% endif %}
+    {% if section.settings.desktop_media_max_width > 0 %}
+      --hero-desktop-media-max-width: {{ section.settings.desktop_media_max_width }}px;
+    {% else %}
+      --hero-desktop-media-max-width: none;
+    {% endif %}
     {% if section.settings.section_height == 'custom' %}
       --hero-min-height: {{ section.settings.section_height_custom }}svh;
     {% elsif section.settings.section_height == "full-screen" %}
@@ -571,6 +588,8 @@
 
     @media screen and (min-width: 750px) {
       align-items: var(--vertical-alignment);
+      height: var(--hero-desktop-container-height);
+      min-height: var(--hero-desktop-container-min-height);
     }
   }
 
@@ -582,6 +601,13 @@
     position: relative;
     inset: 0;
     z-index: var(--layer-flat);
+
+    @media screen and (min-width: 750px) {
+      padding-block: var(--hero-content-padding-block-start) var(--hero-content-padding-block-end);
+      padding-inline: var(--hero-content-padding-inline-start) var(--hero-content-padding-inline-end);
+      max-width: var(--hero-desktop-media-max-width);
+      margin-inline: auto;
+    }
   }
 
   .hero__content-wrapper .group-block-content {
@@ -594,6 +620,14 @@
     display: grid;
     grid-column: 1 / -1;
     grid-template-columns: repeat(var(--hero-media-count, 1), 1fr);
+
+    @media screen and (min-width: 750px) {
+      width: 100%;
+      border-radius: var(--hero-media-border-radius);
+      overflow: hidden;
+      max-width: var(--hero-desktop-media-max-width);
+      margin-inline: auto;
+    }
   }
 
   .hero--auto .hero__media {
@@ -1138,6 +1172,82 @@
       "default": 50,
       "unit": "%",
       "visible_if": "{{ section.settings.section_height == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "desktop_container_height",
+      "label": "Desktop container height",
+      "min": 0,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "default": 0,
+      "info": "Applies to .hero__container on desktop only. Set to 0 to use the section height."
+    },
+    {
+      "type": "range",
+      "id": "desktop_media_max_width",
+      "label": "Desktop media max width",
+      "min": 0,
+      "max": 2000,
+      "step": 20,
+      "unit": "px",
+      "default": 0,
+      "info": "Applies to .hero__media-grid on desktop only. Set to 0 for full width."
+    },
+    {
+      "type": "range",
+      "id": "media_border_radius",
+      "label": "Media border radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Content padding"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_block_start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_padding_block_end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_padding_inline_start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_padding_inline_end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
     },
     {
       "type": "header",

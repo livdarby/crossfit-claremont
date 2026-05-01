@@ -8,6 +8,11 @@
      --summary-font-size: var(--font-{{ block_settings.type_preset }}--size);
      --summary-font-line-height: var(--font-{{ block_settings.type_preset }}--line-height);
      --summary-font-case: var(--font-{{ block_settings.type_preset }}--case);
+    {% if block_settings.desktop_max_width > 0 %}
+      --accordion-desktop-max-width: {{ block_settings.desktop_max_width }}px;
+    {% else %}
+      --accordion-desktop-max-width: none;
+    {% endif %}
     {% render 'spacing-style', settings: block_settings %}
     {% render 'border-override', settings: block_settings %}
   "
@@ -20,6 +25,11 @@
   .accordion {
     flex: 1;
     width: 100%;
+
+    @media screen and (min-width: 750px) {
+      max-width: var(--accordion-desktop-max-width);
+      margin: 0 auto;
+    }
   }
 
   .accordion--dividers accordion-custom:not(:first-of-type) .details {
@@ -156,6 +166,17 @@
     {
       "type": "header",
       "content": "t:content.borders"
+    },
+    {
+      "type": "range",
+      "id": "desktop_max_width",
+      "label": "Desktop max width",
+      "min": 0,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 0,
+      "info": "Applies to .accordion on desktop only. Set to 0 for no max width."
     },
     {
       "type": "select",
