@@ -1,0 +1,184 @@
+{% liquid
+  assign image_field_object = blank
+  assign image_resource = blank
+  assign ratio = 1
+
+  if metaobject_entry != blank and section.settings.image_field != blank
+    assign image_field_object = metaobject_entry[section.settings.image_field]
+    assign image_resource = image_field_object.value | default: image_field_object
+  endif
+
+  case block.settings.image_ratio
+    when 'landscape'
+      assign ratio = '16 / 9'
+    when 'portrait'
+      assign ratio = '4 / 5'
+    when 'square'
+      assign ratio = '1 / 1'
+    when 'adapt'
+      assign ratio = image_resource.aspect_ratio
+  endcase
+
+  if ratio == 0 or ratio == null
+    assign ratio = 1
+  endif
+%}
+
+{% style %}
+  .metaobject-grid-card[data-block-id="{{ parent_block_id }}"] {
+    --ratio: {{ ratio }};
+  }
+{% endstyle %}
+
+{% if image_resource != blank %}
+  <div
+    class="metaobject-grid-card__image spacing-style border-style"
+    style="
+      {%- render 'spacing-style', settings: block.settings -%}
+      {%- render 'border-override', settings: block.settings -%}
+    "
+    {{ block.shopify_attributes }}
+  >
+    {{
+      image_resource
+      | image_url: width: 3840
+      | image_tag:
+        widths: '240, 352, 832, 1200, 1600, 1920, 2560, 3840',
+        class: 'metaobject-grid-card__image-image',
+        sizes: '(min-width: 750px) 50vw, 100vw',
+        loading: 'lazy'
+    }}
+  </div>
+{% else %}
+  <div
+    class="metaobject-grid-card__image metaobject-grid-card__image--placeholder spacing-style border-style"
+    style="
+      {%- render 'spacing-style', settings: block.settings -%}
+      {%- render 'border-override', settings: block.settings -%}
+    "
+    {{ block.shopify_attributes }}
+  >
+    <div class="metaobject-grid-card__image-image">
+      <svg
+        class="metaobject-grid-card__placeholder-image"
+        viewBox="0 0 120 120"
+        role="img"
+        aria-label="Avatar placeholder"
+      >
+        <rect width="120" height="120" fill="rgb(var(--color-foreground-rgb) / 0.06)"></rect>
+        <circle cx="60" cy="44" r="22" fill="rgb(var(--color-foreground-rgb) / 0.16)"></circle>
+        <path
+          d="M24 108c4-22 20-34 36-34s32 12 36 34"
+          fill="rgb(var(--color-foreground-rgb) / 0.16)"
+        ></path>
+      </svg>
+    </div>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .metaobject-grid-card__image {
+    width: 100%;
+    aspect-ratio: var(--ratio);
+    overflow: hidden;
+  }
+
+  .metaobject-grid-card__image-image,
+  .metaobject-grid-card__placeholder-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media screen and (max-width: 749px) {
+    .resource-list:not(.hidden--desktop) .metaobject-grid-card--flexible-aspect-ratio .metaobject-grid-card__image {
+      aspect-ratio: unset;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Image",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "t:settings.aspect_ratio",
+      "info": "t:info.aspect_ratio_adjusted",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:options.auto"
+        },
+        {
+          "value": "portrait",
+          "label": "t:options.portrait"
+        },
+        {
+          "value": "square",
+          "label": "t:options.square"
+        },
+        {
+          "value": "landscape",
+          "label": "t:options.landscape"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "header",
+      "content": "t:content.borders"
+    },
+    {
+      "type": "select",
+      "id": "border",
+      "label": "t:settings.style",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "solid",
+          "label": "t:options.solid"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:settings.thickness",
+      "default": 1,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:settings.opacity",
+      "default": 100,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "t:settings.border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}

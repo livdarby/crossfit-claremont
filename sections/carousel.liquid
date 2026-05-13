@@ -7,6 +7,7 @@
     section--{{ section.settings.section_width }}
     color-{{ section.settings.color_scheme }}
     section-carousel
+    {% if section.settings.square_images %}section-carousel--square-images{% endif %}
     spacing-style
     gap-style
   "
@@ -20,6 +21,12 @@
 
   {% content_for 'block', type: '_carousel-content', id: 'static-carousel-content', closest.product: null %}
 </div>
+
+{% stylesheet %}
+  .section-carousel--square-images {
+    --carousel-forced-ratio: 1 / 1;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -78,6 +85,12 @@
       "step": 1,
       "unit": "px",
       "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "square_images",
+      "label": "Square all images",
+      "default": false
     },
     {
       "type": "color_scheme",

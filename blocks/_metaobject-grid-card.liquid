@@ -1,0 +1,380 @@
+{% assign block_settings = block.settings %}
+
+{% liquid
+  assign onboarding = false
+  assign image_field_object = blank
+  assign title_field_object = blank
+  assign description_field_object = blank
+  assign link_field_object = blank
+
+  if metaobject_entry == blank
+    assign onboarding = true
+    assign display_title = 'Metaobject entry'
+    assign description_content = '<p>Select a metaobject definition and map the field handles for this grid.</p>'
+  else
+    if section.settings.image_field != blank
+      assign image_field_object = metaobject_entry[section.settings.image_field]
+    endif
+
+    if section.settings.title_field != blank
+      assign title_field_object = metaobject_entry[section.settings.title_field]
+    endif
+
+    if section.settings.description_field != blank
+      assign description_field_object = metaobject_entry[section.settings.description_field]
+    endif
+
+    if section.settings.link_field != blank
+      assign link_field_object = metaobject_entry[section.settings.link_field]
+    endif
+
+    assign display_title = title_field_object.value | default: title_field_object
+    if display_title == blank
+      assign display_title = metaobject_entry.system.handle | replace: '-', ' ' | capitalize
+    endif
+
+    if description_field_object != blank
+      if description_field_object.type == 'rich_text_field'
+        assign description_content = description_field_object | metafield_tag
+      else
+        assign description_content = description_field_object.value | default: description_field_object
+      endif
+    endif
+
+    assign card_url = blank
+    if link_field_object != blank
+      assign link_value = link_field_object.value | default: link_field_object
+      if link_value.url != blank
+        assign card_url = link_value.url
+      elsif link_value != blank
+        assign card_url = link_value
+      endif
+    endif
+  endif
+%}
+
+{% capture image %}
+  {% content_for 'block',
+    id: 'image',
+    type: '_metaobject-grid-image',
+    metaobject_entry: metaobject_entry,
+    parent_block_id: block.id
+  %}
+{% endcapture %}
+
+{% capture title %}
+  {% content_for 'block', id: 'title', type: '_heading', text: display_title %}
+{% endcapture %}
+
+{% capture description %}
+  {% content_for 'block',
+    id: 'description',
+    type: '_metaobject-grid-description',
+    description_content: description_content
+  %}
+{% endcapture %}
+
+<div
+  class="
+    metaobject-grid-card spacing-style border-style
+    {% if block_settings.content_overlay %}metaobject-grid-card--overlay{% endif %}
+    {% if section.settings.layout_type == 'editorial' %}metaobject-grid-card--flexible-aspect-ratio{% endif %}
+    {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}
+  "
+  data-block-id="{{ block.id }}"
+  data-testid="metaobject-grid-card"
+  {% if onboarding %}
+    data-placeholder="true"
+  {% endif %}
+  style="
+    {%- render 'spacing-style', settings: block_settings -%}
+    {%- render 'border-override', settings: block_settings -%}
+    --text-align: {{ block_settings.alignment }};
+    --horizontal-alignment: {{ block_settings.alignment }};
+    --gap: {{ block_settings.gap }}px;
+  "
+  {{ block.shopify_attributes }}
+>
+  {% if card_url != blank %}
+    <a
+      class="metaobject-grid-card__link"
+      href="{{ card_url }}"
+    >
+      <span class="visually-hidden">{{ display_title }}</span>
+    </a>
+  {% endif %}
+
+  <div class="metaobject-grid-card__inner">
+    {{ image }}
+
+    <div class="metaobject-grid-card__content layout-panel-flex--column">
+      <h4>{{ title }}</h4>
+      {{ description }}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .metaobject-grid-card {
+    text-align: var(--text-align);
+  }
+
+  .metaobject-grid-card__inner {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    z-index: var(--layer-flat);
+    pointer-events: none;
+  }
+
+  .metaobject-grid-card__inner {
+    gap: var(--gap);
+  }
+
+  .metaobject-grid-card__content {
+    display: flex;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    gap: var(--gap);
+  }
+
+  .metaobject-grid-card__inner a,
+  .metaobject-grid-card__inner button {
+    pointer-events: auto;
+  }
+
+  .shopify-design-mode .metaobject-grid-card__content * {
+    pointer-events: auto;
+  }
+
+  .metaobject-grid-card__content {
+    --flex-wrap: wrap;
+  }
+
+  .metaobject-grid-card__content h4 {
+    margin: 0;
+  }
+
+  .metaobject-grid-card--overlay .metaobject-grid-card__image {
+    position: relative;
+  }
+
+  .metaobject-grid-card--overlay .metaobject-grid-card__content {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: var(--layer-raised);
+    padding: var(--padding-lg) var(--padding-lg) var(--padding-sm);
+    justify-content: flex-end;
+    align-items: flex-start;
+    height: auto;
+    color: var(--color-white);
+    background: linear-gradient(
+      to top,
+      rgb(0 0 0 / 0.62) 0%,
+      rgb(0 0 0 / 0.28) 45%,
+      rgb(0 0 0 / 0) 100%
+    );
+  }
+
+  .metaobject-grid-card--overlay .metaobject-grid-card__content :is(h1, h2, h3, h4, h5, h6, p, a, span) {
+    color: var(--color-white);
+  }
+
+  .metaobject-grid-card__link {
+    position: absolute;
+    inset: 0;
+    z-index: var(--layer-raised);
+  }
+
+  .metaobject-grid-card--flexible-aspect-ratio .metaobject-grid-card__content {
+    --flex-wrap: nowrap;
+  }
+
+  .resource-list:not(.hidden--desktop) .metaobject-grid-card--flexible-aspect-ratio {
+    .metaobject-grid-card__image {
+      aspect-ratio: 99;
+      height: 100%;
+    }
+
+    .metaobject-grid-card__inner {
+      height: 100%;
+    }
+
+    .metaobject-grid-card__content {
+      flex-shrink: 0;
+      height: auto;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Metaobject card",
+  "tag": null,
+  "blocks": [
+    {
+      "type": "_heading"
+    },
+    {
+      "type": "_metaobject-grid-image"
+    },
+    {
+      "type": "_metaobject-grid-description"
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.text"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "right",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "t:settings.vertical_gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "content_overlay",
+      "label": "Overlay content on image",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:content.appearance"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_color_scheme",
+      "label": "t:settings.inherit_color_scheme",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
+    },
+    {
+      "type": "select",
+      "id": "border",
+      "label": "t:settings.borders",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "solid",
+          "label": "t:options.solid"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "t:settings.border_width",
+      "default": 1,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:settings.opacity",
+      "default": 100,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "t:settings.border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}

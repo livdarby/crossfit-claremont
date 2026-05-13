@@ -116,11 +116,11 @@
 {% style %}
   {% if content_type == 'articles' %}
     .featured-blog-posts-card[data-block-id="{{ parent_block_id }}"] {
-      --ratio: {{ ratio }};
+      --ratio: var(--carousel-forced-ratio, {{ ratio }});
     }
   {% elsif content_type == 'collections' %}
     .collection-card[data-block-id="{{ parent_block_id }}"] {
-      --ratio: {{ ratio }};
+      --ratio: var(--carousel-forced-ratio, {{ ratio }});
     }
   {% endif %}
 {% endstyle %}
