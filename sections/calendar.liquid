@@ -1,0 +1,355 @@
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+
+<div
+  class="
+    section
+    section--{{ section.settings.section_width }}
+    color-{{ section.settings.color_scheme }}
+    calendar-section
+    spacing-style
+    gap-style
+  "
+  style="
+    {%- render 'spacing-style', settings: section.settings -%}
+    {%- render 'gap-style', value: section.settings.gap -%}
+  "
+>
+  {% if section.settings.heading != blank or section.settings.subheading != blank %}
+    <div class="calendar-section__header">
+      {% if section.settings.heading != blank %}
+        <h2 class="calendar-section__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <div class="calendar-section__subheading rte">{{ section.settings.subheading }}</div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="calendar-table-wrapper">
+    <div class="calendar-table" role="table" aria-label="{{ section.settings.heading | default: 'Calendar' }}">
+      <div class="calendar-table__row calendar-table__row--head" role="row">
+        <div class="calendar-table__cell calendar-table__cell--head calendar-table__cell--time" role="columnheader">
+          {{ section.settings.time_heading }}
+        </div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_1 }}</div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_2 }}</div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_3 }}</div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_4 }}</div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_5 }}</div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_6 }}</div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_7 }}</div>
+      </div>
+
+      {% for block in section.blocks %}
+        <div class="calendar-table__row" role="row" {{ block.shopify_attributes }}>
+          <div class="calendar-table__cell calendar-table__cell--time" role="rowheader">
+            {{ block.settings.time_label }}
+          </div>
+          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_1 }}</div>
+          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_2 }}</div>
+          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_3 }}</div>
+          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_4 }}</div>
+          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_5 }}</div>
+          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_6 }}</div>
+          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_7 }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .calendar-section__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-3xs);
+  }
+
+  .calendar-section__heading {
+    margin: 0;
+  }
+
+  .calendar-section__subheading > *:first-child {
+    margin-top: 0;
+  }
+
+  .calendar-section__subheading > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .calendar-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .calendar-table {
+    display: grid;
+    min-width: 900px;
+    border-top: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+    border-left: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+  }
+
+  .calendar-table__row {
+    display: grid;
+    grid-template-columns: minmax(120px, 1.1fr) repeat(7, minmax(120px, 1fr));
+  }
+
+  .calendar-table__cell {
+    padding: 1rem;
+    border-right: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+    min-height: 84px;
+    /* background: rgb(var(--color-background-rgb)); */
+  }
+
+  .calendar-table__cell--head,
+  .calendar-table__cell--time {
+    font-weight: 600;
+  }
+
+  .calendar-table__cell--head {
+    min-height: auto;
+    /* background: rgb(var(--color-foreground-rgb) / 0.04); */
+  }
+
+  .calendar-table__cell--time {
+    /* background: rgb(var(--color-foreground-rgb) / 0.025); */
+  }
+
+  .calendar-table__cell > *:first-child {
+    margin-top: 0;
+  }
+
+  .calendar-table__cell > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .calendar-table__cell.rte > p {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 0.35rem 0.7rem;
+    border-radius: var(--style-border-radius-pills);
+    background-color: var(--color-variant-background);
+    color: var(--color-variant-text);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Calendar",
+  "tag": "section",
+  "class": "calendar-section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Weekly schedule"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "header",
+      "content": "Table headings"
+    },
+    {
+      "type": "text",
+      "id": "time_heading",
+      "label": "First column heading",
+      "default": "Time"
+    },
+    {
+      "type": "text",
+      "id": "day_1",
+      "label": "Day 1",
+      "default": "Monday"
+    },
+    {
+      "type": "text",
+      "id": "day_2",
+      "label": "Day 2",
+      "default": "Tuesday"
+    },
+    {
+      "type": "text",
+      "id": "day_3",
+      "label": "Day 3",
+      "default": "Wednesday"
+    },
+    {
+      "type": "text",
+      "id": "day_4",
+      "label": "Day 4",
+      "default": "Thursday"
+    },
+    {
+      "type": "text",
+      "id": "day_5",
+      "label": "Day 5",
+      "default": "Friday"
+    },
+    {
+      "type": "text",
+      "id": "day_6",
+      "label": "Day 6",
+      "default": "Saturday"
+    },
+    {
+      "type": "text",
+      "id": "day_7",
+      "label": "Day 7",
+      "default": "Sunday"
+    },
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page"
+        },
+        {
+          "value": "full-width",
+          "label": "Full"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "time_label",
+          "label": "Time label",
+          "default": "6:00 AM"
+        },
+        {
+          "type": "richtext",
+          "id": "day_1",
+          "label": "Monday"
+        },
+        {
+          "type": "richtext",
+          "id": "day_2",
+          "label": "Tuesday"
+        },
+        {
+          "type": "richtext",
+          "id": "day_3",
+          "label": "Wednesday"
+        },
+        {
+          "type": "richtext",
+          "id": "day_4",
+          "label": "Thursday"
+        },
+        {
+          "type": "richtext",
+          "id": "day_5",
+          "label": "Friday"
+        },
+        {
+          "type": "richtext",
+          "id": "day_6",
+          "label": "Saturday"
+        },
+        {
+          "type": "richtext",
+          "id": "day_7",
+          "label": "Sunday"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Calendar",
+      "category": "Storytelling",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "time_label": "6:00 AM",
+            "day_1": "<p>CrossFit</p>",
+            "day_2": "<p>CrossFit</p>",
+            "day_3": "<p>CrossFit</p>",
+            "day_4": "<p>CrossFit</p>",
+            "day_5": "<p>CrossFit</p>",
+            "day_6": "<p>Open Gym</p>",
+            "day_7": "<p>Rest day</p>"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "time_label": "5:30 PM",
+            "day_1": "<p>Strength</p>",
+            "day_2": "<p>CrossFit</p>",
+            "day_3": "<p>Engine</p>",
+            "day_4": "<p>CrossFit</p>",
+            "day_5": "<p>Gymnastics</p>",
+            "day_6": "<p>Partner workout</p>",
+            "day_7": ""
+          }
+        }
+      }
+    }
+  ]
+}
+{% endschema %}
