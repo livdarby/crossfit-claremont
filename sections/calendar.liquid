@@ -32,27 +32,78 @@
         <div class="calendar-table__cell calendar-table__cell--head calendar-table__cell--time" role="columnheader">
           {{ section.settings.time_heading }}
         </div>
-        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_1 }}</div>
-        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_2 }}</div>
-        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_3 }}</div>
-        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_4 }}</div>
-        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_5 }}</div>
-        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_6 }}</div>
-        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">{{ section.settings.day_7 }}</div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">
+          {{ section.settings.day_1 }}
+        </div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">
+          {{ section.settings.day_2 }}
+        </div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">
+          {{ section.settings.day_3 }}
+        </div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">
+          {{ section.settings.day_4 }}
+        </div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">
+          {{ section.settings.day_5 }}
+        </div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">
+          {{ section.settings.day_6 }}
+        </div>
+        <div class="calendar-table__cell calendar-table__cell--head" role="columnheader">
+          {{ section.settings.day_7 }}
+        </div>
       </div>
 
       {% for block in section.blocks %}
+        {% liquid
+          assign day_1_class = block.settings.day_1_class
+          assign day_1_name = day_1_class['name'].value | default: day_1_class.system.handle
+          assign day_1_color = day_1_class['timetable_color'].value | default: day_1_class['timetable_color']
+          assign day_2_class = block.settings.day_2_class
+          assign day_2_name = day_2_class['name'].value | default: day_2_class.system.handle
+          assign day_2_color = day_2_class['timetable_color'].value | default: day_2_class['timetable_color']
+          assign day_3_class = block.settings.day_3_class
+          assign day_3_name = day_3_class['name'].value | default: day_3_class.system.handle
+          assign day_3_color = day_3_class['timetable_color'].value | default: day_3_class['timetable_color']
+          assign day_4_class = block.settings.day_4_class
+          assign day_4_name = day_4_class['name'].value | default: day_4_class.system.handle
+          assign day_4_color = day_4_class['timetable_color'].value | default: day_4_class['timetable_color']
+          assign day_5_class = block.settings.day_5_class
+          assign day_5_name = day_5_class['name'].value | default: day_5_class.system.handle
+          assign day_5_color = day_5_class['timetable_color'].value | default: day_5_class['timetable_color']
+          assign day_6_class = block.settings.day_6_class
+          assign day_6_name = day_6_class['name'].value | default: day_6_class.system.handle
+          assign day_6_color = day_6_class['timetable_color'].value | default: day_6_class['timetable_color']
+          assign day_7_class = block.settings.day_7_class
+          assign day_7_name = day_7_class['name'].value | default: day_7_class.system.handle
+          assign day_7_color = day_7_class['timetable_color'].value | default: day_7_class['timetable_color']
+        %}
         <div class="calendar-table__row" role="row" {{ block.shopify_attributes }}>
           <div class="calendar-table__cell calendar-table__cell--time" role="rowheader">
             {{ block.settings.time_label }}
           </div>
-          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_1 }}</div>
-          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_2 }}</div>
-          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_3 }}</div>
-          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_4 }}</div>
-          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_5 }}</div>
-          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_6 }}</div>
-          <div class="calendar-table__cell rte" role="cell">{{ block.settings.day_7 }}</div>
+          <div class="calendar-table__cell rte {{ day_1_name | handleize | strip }}" role="cell">
+            {% if day_1_name != blank %}<p{% if day_1_color != blank %} style="background-color: {{ day_1_color }};"{% endif %}>{{ day_1_name | upcase }}</p>{% endif %}
+          </div>
+          <div class="calendar-table__cell rte {{ day_2_name | handleize | strip }}" role="cell">
+            {% if day_2_name != blank %}<p{% if day_2_color != blank %} style="background-color: {{ day_2_color }};"{% endif %}>{{ day_2_name | upcase }}</p>{% endif %}
+          </div>
+          <div class="calendar-table__cell rte {{ day_3_name | handleize | strip }}" role="cell">
+            {% if day_3_name != blank %}<p{% if day_3_color != blank %} style="background-color: {{ day_3_color }};"{% endif %}>{{ day_3_name | upcase }}</p>{% endif %}
+          </div>
+          <div class="calendar-table__cell rte {{ day_4_name | handleize | strip }}" role="cell">
+            {% if day_4_name != blank %}<p{% if day_4_color != blank %} style="background-color: {{ day_4_color }};"{% endif %}>{{ day_4_name | upcase }}</p>{% endif %}
+          </div>
+          <div class="calendar-table__cell rte {{ day_5_name | handleize | strip }}" role="cell">
+            {% if day_5_name != blank %}<p{% if day_5_color != blank %} style="background-color: {{ day_5_color }};"{% endif %}>{{ day_5_name | upcase }}</p>{% endif %}
+          </div>
+          <div class="calendar-table__cell rte {{ day_6_name | handleize | strip }}" role="cell">
+            {% if day_6_name != blank %}<p{% if day_6_color != blank %} style="background-color: {{ day_6_color }};"{% endif %}>{{ day_6_name | upcase }}</p>{% endif %}
+          </div>
+          <div class="calendar-table__cell rte {{ day_7_name | handleize | strip }}" role="cell">
+            {% if day_7_name != blank %}<p{% if day_7_color != blank %} style="background-color: {{ day_7_color }};"{% endif %}>{{ day_7_name | upcase }}</p>{% endif %}
+          </div>
         </div>
       {% endfor %}
     </div>
@@ -95,7 +146,7 @@
   }
 
   .calendar-table__cell {
-    padding: 1rem;
+    padding: 4px;
     border-right: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
     border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
     min-height: 84px;
@@ -126,12 +177,17 @@
 
   .calendar-table__cell.rte > p {
     display: inline-flex;
-    align-items: center;
+    justify-content: center;
+    /* align-items: center; */
     margin: 0;
     padding: 0.35rem 0.7rem;
-    border-radius: var(--style-border-radius-pills);
+    /* border-radius: var(--style-border-radius-pills); */
+    border-radius: 5px;
     background-color: var(--color-variant-background);
     color: var(--color-variant-text);
+    height: 100%;
+    width: 100%;
+    font-weight: 600;
   }
 {% endstylesheet %}
 
@@ -151,7 +207,7 @@
       "default": "Weekly schedule"
     },
     {
-      "type": "richtext",
+      "type": "text",
       "id": "subheading",
       "label": "Subheading"
     },
@@ -280,39 +336,46 @@
           "default": "6:00 AM"
         },
         {
-          "type": "richtext",
-          "id": "day_1",
-          "label": "Monday"
+          "type": "metaobject",
+          "id": "day_1_class",
+          "label": "Monday",
+          "metaobject_type": "classes"
         },
         {
-          "type": "richtext",
-          "id": "day_2",
-          "label": "Tuesday"
+          "type": "metaobject",
+          "id": "day_2_class",
+          "label": "Tuesday",
+          "metaobject_type": "classes"
         },
         {
-          "type": "richtext",
-          "id": "day_3",
-          "label": "Wednesday"
+          "type": "metaobject",
+          "id": "day_3_class",
+          "label": "Wednesday",
+          "metaobject_type": "classes"
         },
         {
-          "type": "richtext",
-          "id": "day_4",
-          "label": "Thursday"
+          "type": "metaobject",
+          "id": "day_4_class",
+          "label": "Thursday",
+          "metaobject_type": "classes"
         },
         {
-          "type": "richtext",
-          "id": "day_5",
-          "label": "Friday"
+          "type": "metaobject",
+          "id": "day_5_class",
+          "label": "Friday",
+          "metaobject_type": "classes"
         },
         {
-          "type": "richtext",
-          "id": "day_6",
-          "label": "Saturday"
+          "type": "metaobject",
+          "id": "day_6_class",
+          "label": "Saturday",
+          "metaobject_type": "classes"
         },
         {
-          "type": "richtext",
-          "id": "day_7",
-          "label": "Sunday"
+          "type": "metaobject",
+          "id": "day_7_class",
+          "label": "Sunday",
+          "metaobject_type": "classes"
         }
       ]
     }
@@ -325,27 +388,13 @@
         "row_1": {
           "type": "row",
           "settings": {
-            "time_label": "6:00 AM",
-            "day_1": "<p>CrossFit</p>",
-            "day_2": "<p>CrossFit</p>",
-            "day_3": "<p>CrossFit</p>",
-            "day_4": "<p>CrossFit</p>",
-            "day_5": "<p>CrossFit</p>",
-            "day_6": "<p>Open Gym</p>",
-            "day_7": "<p>Rest day</p>"
+            "time_label": "6:00 AM"
           }
         },
         "row_2": {
           "type": "row",
           "settings": {
-            "time_label": "5:30 PM",
-            "day_1": "<p>Strength</p>",
-            "day_2": "<p>CrossFit</p>",
-            "day_3": "<p>Engine</p>",
-            "day_4": "<p>CrossFit</p>",
-            "day_5": "<p>Gymnastics</p>",
-            "day_6": "<p>Partner workout</p>",
-            "day_7": ""
+            "time_label": "5:30 PM"
           }
         }
       }

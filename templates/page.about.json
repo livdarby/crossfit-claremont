@@ -45,10 +45,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "heading",
-        "page-content"
-      ],
+      "block_order": ["heading", "page-content"],
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -175,9 +172,7 @@
                   "blocks": {}
                 }
               },
-              "block_order": [
-                "image_xxyK6G"
-              ]
+              "block_order": ["image_xxyK6G"]
             },
             "card_W6bqUn": {
               "type": "_card",
@@ -231,9 +226,7 @@
                   "blocks": {}
                 }
               },
-              "block_order": [
-                "image_yNDULP"
-              ]
+              "block_order": ["image_yNDULP"]
             },
             "card_44Fgtj": {
               "type": "_card",
@@ -287,9 +280,7 @@
                   "blocks": {}
                 }
               },
-              "block_order": [
-                "image_HArjM9"
-              ]
+              "block_order": ["image_HArjM9"]
             },
             "card_YKgJ4K": {
               "type": "_card",
@@ -343,9 +334,7 @@
                   "blocks": {}
                 }
               },
-              "block_order": [
-                "image_d4Kk8j"
-              ]
+              "block_order": ["image_d4Kk8j"]
             }
           },
           "block_order": [
@@ -450,11 +439,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "text_ediDzV",
-        "text_6jxHMb",
-        "text_WYgEfC"
-      ],
+      "block_order": ["text_ediDzV", "text_6jxHMb", "text_WYgEfC"],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
@@ -640,11 +625,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "image_dEQeK4",
-            "text_tyHYdm",
-            "text_pDNLyD"
-          ]
+          "block_order": ["image_dEQeK4", "text_tyHYdm", "text_pDNLyD"]
         },
         "group_mxcpdN": {
           "type": "group",
@@ -763,11 +744,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "image_t9PfNw",
-            "text_xppBTz",
-            "text_PMTgUQ"
-          ]
+          "block_order": ["image_t9PfNw", "text_xppBTz", "text_PMTgUQ"]
         },
         "group_wYEHWX": {
           "type": "group",
@@ -886,11 +863,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "image_AwHCND",
-            "text_wpkYWi",
-            "text_NTLjp3"
-          ]
+          "block_order": ["image_AwHCND", "text_wpkYWi", "text_NTLjp3"]
         },
         "group_MHnRMU": {
           "type": "group",
@@ -1009,11 +982,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "image_qwLn69",
-            "text_jgtJ9U",
-            "text_XwqjVA"
-          ]
+          "block_order": ["image_qwLn69", "text_jgtJ9U", "text_XwqjVA"]
         }
       },
       "block_order": [
@@ -1201,11 +1170,11 @@
           "type": "row",
           "settings": {
             "time_label": "5.30 AM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
@@ -1214,11 +1183,11 @@
           "type": "row",
           "settings": {
             "time_label": "6.30 AM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
@@ -1227,11 +1196,11 @@
           "type": "row",
           "settings": {
             "time_label": "7.30 AM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
@@ -1240,11 +1209,11 @@
           "type": "row",
           "settings": {
             "time_label": "8.30 AM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
@@ -1253,11 +1222,11 @@
           "type": "row",
           "settings": {
             "time_label": "9.15 AM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
@@ -1266,11 +1235,11 @@
           "type": "row",
           "settings": {
             "time_label": "10.15 AM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
@@ -1279,11 +1248,11 @@
           "type": "row",
           "settings": {
             "time_label": "12 PM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
@@ -1292,11 +1261,11 @@
           "type": "row",
           "settings": {
             "time_label": "1 PM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
@@ -1305,11 +1274,11 @@
           "type": "row",
           "settings": {
             "time_label": "3.30 PM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
@@ -1318,11 +1287,11 @@
           "type": "row",
           "settings": {
             "time_label": "4.30 PM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
@@ -1331,11 +1300,11 @@
           "type": "row",
           "settings": {
             "time_label": "5.30 PM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
@@ -1344,11 +1313,11 @@
           "type": "row",
           "settings": {
             "time_label": "6.30 PM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
@@ -1357,11 +1326,11 @@
           "type": "row",
           "settings": {
             "time_label": "7.30 PM",
-            "day_1": "<p>CROSSFIT</p>",
-            "day_2": "<p>CROSSFIT</p>",
-            "day_3": "<p>WEIGHT LIFTING</p>",
-            "day_4": "<p>CROSSFIT</p>",
-            "day_5": "<p>CROSSFIT</p>",
+            "day_1": "CROSSFIT",
+            "day_2": "CROSSFIT",
+            "day_3": "WEIGHT LIFTING",
+            "day_4": "CROSSFIT",
+            "day_5": "CROSSFIT",
             "day_6": "",
             "day_7": ""
           }
