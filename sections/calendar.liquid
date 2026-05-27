@@ -1,7 +1,7 @@
 {% liquid
   assign class_entries = shop.metaobjects.classes.values
-  assign time_slots_joined = ''
-  assign ordered_time_slots_joined = ''
+  assign time_slots_joined = '|'
+  assign ordered_time_slots_joined = '|'
   assign day_handles = 'mon|tue|wed|thu|fri|sat|sun' | split: '|'
   assign canonical_time_slots = '5.30 AM|6.30 AM|7.30 AM|8.30 AM|9.15 AM|10.15 AM|12 PM|1 PM|3.30 PM|4.30 PM|5.30 PM|6.30 PM' | split: '|'
 
@@ -16,6 +16,7 @@
 
         if day_values != blank
           for day_value in day_values
+            assign day_value = day_value | strip
             assign day_value_key = '|' | append: day_value | append: '|'
 
             unless time_slots_joined contains day_value_key
@@ -38,6 +39,8 @@
   assign discovered_time_slots = time_slots_joined | split: '|'
 
   for discovered_time_slot in discovered_time_slots
+    assign discovered_time_slot = discovered_time_slot | strip
+
     if discovered_time_slot == blank
       continue
     endif
@@ -51,6 +54,7 @@
 
   assign time_slots = ordered_time_slots_joined | split: '|'
 %}
+
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 
 <div
@@ -70,7 +74,12 @@
   {% if section.settings.heading != blank or section.settings.subheading != blank %}
     <div class="calendar-section__header">
       {% if section.settings.heading != blank %}
-        <h2 class="calendar-section__heading">{{ section.settings.heading }}</h2>
+        <h2
+          class="calendar-section__heading {{ section.settings.heading_type_preset }} {{ section.settings.heading_type_preset }}"
+          style="--color: {{ section.settings.heading_color }};"
+        >
+          {{ section.settings.heading }}
+        </h2>
       {% endif %}
 
       {% if section.settings.subheading != blank %}
@@ -178,6 +187,7 @@
 
           {% capture wed_cell_content %}
             {% for class_entry in class_entries %}
+              
               {% liquid
                 assign day_values = class_entry.wed.value | default: class_entry.wed
                 assign class_name = class_entry.name.value | default: class_entry.system.handle
@@ -259,10 +269,28 @@
               {% liquid
                 assign day_values = class_entry.sat.value | default: class_entry.sat
                 assign class_name = class_entry.name.value | default: class_entry.system.handle
+                assign sat_start_times = class_entry.sat_start_time.value
                 assign class_color = class_entry.timetable_color.value | default: class_entry.timetable_color
+                assign matched_sat_index = blank
               %}
-              {% if day_values contains time_slot %}
-                <p{% if class_color != blank %} style="background-color: {{ class_color }};"{% endif %}>{{ class_name | upcase }}</p>
+
+              {% if day_values != blank %}
+                {% for day_value in day_values %}
+                  {% assign normalized_day_value = day_value | strip %}
+                  {% if normalized_day_value == time_slot %}
+                    {% assign matched_sat_index = forloop.index0 %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+
+              {% if matched_sat_index != blank %}
+                <p{% if class_color != blank %} style="background-color: {{ class_color }};"{% endif %}>
+                  {{ class_name | upcase }}
+                  {% if sat_start_times != blank and sat_start_times[matched_sat_index] != blank %}
+                    <span>{{ sat_start_times[matched_sat_index] }}</span>
+                  {% endif %}
+                </p>
               {% endif %}
             {% endfor %}
           {% endcapture %}
@@ -285,10 +313,28 @@
               {% liquid
                 assign day_values = class_entry.sun.value | default: class_entry.sun
                 assign class_name = class_entry.name.value | default: class_entry.system.handle
+                assign sun_start_times = class_entry.sun_start_time.value
                 assign class_color = class_entry.timetable_color.value | default: class_entry.timetable_color
+                assign matched_sun_index = blank
               %}
-              {% if day_values contains time_slot %}
-                <p{% if class_color != blank %} style="background-color: {{ class_color }};"{% endif %}>{{ class_name | upcase }}</p>
+
+              {% if day_values != blank %}
+                {% for day_value in day_values %}
+                  {% assign normalized_day_value = day_value | strip %}
+                  {% if normalized_day_value == time_slot %}
+                    {% assign matched_sun_index = forloop.index0 %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+
+              {% if matched_sun_index != blank %}
+                <p{% if class_color != blank %} style="background-color: {{ class_color }};"{% endif %}>
+                  {{ class_name | upcase }}
+                  {% if sun_start_times != blank and sun_start_times[matched_sun_index] != blank %}
+                    <span>{{ sun_start_times[matched_sun_index] }}</span>
+                  {% endif %}
+                </p>
               {% endif %}
             {% endfor %}
           {% endcapture %}
@@ -308,53 +354,55 @@
 
           <div class="calendar-table__row" role="row">
             <div class="calendar-table__cell calendar-table__cell--time" role="rowheader">
-              {{ time_slot }}
+              <div>
+                <p>{{ time_slot }}</p>
+              </div>
             </div>
 
             <div
-              class="calendar-table__cell rte{% if mon_has_content != blank and mon_next_has_content == false and mon_cell_content contains 'OPEN GYM' %} calendar-table__cell--above-empty{% endif %}"
+              class="calendar-table__cell rte{% if mon_has_content != blank and next_time_slot != blank and mon_next_has_content == false and mon_cell_content contains 'OPEN GYM' %} calendar-table__cell--above-empty{% endif %}"
               role="cell"
             >
               {{ mon_cell_content }}
             </div>
 
             <div
-              class="calendar-table__cell rte{% if tue_has_content != blank and tue_next_has_content == false  and tue_cell_content contains 'OPEN GYM'%} calendar-table__cell--above-empty{% endif %}"
+              class="calendar-table__cell rte{% if tue_has_content != blank and next_time_slot != blank and tue_next_has_content == false and tue_cell_content contains 'OPEN GYM' %} calendar-table__cell--above-empty{% endif %}"
               role="cell"
             >
               {{ tue_cell_content }}
             </div>
 
             <div
-              class="calendar-table__cell rte{% if wed_has_content != blank and wed_next_has_content == false and wed_cell_content contains 'OPEN GYM' %} calendar-table__cell--above-empty{% endif %}"
+              class="calendar-table__cell rte{% if wed_has_content != blank and next_time_slot != blank and wed_next_has_content == false and wed_cell_content contains 'OPEN GYM' %} calendar-table__cell--above-empty{% endif %}"
               role="cell"
             >
               {{ wed_cell_content }}
             </div>
 
             <div
-              class="calendar-table__cell rte{% if thu_has_content != blank and thu_next_has_content == false and thu_cell_content contains 'OPEN GYM' %} calendar-table__cell--above-empty{% endif %}"
+              class="calendar-table__cell rte{% if thu_has_content != blank and next_time_slot != blank and thu_next_has_content == false and thu_cell_content contains 'OPEN GYM' %} calendar-table__cell--above-empty{% endif %}"
               role="cell"
             >
               {{ thu_cell_content }}
             </div>
 
             <div
-              class="calendar-table__cell rte{% if fri_has_content != blank and fri_next_has_content == false and fri_cell_content contains 'OPEN GYM' %} calendar-table__cell--above-empty{% endif %}"
+              class="calendar-table__cell rte{% if fri_has_content != blank and next_time_slot != blank and fri_next_has_content == false and fri_cell_content contains 'OPEN GYM' %} calendar-table__cell--above-empty{% endif %}"
               role="cell"
             >
               {{ fri_cell_content }}
             </div>
 
             <div
-              class="calendar-table__cell rte{% if sat_has_content != blank and sat_next_has_content == false and sat_cell_content contains 'OPEN GYM' %} calendar-table__cell--above-empty{% endif %}"
+              class="calendar-table__cell rte{% if sat_has_content != blank and next_time_slot != blank and sat_next_has_content == false %} calendar-table__cell--above-empty {{ sat_cell_content | strip_html | handleize }}{% endif %}"
               role="cell"
             >
               {{ sat_cell_content }}
             </div>
 
             <div
-              class="calendar-table__cell rte{% if sun_has_content != blank and sun_next_has_content == false and sun_cell_content contains 'OPEN GYM' %} calendar-table__cell--above-empty{% endif %}"
+              class="calendar-table__cell rte{% if sun_has_content != blank and next_time_slot != blank and sun_next_has_content == false and sun_cell_content contains 'OPEN GYM' %} calendar-table__cell--above-empty{% endif %}"
               role="cell"
             >
               {{ sun_cell_content }}
@@ -375,6 +423,12 @@
 </div>
 
 {% stylesheet %}
+  .calendar-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+  }
+
   .calendar-section__header {
     display: flex;
     flex-direction: column;
@@ -403,30 +457,50 @@
 
   .calendar-table-wrapper {
     overflow-x: auto;
+    overflow-y: hidden;
+    border: 1px solid #d7d7d7;
+    border-radius: 5px;
   }
 
   .calendar-table {
     display: grid;
-    min-width: 900px;
-    border-top: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
-    border-left: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+    /* min-width: 900px; */
   }
 
   .calendar-table__row {
     display: grid;
-    grid-template-columns: minmax(120px, 1.1fr) repeat(7, minmax(120px, 1fr));
+    grid-template-columns: 74px repeat(7, 74px);
   }
 
   .calendar-table__cell {
     padding: 4px;
-    border-right: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
-    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+    border-right: 1px solid #d7d7d7;
+    border-bottom: 1px solid #d7d7d7;
     min-height: 84px;
+    position: relative;
   }
 
   .calendar-table__cell--head,
   .calendar-table__cell--time {
     font-weight: 600;
+  }
+
+  .calendar-table__cell--time:not(.calendar-table__cell--head) div {
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #deddd6;
+    border-radius: 5px;
+  }
+
+  .calendar-table__cell--time:not(.calendar-table__cell--head) p,
+  .calendar-table__cell--head {
+    font-size: 9.42px;
+    font-weight: 600;
+    color: black;
+    line-height: 142%;
+    text-align: center;
   }
 
   .calendar-table__cell--head {
@@ -439,6 +513,22 @@
     gap: 4px;
   }
 
+  .calendar-table__cell.rte p:has(span) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 50%;
+    margin-bottom: -50%;
+  }
+
+  .calendar-table__cell.rte.calendar-table__cell--above-empty:has(span) {
+    height: calc(150% + 10px);
+  }
+
+  .calendar-table__cell.rte.calendar-table__cell--above-empty.weight-lifting-8-am:has(span) {
+    height: calc(200%);
+  }
+
   .calendar-table__cell > *:first-child {
     margin-top: 0;
   }
@@ -449,6 +539,8 @@
 
   .calendar-table__cell.rte > p {
     display: inline-flex;
+    position: relative;
+    z-index: 2;
     justify-content: center;
     margin: 0;
     padding: 0.35rem 0.7rem;
@@ -458,16 +550,22 @@
     width: 100%;
     font-weight: 600;
     text-align: center;
-    align-items: center;
-    font-size: 12px;
+    align-items: flex-start;
+    font-size: 9.42px;
   }
 
   .calendar-table__cell.rte:has(> p + p) > p {
     font-size: 7px;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .calendar-table__cell--above-empty {
     height: 200%;
+  }
+
+  .calendar-table__cell.rte.calendar-table__cell--above-empty > p {
+    z-index: 3;
   }
 {% endstylesheet %}
 
@@ -552,6 +650,66 @@
       "content": "This timetable is generated automatically from the `classes` metaobject entries."
     },
     {
+      "type": "header",
+      "content": "Heading typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_type_preset",
+      "label": "Preset",
+      "options": [
+        {
+          "value": "h1",
+          "label": "Heading 1"
+        },
+        {
+          "value": "h2",
+          "label": "Heading 2"
+        },
+        {
+          "value": "h3",
+          "label": "Heading 3"
+        },
+        {
+          "value": "h4",
+          "label": "Heading 4"
+        },
+        {
+          "value": "h5",
+          "label": "Heading 5"
+        },
+        {
+          "value": "h6",
+          "label": "Heading 6"
+        }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "select",
+      "id": "heading_color",
+      "label": "Color",
+      "options": [
+        {
+          "value": "var(--color-foreground)",
+          "label": "Text"
+        },
+        {
+          "value": "var(--color-foreground-heading)",
+          "label": "Heading"
+        },
+        {
+          "value": "var(--color-link)",
+          "label": "Link"
+        }
+      ],
+      "default": "var(--color-foreground-heading)"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
       "type": "select",
       "id": "section_width",
       "label": "Width",
@@ -586,6 +744,26 @@
     {
       "type": "header",
       "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
     },
     {
       "type": "range",
