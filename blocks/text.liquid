@@ -60,6 +60,41 @@
       "visible_if": "{{ block.settings.width == '100%' }}"
     },
     {
+      "type": "select",
+      "id": "desktop_position",
+      "label": "t:settings.desktop_position",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "left",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "right",
+          "label": "t:options.right"
+        }
+      ],
+      "default": ""
+    },
+    {
+      "type": "range",
+      "id": "desktop_offset",
+      "label": "t:settings.offset",
+      "min": 0,
+      "max": 400,
+      "step": 4,
+      "unit": "px",
+      "default": 100,
+      "visible_if": "{{ block.settings.desktop_position == 'left' or block.settings.desktop_position == 'right' }}"
+    },
+    {
       "type": "header",
       "content": "t:content.typography"
     },

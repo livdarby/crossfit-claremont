@@ -547,6 +547,8 @@
         {% if section.settings.vertical_on_mobile %}mobile-column{% endif %}
         section-content-wrapper
         {{section.settings.section_width}}
+        {% if section.settings.desktop_horizontal_alignment != blank %}hero__content-wrapper--desktop-alignment-{{ section.settings.desktop_horizontal_alignment | replace: '-', '' }}{% endif %}
+        {% if section.settings.desktop_horizontal_alignment_flex_direction_column != blank %}hero__content-wrapper--desktop-column-alignment-{{ section.settings.desktop_horizontal_alignment_flex_direction_column | replace: '-', '' }}{% endif %}
         {% if request.design_mode %}hero__content-wrapper--design-mode{% endif %}
       "
       style="{% render 'layout-panel-style', settings: section.settings %}"
@@ -607,6 +609,69 @@
       padding-inline: var(--hero-content-padding-inline-start) var(--hero-content-padding-inline-end);
       max-width: var(--hero-desktop-media-max-width);
       margin-inline: auto;
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .hero__content-wrapper.layout-panel-flex--row.hero__content-wrapper--desktop-alignment-flexstart {
+      justify-content: flex-start;
+    }
+
+    .hero__content-wrapper.layout-panel-flex--row.hero__content-wrapper--desktop-alignment-center {
+      justify-content: center;
+    }
+
+    .hero__content-wrapper.layout-panel-flex--row.hero__content-wrapper--desktop-alignment-flexend {
+      justify-content: flex-end;
+    }
+
+    .hero__content-wrapper.layout-panel-flex--row.hero__content-wrapper--desktop-alignment-spacebetween {
+      justify-content: space-between;
+    }
+
+    .hero__content-wrapper.layout-panel-flex--column.hero__content-wrapper--desktop-column-alignment-flexstart {
+      align-items: flex-start;
+    }
+
+    .hero__content-wrapper.layout-panel-flex--column.hero__content-wrapper--desktop-column-alignment-center {
+      align-items: center;
+    }
+
+    .hero__content-wrapper.layout-panel-flex--column.hero__content-wrapper--desktop-column-alignment-flexend {
+      align-items: flex-end;
+    }
+
+    .hero__content-wrapper--desktop-alignment-flexstart .text-block,
+    .hero__content-wrapper--desktop-column-alignment-flexstart .text-block {
+      --text-align-default: left;
+      align-items: flex-start;
+    }
+
+    .hero__content-wrapper--desktop-alignment-flexstart .text-block > *,
+    .hero__content-wrapper--desktop-column-alignment-flexstart .text-block > * {
+      text-align: left;
+    }
+
+    .hero__content-wrapper--desktop-alignment-center .text-block,
+    .hero__content-wrapper--desktop-column-alignment-center .text-block {
+      --text-align-default: center;
+      align-items: center;
+    }
+
+    .hero__content-wrapper--desktop-alignment-center .text-block > *,
+    .hero__content-wrapper--desktop-column-alignment-center .text-block > * {
+      text-align: center;
+    }
+
+    .hero__content-wrapper--desktop-alignment-flexend .text-block,
+    .hero__content-wrapper--desktop-column-alignment-flexend .text-block {
+      --text-align-default: right;
+      align-items: flex-end;
+    }
+
+    .hero__content-wrapper--desktop-alignment-flexend .text-block > *,
+    .hero__content-wrapper--desktop-column-alignment-flexend .text-block > * {
+      text-align: right;
     }
   }
 
@@ -1032,6 +1097,35 @@
     },
     {
       "type": "select",
+      "id": "desktop_horizontal_alignment",
+      "label": "Desktop alignment",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "flex-start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.right"
+        },
+        {
+          "value": "space-between",
+          "label": "t:options.space_between"
+        }
+      ],
+      "default": "",
+      "visible_if": "{{ section.settings.content_direction == 'row' }}"
+    },
+    {
+      "type": "select",
       "id": "vertical_alignment",
       "label": "t:settings.position",
       "options": [
@@ -1077,6 +1171,31 @@
         }
       ],
       "default": "flex-start",
+      "visible_if": "{{ section.settings.content_direction != 'row' }}"
+    },
+    {
+      "type": "select",
+      "id": "desktop_horizontal_alignment_flex_direction_column",
+      "label": "Desktop alignment",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "flex-start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "",
       "visible_if": "{{ section.settings.content_direction != 'row' }}"
     },
     {

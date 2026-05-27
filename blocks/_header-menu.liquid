@@ -1,4 +1,3 @@
-
 {%- doc -%}
   Renders a header menu block.
 
@@ -329,8 +328,8 @@
   .menu-list__list-item:not([slot='overflow'])::after {
     content: '';
     width: 100%;
-    height: var(--header-padding);
-    margin-bottom: calc(-1 * var(--header-padding));
+    height: 0;
+    margin-bottom: 0;
   }
 
   [slot='overflow'] > .menu-list__link::after {

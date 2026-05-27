@@ -9,7 +9,8 @@
  */
 {
   "current": {
-    "logo": "shopify://shop_images/logo.png",
+    "logo": "shopify://shop_images/no_bg_image_92_1.png",
+    "logo_inverse": "shopify://shop_images/logo.png",
     "logo_height": 36,
     "logo_height_mobile": 44,
     "favicon": "shopify://shop_images/308174502_521732123286214_325152853899408542_n.png",
