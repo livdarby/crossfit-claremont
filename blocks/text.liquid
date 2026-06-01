@@ -53,6 +53,16 @@
       "default": "normal"
     },
     {
+      "type": "range",
+      "id": "desktop_max_width",
+      "label": "Max width - Desktop",
+      "min": 0,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 0
+    },
+    {
       "type": "text_alignment",
       "id": "alignment",
       "label": "t:settings.alignment",
@@ -82,17 +92,6 @@
         }
       ],
       "default": ""
-    },
-    {
-      "type": "range",
-      "id": "desktop_offset",
-      "label": "t:settings.offset",
-      "min": 0,
-      "max": 400,
-      "step": 4,
-      "unit": "px",
-      "default": 100,
-      "visible_if": "{{ block.settings.desktop_position == 'left' or block.settings.desktop_position == 'right' }}"
     },
     {
       "type": "header",

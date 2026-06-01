@@ -14,6 +14,7 @@
   class="
     section
     section--{{ section.settings.section_width }}
+    metaobject-grid
     color-{{ section.settings.color_scheme }}
     section-resource-list
     spacing-style
@@ -22,6 +23,9 @@
   style="
     {%- render 'spacing-style', settings: section.settings -%}
     {%- render 'gap-style', value: section.settings.gap -%}
+    --metaobject-grid-columns: {{ section.settings.columns }};
+    --metaobject-grid-desktop-grid-gap: {{ section.settings.desktop_gap }}px;
+    --metaobject-grid-desktop-section-gap: {{ section.settings.desktop_section_gap }}px;
   "
 >
   {% content_for 'block', id: 'static-metaobject-title', type: '_metaobject-grid-title' %}
@@ -70,6 +74,36 @@
     test_id: 'metaobject-grid'
   %}
 </div>
+
+{% stylesheet %}
+  @media screen and (min-width: 769px) {
+    .metaobject-grid.section-resource-list {
+      row-gap: var(--metaobject-grid-desktop-section-gap);
+    }
+
+    .metaobject-grid .resource-list--grid[data-testid='metaobject-grid'] {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      align-content: flex-start;
+      gap: var(--metaobject-grid-desktop-grid-gap);
+    }
+
+    .metaobject-grid .resource-list--grid[data-testid='metaobject-grid'] > .resource-list__item {
+      flex: 0 0
+        calc(
+          (100% - (var(--metaobject-grid-columns) - 1) * var(--metaobject-grid-desktop-grid-gap)) /
+            var(--metaobject-grid-columns)
+        );
+      max-width: calc(
+        (100% - (var(--metaobject-grid-columns) - 1) * var(--metaobject-grid-desktop-grid-gap)) /
+          var(--metaobject-grid-columns)
+      );
+      height: auto;
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -222,6 +256,27 @@
       "unit": "px",
       "default": 16,
       "visible_if": "{{ section.settings.layout_type == 'grid' or section.settings.layout_type == 'carousel' }}"
+    },
+    {
+      "type": "range",
+      "id": "desktop_gap",
+      "label": "Desktop grid gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ section.settings.layout_type == 'grid' }}"
+    },
+    {
+      "type": "range",
+      "id": "desktop_section_gap",
+      "label": "Desktop section gap",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 12
     },
     {
       "type": "range",

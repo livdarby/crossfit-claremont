@@ -62,7 +62,9 @@
     {% render 'typography-style', settings: block_settings %}
     --width: {{ text_width }};
     --max-width: var(--max-width--{{ type }}-{{ block_settings.max_width }});
-    --text-desktop-offset: {{ block_settings.desktop_offset | default: 100 }}px;
+    {% if block_settings.desktop_max_width > 0 %}
+      --desktop-max-width: {{ block_settings.desktop_max_width }}px;
+    {% endif %}
     {% if text_width == "100%" %}
       --text-align: {{ block_settings.alignment }};
     {% endif %}
@@ -207,9 +209,12 @@
   }
 
   @media screen and (min-width: 750px) {
+    .text-block > * {
+      max-inline-size: min(100%, var(--desktop-max-width, var(--max-width, 100%)));
+    }
+
     .text-block--desktop-position-left {
       align-self: flex-start;
-      margin-inline-start: calc(var(--text-desktop-offset) - var(--util-page-margin-offset, 0px));
     }
 
     .text-block--desktop-position-center {
@@ -218,7 +223,6 @@
 
     .text-block--desktop-position-right {
       align-self: flex-end;
-      margin-inline-end: calc(var(--text-desktop-offset) - var(--util-page-margin-offset, 0px));
     }
 
     .text-block--desktop-position-left > * {

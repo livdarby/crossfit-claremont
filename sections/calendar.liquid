@@ -69,6 +69,7 @@
   style="
     {%- render 'spacing-style', settings: section.settings -%}
     {%- render 'gap-style', value: section.settings.gap -%}
+    --calendar-desktop-padding-inline: {{ section.settings.desktop_padding_inline }}px;
   "
 >
   {% if section.settings.heading != blank or section.settings.subheading != blank %}
@@ -429,6 +430,12 @@
     gap: var(--gap);
   }
 
+  @media screen and (min-width: 750px) {
+    .calendar-section.section {
+      padding-inline: var(--calendar-desktop-padding-inline);
+    }
+  }
+
   .calendar-section__header {
     display: flex;
     flex-direction: column;
@@ -566,6 +573,42 @@
 
   .calendar-table__cell.rte.calendar-table__cell--above-empty > p {
     z-index: 3;
+  }
+
+  .calendar-table-wrapper {
+    max-width: fit-content;
+  }
+
+  @media screen and (min-width: 769px) {
+    .calendar-section__heading {
+      text-align: center;
+    }
+
+    .calendar-table-wrapper {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .calendar-table__row {
+      grid-template-columns: repeat(8, 1fr);
+    }
+
+    .calendar-table__cell--time:not(.calendar-table__cell--head) p,
+    .calendar-table__cell--head,
+    .calendar-table__cell.rte > p {
+      font-size: 18px;
+    }
+
+    .calendar-table__cell.rte:has(> p + p) > p {
+      font-size: 16px;
+    }
+
+    .calendar-table__cell,
+    .calendar-table__cell > div {
+      padding-top: 9px;
+      padding-bottom: 9px;
+      height: auto !important;
+    }
   }
 {% endstylesheet %}
 
@@ -762,6 +805,16 @@
       "min": 0,
       "max": 100,
       "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_inline",
+      "label": "Horizontal padding - desktop",
+      "min": 0,
+      "max": 200,
+      "step": 2,
       "unit": "px",
       "default": 0
     },
