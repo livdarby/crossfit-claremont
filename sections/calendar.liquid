@@ -70,6 +70,7 @@
     {%- render 'spacing-style', settings: section.settings -%}
     {%- render 'gap-style', value: section.settings.gap -%}
     --calendar-desktop-padding-inline: {{ section.settings.desktop_padding_inline }}px;
+    --calendar-desktop-padding-block: {{ section.settings.desktop_padding_block }}px;
   "
 >
   {% if section.settings.heading != blank or section.settings.subheading != blank %}
@@ -289,7 +290,7 @@
                 <p{% if class_color != blank %} style="background-color: {{ class_color }};"{% endif %}>
                   {{ class_name | upcase }}
                   {% if sat_start_times != blank and sat_start_times[matched_sat_index] != blank %}
-                    <span>{{ sat_start_times[matched_sat_index] }}</span>
+                    <span class='time-{{ sat_start_times[matched_sat_index] | handleize }}'>{{ sat_start_times[matched_sat_index] }}</span>
                   {% endif %}
                 </p>
               {% endif %}
@@ -333,7 +334,7 @@
                 <p{% if class_color != blank %} style="background-color: {{ class_color }};"{% endif %}>
                   {{ class_name | upcase }}
                   {% if sun_start_times != blank and sun_start_times[matched_sun_index] != blank %}
-                    <span>{{ sun_start_times[matched_sun_index] }}</span>
+                    <span class='time-{{ sun_start_times[matched_sun_index] | handleize }}'>{{ sun_start_times[matched_sun_index] }}</span>
                   {% endif %}
                 </p>
               {% endif %}
@@ -433,6 +434,7 @@
   @media screen and (min-width: 750px) {
     .calendar-section.section {
       padding-inline: var(--calendar-desktop-padding-inline);
+      padding-block: var(--calendar-desktop-padding-block);
     }
   }
 
@@ -579,7 +581,7 @@
     max-width: fit-content;
   }
 
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: 1200px) {
     .calendar-section__heading {
       text-align: center;
     }
@@ -590,7 +592,7 @@
     }
 
     .calendar-table__row {
-      grid-template-columns: repeat(8, 1fr);
+      grid-template-columns: repeat(8, 136px);
     }
 
     .calendar-table__cell--time:not(.calendar-table__cell--head) p,
@@ -599,15 +601,48 @@
       font-size: 18px;
     }
 
+    .calendar-table__cell--head {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .calendar-table__cell.rte:has(> p + p) > p {
       font-size: 16px;
     }
 
     .calendar-table__cell,
     .calendar-table__cell > div {
-      padding-top: 9px;
-      padding-bottom: 9px;
-      height: auto !important;
+      height: 45px !important;
+    }
+
+    .calendar-table__cell.rte p:has(.time-7-am) {
+      margin-top: 25%;
+      height: calc(100% + 4px);
+    }
+
+    .calendar-table__cell.rte p:has(.time-8-am) {
+      margin-top: calc(25% + 4px);
+      height: calc(200% + 8px);
+    }
+
+    .calendar-table__cell.rte p:has(.time-9-30-am) {
+      margin-top: calc(25% + 4px);
+      height: calc(100% + 4px);
+    }
+
+    .calendar-table__cell.rte p:has(.time-9-am) {
+      margin-top: calc(25% + 4px);
+      height: calc(100%);
+    }
+
+    .calendar-table__cell.rte p:has(.time-10-am) {
+      margin-top: calc(25% + 4px);
+      height: calc(150% + 8px);
+    }
+
+    .calendar-section {
+      gap: 51px;
     }
   }
 {% endstylesheet %}
@@ -814,6 +849,16 @@
       "label": "Horizontal padding - desktop",
       "min": 0,
       "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_block",
+      "label": "Vertical padding - desktop",
+      "min": 0,
+      "max": 120,
       "step": 2,
       "unit": "px",
       "default": 0

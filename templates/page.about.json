@@ -1313,7 +1313,8 @@
         "color_scheme": "scheme-3",
         "padding-inline-start": 16,
         "padding-inline-end": 16,
-        "desktop_padding_inline": 140,
+        "desktop_padding_inline": 32,
+        "desktop_padding_block": 94,
         "padding-block-start": 48,
         "padding-block-end": 48
       }
@@ -1443,6 +1444,9 @@
       "block_order": [
         "group_t3HA4F"
       ],
+      "custom_css": [
+        "@media screen and (min-width: 769px) {.layout-panel-flex--row {align-items: flex-end; } .section-content-wrapper {padding-bottom: 56px !important; } .background-image-container img {border-radius: 10px; } .group-block-content {padding-left: 52px; padding-right: 52px; }}"
+      ],
       "name": "t:names.image_with_text",
       "settings": {
         "content_direction": "row",
@@ -1456,7 +1460,9 @@
         "section_width": "page-width",
         "section_height": "custom",
         "section_height_custom": 40,
-        "color_scheme": "",
+        "color_scheme": "scheme-6",
+        "desktop_image_height": 580,
+        "desktop_image_max_width": 1240,
         "background_media": "image",
         "video_position": "cover",
         "background_image": "shopify://shop_images/image_82_cea47d93-0a1a-42e0-a50c-974f11b3b9f9.png",

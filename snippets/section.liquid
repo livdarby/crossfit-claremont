@@ -7,7 +7,7 @@
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
-  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}{% if section.settings.desktop_image_height > 0 %} section--desktop-image-height{% endif %}{% if section.settings.desktop_image_max_width > 0 %} section--desktop-image-max-width{% endif %}"
   data-testid="ui-test-section"
 
   {% if request.visual_preview_mode %}
@@ -16,11 +16,19 @@
 
   style="
     {% if section.settings.section_height == 'custom' %}
-      --section-min-height: {{ section.settings.section_height_custom }}svh;
+      --section-min-height-mobile: {{ section.settings.section_height_custom }}svh;
     {% elsif section.settings.section_height == 'full-screen' %}
-      --section-min-height: 100svh;
+      --section-min-height-mobile: 100svh;
     {% elsif section.settings.section_height != '' %}
-      --section-min-height: var(--section-height-{{ section.settings.section_height }});
+      --section-min-height-mobile: var(--section-height-{{ section.settings.section_height }});
+    {% endif %}
+
+    {% if section.settings.desktop_image_height > 0 %}
+      --section-desktop-image-height: {{ section.settings.desktop_image_height }}px;
+    {% endif %}
+
+    {% if section.settings.desktop_image_max_width > 0 %}
+      --section-desktop-image-max-width: {{ section.settings.desktop_image_max_width }}px;
     {% endif %}
 
     {% if section.settings.section_height != '' %}
@@ -70,6 +78,10 @@
     --section-height-offset: 0px;
   }
 
+  .section {
+    --section-min-height: var(--section-min-height-mobile, auto);
+  }
+
   .section[data-shopify-visual-preview] {
     min-height: var(--section-preview-height);
     padding-top: 0;
@@ -93,5 +105,34 @@
 
   .custom-section-content {
     z-index: var(--layer-flat);
+  }
+
+  @media screen and (min-width: 750px) {
+    .section--desktop-image-max-width .section-content-wrapper {
+      max-width: var(--section-desktop-image-max-width);
+      margin-inline: auto;
+    }
+
+    .section--desktop-image-height {
+      --section-min-height: var(--section-desktop-image-height);
+    }
+
+    .section--desktop-image-max-width .background-image-container {
+      left: 50%;
+      right: auto;
+      width: min(100%, var(--section-desktop-image-max-width));
+      transform: translateX(-50%);
+    }
+
+    .section--desktop-image-height .background-image-container {
+      top: 50%;
+      bottom: auto;
+      height: var(--section-desktop-image-height);
+      transform: translateY(-50%);
+    }
+
+    .section--desktop-image-height.section--desktop-image-max-width .background-image-container {
+      transform: translate(-50%, -50%);
+    }
   }
 {% endstylesheet %}
