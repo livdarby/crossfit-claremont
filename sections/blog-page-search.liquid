@@ -1,0 +1,314 @@
+<script
+  src="{{ 'blog-page-search.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+
+<blog-page-search-component>
+  <div
+    class="
+      section
+      section--page-width
+      color-{{ section.settings.color_scheme }}
+      blog-page-search
+      spacing-style
+    "
+    style="{% render 'spacing-style', settings: section.settings %}"
+  >
+    <div class="blog-page-search__inner">
+      {% comment %}
+        {% if section.settings.heading != blank %}
+          {% capture heading_text %}
+            <h3>{{ section.settings.heading }}</h3>
+          {% endcapture %}
+
+          {% content_for 'block',
+            id: 'heading',
+            type: '_heading',
+            text: heading_text,
+            alignment: section.settings.alignment
+          %}
+        {% endif %}
+      {% endcomment %}
+
+      <div
+        class="blog-page-search__field"
+        style="max-width: {{ section.settings.search_width }}%;"
+      >
+        <span
+          class="blog-page-search__icon svg-wrapper"
+          aria-hidden="true"
+        >
+          {{ 'icon-search.svg' | inline_asset_content }}
+        </span>
+        <label
+          for="BlogPageSearchInput--{{ section.id }}"
+          class="visually-hidden"
+        >
+          {{ section.settings.placeholder }}
+        </label>
+        <input
+          id="BlogPageSearchInput--{{ section.id }}"
+          class="blog-page-search__input"
+          type="text"
+          autocomplete="off"
+          placeholder="{{ section.settings.placeholder }}"
+          ref="searchInput"
+          on:input="/onInput"
+          on:keydown="/handleKeydown"
+        >
+      </div>
+
+      {% if section.settings.blog != blank and section.settings.blog.all_tags.size > 0 %}
+        <div class="blog-page-search__tags">
+          <button
+            type="button"
+            class="blog-page-search__tag-pill blog-page-search__tag-pill--selected"
+            data-tag-pill
+            data-tag-value="all"
+            on:click="/selectTag"
+          >
+            All
+          </button>
+          {% for tag in section.settings.blog.all_tags %}
+            <button
+              type="button"
+              class="blog-page-search__tag-pill"
+              data-tag-pill
+              data-tag-value="{{ tag | handleize }}"
+              on:click="/selectTag"
+            >
+              {{ tag }}
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</blog-page-search-component>
+
+{% stylesheet %}
+  blog-page-search-component {
+    display: block;
+  }
+
+  .blog-page-search__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: var(--horizontal-alignment);
+    gap: var(--gap-md);
+  }
+
+  .blog-page-search {
+    --horizontal-alignment: {{ section.settings.alignment }};
+  }
+
+  .blog-page-search__field {
+    position: relative;
+    width: 100%;
+
+    @media screen and (max-width: 749px) {
+      max-width: 100% !important;
+    }
+  }
+
+  .blog-page-search__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .blog-page-search__tag-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.25rem;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid #000000 !important;
+    border-radius: 0;
+    background: rgb(var(--color-background-rgb) / 0.88);
+    color: #000000;
+    box-shadow: 0 8px 20px rgb(var(--color-foreground-rgb) / 0.04);
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      border-color var(--hover-transition-duration) var(--hover-transition-timing),
+      background-color var(--hover-transition-duration) var(--hover-transition-timing),
+      color var(--hover-transition-duration) var(--hover-transition-timing),
+      box-shadow var(--hover-transition-duration) var(--hover-transition-timing);
+  }
+
+  .blog-page-search__tag-pill:hover {
+    border-color: rgb(var(--color-foreground-rgb) / 0.2);
+    box-shadow: 0 10px 24px rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .blog-page-search__tag-pill:focus-visible {
+    outline: none;
+    border-color: rgb(var(--color-foreground-rgb) / 0.28);
+    box-shadow:
+      0 0 0 4px rgb(var(--color-foreground-rgb) / 0.05),
+      0 10px 24px rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .blog-page-search__tag-pill--selected {
+    background: #530678;
+    color: white;
+    border-color: rgb(var(--color-foreground-rgb));
+    box-shadow: 0 10px 24px rgb(var(--color-foreground-rgb) / 0.14);
+  }
+
+  .blog-page-search__input {
+    width: 100%;
+    height: 48px;
+    padding: 0 10px 0 30px;
+    border: 1px solid #000000 !important;
+    border-radius: 0;
+    background:
+      linear-gradient(
+        180deg,
+        rgb(var(--color-background-rgb) / 0.96),
+        rgb(var(--color-background-rgb))
+      );
+    color: var(--color-input-text, rgb(var(--color-foreground-rgb)));
+    box-shadow:
+      0 1px 0 rgb(var(--color-foreground-rgb) / 0.03),
+      0 12px 30px rgb(var(--color-foreground-rgb) / 0.06);
+    transition:
+      border-color var(--hover-transition-duration) var(--hover-transition-timing),
+      box-shadow var(--hover-transition-duration) var(--hover-transition-timing),
+      transform var(--hover-transition-duration) var(--hover-transition-timing);
+  }
+
+  .blog-page-search__input::placeholder {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .blog-page-search__input:hover {
+    border-color: rgb(var(--color-foreground-rgb) / 0.22);
+  }
+
+  .blog-page-search__input:focus,
+  .blog-page-search__input:focus-visible {
+    outline: none;
+    border-color: rgb(var(--color-foreground-rgb) / 0.28);
+    box-shadow:
+      0 0 0 4px rgb(var(--color-foreground-rgb) / 0.05),
+      0 14px 34px rgb(var(--color-foreground-rgb) / 0.08);
+    transform: translateY(-1px);
+  }
+
+  .blog-page-search__icon {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    display: inline-flex;
+    transform: translateY(-50%);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    pointer-events: none;
+  }
+
+  .blog-page-search__icon svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Blog Page search",
+  "tag": "section",
+  "class": "blog-page-search-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "blocks": [
+    {
+      "type": "_heading"
+    }
+  ],
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Search programs"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder",
+      "default": "Search program titles"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "search_width",
+      "label": "Search width",
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    }
+  ]
+}
+{% endschema %}

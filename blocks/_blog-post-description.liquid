@@ -74,6 +74,14 @@
     color: var(--color-primary);
   }
 
+  .featured-blog-posts-card__content .blog-post-card__content-text {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
   .custom-color,
   .custom-color > :is(h1, h2, h3, h4, h5, h6, p, *) {
     color: var(--color);
