@@ -1,0 +1,88 @@
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="section color-{{ section.settings.color_scheme }}">
+  <div
+    class="article-footer spacing-style section-content-wrapper"
+    style="{% render 'spacing-style', settings: section.settings %}"
+  >
+    {% if section.settings.content != blank %}
+      <div class="article-footer__content rte">
+        {{ section.settings.content }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .article-footer {
+    width: 100%;
+    max-width: var(--normal-content-width);
+    margin: 0 auto;
+  }
+
+  .article-footer__content {
+    color: rgb(var(--color-foreground-rgb) / 0.82);
+    font-size: 0.98rem;
+    line-height: 1.6;
+  }
+
+  .article-footer__content p {
+    margin: 0 0 1rem;
+  }
+
+  .article-footer__content p:last-child {
+    margin-bottom: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Article footer",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Log all workout results to Beyond the Whiteboard. Visit <a href=\"http://www.btwb.com/signup\">www.btwb.com/signup</a> and use code \"CFC123\" to set up an account.</p><p>To be updated with announcements, news and info - join our private Slack group. <a href=\"https://join.slack.com/t/crossfitclaremont/shared_invite/zt-10zesko2s-FgOiGAIGfIbdsvE3kYfiVg\">The link to join is here.</a> Here you can also find some our other tracks: Weightlifting, Mobility and Endurance. Search the name of the track you want from the slack page and/or app and then join. If you have questions just email us.</p><p>If you wish to view our competitors' programming, contact us at <a href=\"mailto:info@crossfitclaremont.com.au\">info@crossfitclaremont.com.au</a> to be added to the private group or you can follow on our Beyond the Whiteboard track.</p>"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article footer"
+    }
+  ]
+}
+{% endschema %}

@@ -12,6 +12,98 @@
     "section": {
       "type": "main-blog-post",
       "blocks": {
+        "weekend-entry-notice": {
+          "type": "group",
+          "name": "Weekend entry notice",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "desktop_horizontal_direction": "row",
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 10,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": false,
+            "color_scheme": "scheme-1",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 8,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "weekend-entry-text": {
+              "type": "text",
+              "name": "Text",
+              "settings": {
+                "text": "<p>On weekends we cannot enter through the usual spot (Gate 8). You must enter through Gate 1, which is near the Railway line on Graylands Road.</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "desktop_max_width": 0,
+                "alignment": "left",
+                "desktop_position": "",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "font_size": "0.9rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "weekend-entry-button": {
+              "type": "button",
+              "name": "Button",
+              "settings": {
+                "label": "Contact us",
+                "link": "/pages/contact",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "weekend-entry-text",
+            "weekend-entry-button"
+          ]
+        },
         "blog-post-title": {
           "type": "text",
           "name": "Title",
@@ -20,7 +112,9 @@
             "text": "<h1>{{ article.title }}</h1>",
             "width": "100%",
             "max_width": "normal",
+            "desktop_max_width": 0,
             "alignment": "center",
+            "desktop_position": "",
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
@@ -28,7 +122,7 @@
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
-            "color": "",
+            "color": "var(--color-foreground-heading)",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -42,6 +136,7 @@
         "blog-post-details": {
           "type": "_blog-post-info-text",
           "name": "Details",
+          "disabled": true,
           "static": true,
           "settings": {
             "show_date": true,
@@ -54,12 +149,17 @@
           },
           "blocks": {}
         },
+        "blog-post-content": {
+          "type": "_blog-post-content",
+          "static": true,
+          "settings": {},
+          "blocks": {}
+        },
         "blog-post-image": {
-          "type": "image",
-          "name": "Featured image",
+          "type": "_blog-post-featured-image",
           "static": true,
           "settings": {
-            "image_ratio": "landscape",
+            "image_ratio": "adapt",
             "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
@@ -68,7 +168,63 @@
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
-            "border_radius": 0,
+            "border_radius": 10,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "weekend-entry-notice"
+      ],
+      "custom_css": [],
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "scheme-3",
+        "top_links_heading": "",
+        "top_links_menu": "wod-blog-links",
+        "top_links_style": "button-secondary",
+        "padding-block-start": 40,
+        "padding-block-end": 24
+      }
+    },
+    "article_footer_8gBy2L": {
+      "type": "article-footer",
+      "settings": {
+        "content": "<p>Log all workout results to Beyond the Whiteboard. Visit <a href=\"http://www.btwb.com/signup\">www.btwb.com/signup</a> and use code \"CFC123\" to set up an account.</p><p>To be updated with announcements, news and info - join our private Slack group. <a href=\"https://join.slack.com/t/crossfitclaremont/shared_invite/zt-10zesko2s-FgOiGAIGfIbdsvE3kYfiVg\">The link to join is here.</a> Here you can also find some our other tracks: Weightlifting, Mobility and Endurance. Search the name of the track you want from the slack page and/or app and then join. If you have questions just email us.</p><p>If you wish to view our competitors' programming, contact us at <a href=\"mailto:info@crossfitclaremont.com.au\">info@crossfitclaremont.com.au</a> to be added to the private group or you can follow on our Beyond the Whiteboard track.</p>",
+        "color_scheme": "scheme-3",
+        "padding-block-start": 0,
+        "padding-block-end": 44
+      }
+    },
+    "hero_bjB6Xy": {
+      "type": "hero",
+      "blocks": {
+        "text_RAYqpz": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<p>Start Your Fitness Journey Today</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "desktop_max_width": 0,
+            "alignment": "left",
+            "desktop_position": "",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -76,23 +232,117 @@
           },
           "blocks": {}
         },
-        "blog-post-content": {
-          "type": "_blog-post-content",
-          "static": true,
-          "settings": {},
+        "text_hMBYRU": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Join CrossFit Claremont and experience expert coaching, challenging workouts, and a community that supports your progress.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "desktop_max_width": 0,
+            "alignment": "left",
+            "desktop_position": "",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_kK4JM6": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Book Your Free 3 Class Trial",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "padding-block-start": 0,
+            "padding-block-end": 0
+          },
           "blocks": {}
         }
       },
+      "block_order": [
+        "text_RAYqpz",
+        "text_hMBYRU",
+        "button_kK4JM6"
+      ],
+      "name": "t:names.hero",
       "settings": {
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/image_82_1.png",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
         "content_direction": "column",
-        "gap": 32,
-        "color_scheme": "",
-        "padding-block-start": 40,
-        "padding-block-end": 80
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "space-between",
+        "desktop_horizontal_alignment": "",
+        "vertical_alignment": "flex-end",
+        "align_baseline": true,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "desktop_horizontal_alignment_flex_direction_column": "",
+        "vertical_alignment_flex_direction_column": "flex-end",
+        "gap": 24,
+        "section_width": "page-width",
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "desktop_container_height": 580,
+        "desktop_media_max_width": 1240,
+        "media_border_radius": 10,
+        "content_padding_block_start": 0,
+        "content_padding_block_end": 0,
+        "content_padding_inline_start": 43,
+        "content_padding_inline_end": 43,
+        "color_scheme": "scheme-6",
+        "toggle_overlay": true,
+        "overlay_color": "#12121266",
+        "overlay_style": "solid",
+        "gradient_direction": "to bottom",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 100,
+        "padding-block-end": 72
+      }
+    },
+    "recent_blog_posts_Kt7mP2": {
+      "type": "recent-blog-posts",
+      "custom_css": [],
+      "settings": {
+        "heading": "Recent News",
+        "blog": "wod",
+        "post_limit": 3,
+        "button_label": "View Post",
+        "color_scheme": "scheme-3",
+        "padding-block-start": 24,
+        "padding-block-end": 48
       }
     }
   },
   "order": [
-    "section"
+    "section",
+    "article_footer_8gBy2L",
+    "hero_bjB6Xy",
+    "recent_blog_posts_Kt7mP2"
   ]
 }
