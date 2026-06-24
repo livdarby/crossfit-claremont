@@ -267,9 +267,83 @@
     margin: 0;
   }
 
+  .metaobject-grid--testimonials .resource-list__item,
+  .metaobject-grid--testimonials .metaobject-grid-card {
+    height: auto;
+  }
+
+  .metaobject-grid--testimonials .metaobject-grid-card__inner {
+    gap: 1rem;
+  }
+
+  .metaobject-grid--testimonials .metaobject-grid-card__image {
+    border-radius: 18px;
+    background: #ddd7cd;
+  }
+
+  .metaobject-grid--testimonials .metaobject-grid-card__content {
+    gap: 0.85rem;
+  }
+
+  .metaobject-grid--testimonials .metaobject-grid-card__content h4 {
+    font-family: 'Oswald';
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 0.95;
+    font-weight: 500;
+    color: var(--color-foreground-heading);
+  }
+
+  .metaobject-grid--testimonials .metaobject-grid-card__content .text {
+    color: rgb(var(--color-foreground-rgb) / 0.8);
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .metaobject-grid--testimonials .metaobject-grid-card__content .text p {
+    margin: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .metaobject-grid--testimonials .metaobject-grid-card__inner {
+      display: grid;
+      grid-template-columns: minmax(12rem, 0.95fr) minmax(0, 1.65fr);
+      align-items: start;
+      gap: clamp(1.25rem, 3vw, 2.5rem);
+    }
+
+    .metaobject-grid--testimonials .metaobject-grid-card__content {
+      padding-top: 0.25rem;
+    }
+
+    .metaobject-grid--testimonials .metaobject-grid-card__image {
+      max-width: 18rem;
+    }
+
+    .metaobject-grid--testimonials .resource-list__item:nth-child(even) .metaobject-grid-card__inner {
+      grid-template-columns: minmax(0, 1.65fr) minmax(12rem, 0.95fr);
+    }
+
+    .metaobject-grid--testimonials .resource-list__item:nth-child(even) .metaobject-grid-card__image {
+      order: 2;
+      margin-left: auto;
+    }
+
+    .metaobject-grid--testimonials .resource-list__item:nth-child(even) .metaobject-grid-card__content {
+      order: 1;
+    }
+  }
+
   @media screen and (max-width: 749px) {
     .metaobject-grid--coaches .metaobject-grid-card__content h4 {
       font-size: 1.6rem;
+    }
+
+    .metaobject-grid--testimonials .metaobject-grid-card__inner {
+      gap: 1rem;
+    }
+
+    .metaobject-grid--testimonials .metaobject-grid-card__content h4 {
+      font-size: 1.7rem;
     }
   }
 {% endstylesheet %}

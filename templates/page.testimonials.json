@@ -16,7 +16,7 @@
           "type": "text",
           "name": "Title",
           "settings": {
-            "text": "<p>A community built on hard work, support, and long-term fitness.</p>",
+            "text": "<p>Real stories from members building strength, confidence, and consistency at CrossFit Claremont.</p>",
             "width": "100%",
             "max_width": "normal",
             "desktop_max_width": 0,
@@ -59,7 +59,7 @@
         "padding-block-end": 24
       }
     },
-    "metaobject_grid_coaches": {
+    "metaobject_grid_testimonials": {
       "type": "metaobject-grid",
       "blocks": {
         "static-metaobject-title": {
@@ -67,7 +67,7 @@
           "name": "Title",
           "static": true,
           "settings": {
-            "text": "<p>Meet The Coaches</p>",
+            "text": "<p>Testimonials</p>",
             "width": "fit-content",
             "max_width": "normal",
             "desktop_max_width": 0,
@@ -176,15 +176,15 @@
       "custom_css": [],
       "name": "Metaobject: Grid",
       "settings": {
-        "metaobject_type": "coaches",
+        "metaobject_type": "testimonials",
         "entry_limit": 12,
         "title_field": "name",
-        "description_field": "bio",
-        "image_field": "photo",
+        "description_field": "copy",
+        "image_field": "image",
         "link_field": "",
-        "layout_type": "grid",
+        "layout_type": "editorial",
         "carousel_on_mobile": false,
-        "columns": 3,
+        "columns": 1,
         "mobile_columns": "1",
         "mobile_card_size": "60cqw",
         "columns_gap": 20,
@@ -203,6 +203,6 @@
   },
   "order": [
     "main",
-    "metaobject_grid_coaches"
+    "metaobject_grid_testimonials"
   ]
 }

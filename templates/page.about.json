@@ -1269,7 +1269,7 @@
       "settings": {
         "metaobject_type": "coaches",
         "entry_limit": 6,
-        "title_field": "title",
+        "title_field": "name",
         "description_field": "role",
         "image_field": "photo",
         "link_field": "",
