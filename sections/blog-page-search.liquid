@@ -4,9 +4,18 @@
   fetchpriority="low"
 ></script>
 
+{% liquid
+  assign source_blog = section.settings.blog
+  assign initial_tag = 'all'
+
+  if request.page_type == 'blog' and current_tags != blank
+    assign initial_tag = current_tags | first | handleize
+  endif
+%}
+
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 
-<blog-page-search-component>
+<blog-page-search-component data-initial-tag="{{ initial_tag }}">
   <div
     class="
       section
@@ -61,27 +70,26 @@
         >
       </div>
 
-      {% if section.settings.blog != blank and section.settings.blog.all_tags.size > 0 %}
+      {% if source_blog != blank and source_blog.all_tags.size > 0 %}
         <div class="blog-page-search__tags">
-          <button
-            type="button"
-            class="blog-page-search__tag-pill blog-page-search__tag-pill--selected"
+          <a
+            class="blog-page-search__tag-pill{% if initial_tag == 'all' %} blog-page-search__tag-pill--selected{% endif %}"
+            href="{{ source_blog.url }}"
             data-tag-pill
             data-tag-value="all"
-            on:click="/selectTag"
           >
             All
-          </button>
-          {% for tag in section.settings.blog.all_tags %}
-            <button
-              type="button"
-              class="blog-page-search__tag-pill"
+          </a>
+          {% for tag in source_blog.all_tags %}
+            {% assign tag_handle = tag | handleize %}
+            <a
+              class="blog-page-search__tag-pill{% if initial_tag == tag_handle %} blog-page-search__tag-pill--selected{% endif %}"
+              href="{{ source_blog.url }}/tagged/{{ tag_handle }}"
               data-tag-pill
-              data-tag-value="{{ tag | handleize }}"
-              on:click="/selectTag"
+              data-tag-value="{{ tag_handle }}"
             >
               {{ tag }}
-            </button>
+            </a>
           {% endfor %}
         </div>
       {% endif %}
@@ -108,6 +116,8 @@
   .blog-page-search__field {
     position: relative;
     width: 100%;
+    display: flex;
+    justify-content: center;
 
     @media screen and (max-width: 749px) {
       max-width: 100% !important;
@@ -182,6 +192,7 @@
       border-color var(--hover-transition-duration) var(--hover-transition-timing),
       box-shadow var(--hover-transition-duration) var(--hover-transition-timing),
       transform var(--hover-transition-duration) var(--hover-transition-timing);
+    max-width: 500px;
   }
 
   .blog-page-search__input::placeholder {

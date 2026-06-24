@@ -37,6 +37,29 @@
   endif
 %}
 
+{% capture quick_links %}
+  {% if contact_link != blank %}
+    <li class="menu-drawer__list-item{% if block_settings.drawer_dividers %} menu-drawer__list-item--divider{% endif %}">
+      <a
+        href="{{ contact_link }}"
+        class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element focus-inset"
+      >
+        <span class="menu-drawer__menu-item-text wrap-text">{{ contact_label | default: 'Contact' | escape }}</span>
+      </a>
+    </li>
+  {% endif %}
+  {% if free_trial_link != blank %}
+    <li class="menu-drawer__list-item{% if block_settings.drawer_dividers %} menu-drawer__list-item--divider{% endif %}">
+      <a
+        href="{{ free_trial_link }}"
+        class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element focus-inset"
+      >
+        <span class="menu-drawer__menu-item-text wrap-text">{{ free_trial_label | default: 'Free Trial' | escape }}</span>
+      </a>
+    </li>
+  {% endif %}
+{% endcapture %}
+
 <script
   src="{{ 'header-drawer.js' | asset_url }}"
   type="module"
@@ -570,6 +593,7 @@
               </li>
             {%- endfor -%}
           {% endif %}
+          {{ quick_links }}
         </ul>
       </nav>
       <div

@@ -68,6 +68,38 @@
     render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section
   endcapture
 
+  assign contact_section_id = 'contact-map'
+  assign contact_link_href = section.settings.contact_link
+  if contact_link_href != blank
+    assign contact_link_href = contact_link_href | append: '#' | append: contact_section_id
+  endif
+
+  capture quick_links
+    if contact_link_href != blank or section.settings.free_trial_link != blank
+      echo '<div class="header-quick-links mobile:hidden">'
+
+      if contact_link_href != blank
+        echo '<a class="header-quick-links__link" href="'
+        echo contact_link_href
+        echo '">'
+        echo section.settings.contact_label | default: 'Contact' | escape
+        echo '</a>'
+      endif
+
+      if section.settings.free_trial_link != blank
+        echo '<a class="header-quick-links__link header-quick-links__link--cta" href="'
+        echo section.settings.free_trial_link
+        echo '">'
+        echo section.settings.free_trial_label | default: 'Free Trial' | escape
+        echo '</a>'
+      endif
+
+      echo '</div>'
+    endif
+  endcapture
+
+  assign actions = quick_links | append: actions
+
   if shop.customer_accounts_enabled
     assign search_class = 'search-action--hidden-on-drawer'
   endif
@@ -431,6 +463,50 @@
       transition:
         color var(--header-content-transition-timing),
         border-color var(--header-content-transition-timing);
+    }
+  }
+
+  .header-quick-links {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .header-quick-links {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-inline-end: 0.5rem;
+    }
+
+    .header-quick-links__link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.5rem;
+      padding: 0.45rem 0.8rem;
+      font-family: var(--header-actions-font-family, var(--font-body--family));
+      font-size: var(--header-actions-font-size, 0.875rem);
+      font-weight: var(--header-actions-font-weight, var(--font-body--weight));
+      text-transform: var(--header-actions-text-case, none);
+      color: var(--color-foreground);
+      text-decoration: none;
+      border-radius: 999px;
+      transition: background-color var(--animation-speed-fast) var(--animation-easing), color var(--animation-speed-fast) var(--animation-easing);
+    }
+
+    .header-quick-links__link:hover {
+      background: rgb(var(--color-foreground-rgb) / 0.06);
+    }
+
+    .header-quick-links__link--cta {
+      background: rgb(var(--color-foreground-rgb));
+      color: rgb(var(--color-background-rgb));
+      padding-inline: 1rem;
+    }
+
+    .header-quick-links__link--cta:hover {
+      background: rgb(var(--color-foreground-rgb) / 0.82);
+      color: rgb(var(--color-background-rgb));
     }
   }
 
@@ -1495,6 +1571,32 @@
     {
       "type": "header",
       "content": "t:content.utilities"
+    },
+    {
+      "type": "header",
+      "content": "Quick links"
+    },
+    {
+      "type": "text",
+      "id": "contact_label",
+      "label": "Contact label",
+      "default": "Contact"
+    },
+    {
+      "type": "url",
+      "id": "contact_link",
+      "label": "Contact link"
+    },
+    {
+      "type": "text",
+      "id": "free_trial_label",
+      "label": "Free trial label",
+      "default": "Free Trial"
+    },
+    {
+      "type": "url",
+      "id": "free_trial_link",
+      "label": "Free trial link"
     },
     {
       "type": "select",

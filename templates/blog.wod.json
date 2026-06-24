@@ -16,13 +16,13 @@
           "type": "text",
           "name": "Title",
           "settings": {
-            "text": "<p>Real stories from members building strength, confidence, and consistency at CrossFit Claremont.</p>",
+            "text": "<p>Workout Programs to Achieve your goals </p>",
             "width": "100%",
-            "max_width": "narrow",
-            "desktop_max_width": 760,
+            "max_width": "normal",
+            "desktop_max_width": 0,
             "alignment": "center",
             "desktop_position": "",
-            "type_preset": "h3",
+            "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
             "line_height": "normal",
@@ -43,7 +43,8 @@
         "page-content": {
           "type": "page-content",
           "disabled": true,
-          "settings": {},
+          "settings": {
+          },
           "blocks": {}
         }
       },
@@ -59,46 +60,86 @@
         "padding-block-end": 24
       }
     },
-    "metaobject_grid_testimonials": {
-      "type": "metaobject-grid",
+    "blog_page_search_Hh4K9R": {
+      "type": "blog-page-search",
       "blocks": {
-        "static-metaobject-title": {
-          "type": "_metaobject-grid-title",
-          "name": "Title",
+        "heading": {
+          "type": "_heading",
           "static": true,
           "settings": {
-            "text": "<p>Testimonials</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "desktop_max_width": 0,
-            "alignment": "left",
-            "type_preset": "h3",
+            "type_preset": "rte",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
-            "background": false,
-            "background_color": "",
-            "corner_radius": 0,
-            "color": "",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "text": "",
+            "read_only": false,
+            "alignment": "center",
+            "show_alignment": true,
             "padding-block-start": 0,
-            "padding-block-end": 24,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "settings": {
+        "blog": "wod",
+        "heading": "Search programs",
+        "placeholder": "Search program titles",
+        "alignment": "center",
+        "search_width": 100,
+        "color_scheme": "scheme-2",
+        "padding-block-start": 0,
+        "padding-block-end": 24
+      }
+    },
+    "featured_blog_posts_8X3bX4": {
+      "type": "featured-blog-posts",
+      "blocks": {
+        "static-blog-title": {
+          "type": "_featured-blog-posts-title",
+          "name": "t:names.title",
+          "disabled": true,
+          "static": true,
+          "settings": {
+            "text": "<h3>{{ closest.blog.title }}</h3>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
           "blocks": {}
         },
-        "static-metaobject-card": {
-          "type": "_metaobject-grid-card",
-          "name": "Metaobject card",
+        "static-blog-post-card": {
+          "type": "_featured-blog-posts-card",
+          "name": "t:names.blog_card",
           "static": true,
           "settings": {
             "alignment": "left",
-            "gap": 14,
-            "content_overlay": false,
+            "gap": 8,
+            "show_button": true,
+            "button_label": "View Program",
             "inherit_color_scheme": true,
-            "color_scheme": "scheme-1",
+            "color_scheme": "",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -110,32 +151,31 @@
           },
           "blocks": {
             "image": {
-              "type": "_metaobject-grid-image",
-              "name": "Image",
+              "type": "_featured-blog-posts-image",
               "static": true,
               "settings": {
-                "image_ratio": "square",
+                "image_ratio": "landscape",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
-                "border_radius": 16
+                "border_radius": 10
               },
               "blocks": {}
             },
             "title": {
               "type": "_heading",
-              "name": "Title",
+              "name": "t:names.title",
               "static": true,
               "settings": {
-                "type_preset": "rte",
+                "type_preset": "h3",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "text": "",
+                "color": "var(--color-foreground-heading)",
+                "text": "<h4>{{ closest.article.title }}</h4>",
                 "read_only": false,
                 "alignment": "left",
                 "show_alignment": false,
@@ -146,26 +186,36 @@
               },
               "blocks": {}
             },
-            "description": {
-              "type": "_metaobject-grid-description",
-              "name": "Description",
+            "blog-post-info-text": {
+              "type": "_blog-post-info-text",
+              "name": "t:names.details",
               "static": true,
               "settings": {
-                "text": "",
-                "width": "100%",
-                "max_width": "none",
+                "show_date": true,
+                "show_author": false,
+                "type_preset": "",
                 "alignment": "left",
-                "type_preset": "custom",
+                "show_alignment": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
+            "blog-post-description": {
+              "type": "_blog-post-description",
+              "name": "t:names.excerpt",
+              "static": true,
+              "settings": {
+                "type_preset": "rte",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
-                "color": "",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
                 "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-block-end": 0
               },
               "blocks": {}
             }
@@ -173,36 +223,31 @@
           "block_order": []
         }
       },
-      "custom_css": [],
-      "name": "Metaobject: Grid",
+      "name": "t:names.blog_posts_grid",
       "settings": {
-        "metaobject_type": "testimonials",
-        "entry_limit": 12,
-        "title_field": "name",
-        "description_field": "copy",
-        "image_field": "image",
-        "link_field": "",
+        "blog": "wod",
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "columns": 1,
+        "post_limit": 6,
+        "paginate_blog_cards": true,
+        "columns": 3,
         "mobile_columns": "1",
         "mobile_card_size": "60cqw",
-        "columns_gap": 20,
-        "desktop_gap": 32,
-        "desktop_section_gap": 0,
-        "rows_gap": 28,
+        "columns_gap": 24,
+        "rows_gap": 24,
         "icons_style": "arrow",
         "icons_shape": "none",
         "section_width": "page-width",
-        "gap": 0,
-        "color_scheme": "scheme-3",
-        "padding-block-start": 8,
-        "padding-block-end": 56
+        "gap": 12,
+        "color_scheme": "scheme-2",
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     }
   },
   "order": [
     "main",
-    "metaobject_grid_testimonials"
+    "blog_page_search_Hh4K9R",
+    "featured_blog_posts_8X3bX4"
   ]
 }

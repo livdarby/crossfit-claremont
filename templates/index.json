@@ -34,7 +34,7 @@
           "name": "t:names.button",
           "settings": {
             "label": "See Programs",
-            "link": "shopify://pages/wods",
+            "link": "shopify://blogs/wod",
             "open_in_new_tab": false,
             "style_class": "button-secondary",
             "width": "fit-content",

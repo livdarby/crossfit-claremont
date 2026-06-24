@@ -11,8 +11,18 @@ class FeaturedBlogPostsComponent extends Component {
   /** @type {{ tags: string[], title: string, html: string }[] | null} */
   #allPageCards = null;
 
+  /** @type {string | null} */
+  #defaultGridHTML = null;
+
+  /** @type {boolean} */
+  #defaultEmptyStateHidden = true;
+
+  /** @type {boolean} */
+  #defaultPaginationHidden = false;
+
   connectedCallback() {
     super.connectedCallback();
+    this.#resetFilterStateCache();
     document.addEventListener(
       "blog-page-search:change",
       this.#handleSearchChange,
@@ -55,6 +65,7 @@ class FeaturedBlogPostsComponent extends Component {
         url: renderUrl,
       });
 
+      this.#resetFilterStateCache();
       history.pushState({}, "", url);
     } catch (error) {
       if (error.name !== "AbortError") {
@@ -71,31 +82,36 @@ class FeaturedBlogPostsComponent extends Component {
     const query = (event.detail?.query ?? "").trim();
 
     if (tag === "all" && query === "") {
-      await this.#restoreDefaultGrid();
+      this.#restoreDefaultGrid();
       return;
     }
 
-    await this.#filterCards({ tag, query });
+    this.#filterCards({ tag, query });
   };
 
-  async #restoreDefaultGrid() {
-    const sectionId = this.getAttribute("section-id");
-    if (!sectionId) return;
+  #restoreDefaultGrid() {
+    this.#cacheDefaultState();
 
-    this.setAttribute("aria-busy", "true");
+    const grid = this.querySelector('.resource-list[data-testid="featured-blog-posts"]');
+    if (!(grid instanceof HTMLElement) || this.#defaultGridHTML == null) return;
+
+    grid.innerHTML = this.#defaultGridHTML;
     this.removeAttribute("data-filtered");
 
-    try {
-      await sectionRenderer.renderSection(sectionId, {
-        cache: false,
-        url: new URL(window.location.href),
-      });
-    } finally {
-      this.removeAttribute("aria-busy");
+    const emptyState = this.querySelector('[ref="emptyState"]');
+    if (emptyState instanceof HTMLElement) {
+      emptyState.hidden = this.#defaultEmptyStateHidden;
+    }
+
+    const paginationNav = this.querySelector('[ref="paginationNav"]');
+    if (paginationNav instanceof HTMLElement) {
+      paginationNav.hidden = this.#defaultPaginationHidden;
     }
   }
 
   async #filterCards({ tag, query }) {
+    this.#cacheDefaultState();
+
     this.setAttribute("aria-busy", "true");
 
     try {
@@ -109,9 +125,29 @@ class FeaturedBlogPostsComponent extends Component {
 
         return matchesTag && matchesQuery;
       });
+
       this.#renderFilteredCards(matchingCards);
     } finally {
       this.removeAttribute("aria-busy");
+    }
+  }
+
+  #cacheDefaultState() {
+    if (this.#defaultGridHTML != null) return;
+
+    const grid = this.querySelector('.resource-list[data-testid="featured-blog-posts"]');
+    if (!(grid instanceof HTMLElement)) return;
+
+    this.#defaultGridHTML = grid.innerHTML;
+
+    const emptyState = this.querySelector('[ref="emptyState"]');
+    if (emptyState instanceof HTMLElement) {
+      this.#defaultEmptyStateHidden = emptyState.hidden;
+    }
+
+    const paginationNav = this.querySelector('[ref="paginationNav"]');
+    if (paginationNav instanceof HTMLElement) {
+      this.#defaultPaginationHidden = paginationNav.hidden;
     }
   }
 
@@ -153,6 +189,13 @@ class FeaturedBlogPostsComponent extends Component {
     const paginationMeta = this.querySelector('[ref="paginationMeta"]');
     const totalPages = paginationMeta?.dataset.totalPages;
     return totalPages ? Number(totalPages) : 1;
+  }
+
+  #resetFilterStateCache() {
+    this.#allPageCards = null;
+    this.#defaultGridHTML = null;
+    this.#defaultEmptyStateHidden = true;
+    this.#defaultPaginationHidden = false;
   }
 
   /**

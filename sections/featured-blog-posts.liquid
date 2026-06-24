@@ -3,6 +3,13 @@
 {% liquid
   assign max_items = section.settings.post_limit
   assign paginate_blog_cards = section.settings.paginate_blog_cards
+  assign source_blog = section.settings.blog
+
+  if request.page_type == 'blog'
+    if source_blog == blank or blog.handle == source_blog.handle
+      assign source_blog = blog
+    endif
+  endif
 %}
 
 <script
@@ -31,10 +38,10 @@
   >
     {% content_for 'block', id: 'static-blog-title', type: '_featured-blog-posts-title' %}
 
-    {% if section.settings.blog != blank and section.settings.blog.articles_count > 0 and paginate_blog_cards and section.settings.layout_type == 'grid' %}
-      {% paginate section.settings.blog.articles by max_items %}
+    {% if source_blog != blank and source_blog.articles_count > 0 and paginate_blog_cards and section.settings.layout_type == 'grid' %}
+      {% paginate source_blog.articles by max_items %}
         {% capture list_items %}
-          {% for article in section.settings.blog.articles %}
+          {% for article in source_blog.articles %}
             {% capture article_tag_handles %}
               {% for tag in article.tags %}
                 {{ tag | handleize }}{% unless forloop.last %}|{% endunless %}
@@ -74,8 +81,8 @@
         {% render 'pagination-controls', paginate: paginate, on_click_handler: '/paginateBlogCards', ref: 'paginationNav' %}
       {% endpaginate %}
     {% else %}
-      {% if section.settings.blog != blank and section.settings.blog.articles_count > 0 %}
-        {% assign section_articles = section.settings.blog.articles %}
+      {% if source_blog != blank and source_blog.articles_count > 0 %}
+        {% assign section_articles = source_blog.articles %}
       {% else %}
         {% assign section_articles = '' %}
         {% for i in (1..max_items) %}
@@ -126,6 +133,17 @@
     >
       No blog posts match this tag.
     </p>
+
+    {% if section.settings.archive_link != blank and section.settings.archive_label != blank %}
+      <div class="featured-blog-posts__archive-link">
+        <a
+          class="button-secondary"
+          href="{{ section.settings.archive_link }}"
+        >
+          {{ section.settings.archive_label }}
+        </a>
+      </div>
+    {% endif %}
   </div>
 
   <div
@@ -161,6 +179,12 @@
   .featured-blog-posts__empty {
     margin: var(--gap-md) 0 0;
     color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .featured-blog-posts__archive-link {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--gap-lg);
   }
 
   featured-blog-posts-component[data-filtered='true'] .pagination {
@@ -263,6 +287,17 @@
       "label": "Paginate blog cards",
       "default": false,
       "visible_if": "{{ section.settings.layout_type == 'grid' }}"
+    },
+    {
+      "type": "url",
+      "id": "archive_link",
+      "label": "Archive link"
+    },
+    {
+      "type": "text",
+      "id": "archive_label",
+      "label": "Archive link label",
+      "default": "See all blogs"
     },
     {
       "type": "range",

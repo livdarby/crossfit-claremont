@@ -21,14 +21,17 @@
   >
     {% content_for 'blocks' %}
 
-    <div
-      ref="grid"
-      class="blog-posts-container"
-    >
-      {% liquid
-        assign items_on_page = blog.articles.size
-      %}
-      {% for article in blog.articles %}
+    {% paginate blog.articles by 12 %}
+      <span ref="viewMorePrevious"></span>
+      <div
+        ref="grid"
+        class="blog-posts-container"
+        data-last-page="{{ paginate.pages }}"
+      >
+        {% liquid
+          assign items_on_page = blog.articles.size
+        %}
+        {% for article in blog.articles %}
         {% liquid
           # Defaults for compact layout
           assign col_span = 2
@@ -97,15 +100,22 @@
             }
           }
         {% endstyle %}
-        <div
-          class="blog-post-item{% if is_horizontal %} blog-post-item--horizontal{% endif %}"
-          data-testid="blog-post-item"
-          data-blog-index="{{ section.id }}-{{ forloop.index }}"
-        >
-          {% content_for 'block', id: 'static-blog-post-card', type: '_blog-post-card', article: article %}
-        </div>
-      {% endfor %}
-    </div>
+          <div
+            ref="cards[]"
+            class="blog-post-item{% if is_horizontal %} blog-post-item--horizontal{% endif %}"
+            data-testid="blog-post-item"
+            data-blog-index="{{ section.id }}-{{ forloop.index }}"
+            data-page="{{ paginate.current_page }}"
+          >
+            {% content_for 'block', id: 'static-blog-post-card', type: '_blog-post-card', article: article %}
+          </div>
+        {% endfor %}
+      </div>
+      <span ref="viewMoreNext"></span>
+      <noscript>
+        {% render 'pagination-controls', paginate: paginate %}
+      </noscript>
+    {% endpaginate %}
   </div>
 </blog-posts-list>
 
