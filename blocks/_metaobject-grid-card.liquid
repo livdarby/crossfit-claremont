@@ -6,6 +6,8 @@
   assign title_field_object = blank
   assign description_field_object = blank
   assign link_field_object = blank
+  assign eyebrow_content = blank
+  assign coaches_bio_placeholder = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper, nisl vitae feugiat posuere, nibh augue convallis mauris, vitae volutpat augue sem at sapien.'
 
   if metaobject_entry == blank
     assign onboarding = true
@@ -38,6 +40,15 @@
         assign description_content = description_field_object | metafield_tag
       else
         assign description_content = description_field_object.value | default: description_field_object
+      endif
+    endif
+
+    if section.settings.metaobject_type == 'coaches' and section.settings.description_field == 'bio'
+      assign role_field_object = metaobject_entry.role
+      assign eyebrow_content = role_field_object.value | default: role_field_object
+
+      if description_content == blank
+        assign description_content = coaches_bio_placeholder
       endif
     endif
 
@@ -109,6 +120,9 @@
 
     <div class="metaobject-grid-card__content layout-panel-flex--column">
       <h4>{{ title }}</h4>
+      {% if eyebrow_content != blank %}
+        <p class="metaobject-grid-card__eyebrow">{{ eyebrow_content }}</p>
+      {% endif %}
       {{ description }}
     </div>
   </div>
@@ -156,6 +170,13 @@
 
   .metaobject-grid-card__content h4 {
     margin: 0;
+  }
+
+  .metaobject-grid-card__eyebrow {
+    margin: calc(var(--gap) * -0.35) 0 0;
+    font-size: 0.85rem;
+    line-height: 1.35;
+    color: rgb(var(--color-foreground-rgb) / 0.62);
   }
 
   .metaobject-grid-card--overlay .metaobject-grid-card__image {
@@ -206,6 +227,49 @@
     .metaobject-grid-card__content {
       flex-shrink: 0;
       height: auto;
+    }
+  }
+
+  .metaobject-grid--coaches .metaobject-grid-card {
+    height: 100%;
+  }
+
+  .metaobject-grid--coaches .metaobject-grid-card__inner {
+    height: 100%;
+    gap: 1.1rem;
+  }
+
+  .metaobject-grid--coaches .metaobject-grid-card__image {
+    border-radius: 16px;
+    background: #ddd7cd;
+  }
+
+  .metaobject-grid--coaches .metaobject-grid-card__content {
+    gap: 0.55rem;
+    padding: 0 0.2rem;
+  }
+
+  .metaobject-grid--coaches .metaobject-grid-card__content h4 {
+    font-family: 'Oswald';
+    font-size: 2rem;
+    line-height: 1;
+    font-weight: 500;
+    color: var(--color-foreground-heading);
+  }
+
+  .metaobject-grid--coaches .metaobject-grid-card__content .text {
+    color: rgb(var(--color-foreground-rgb) / 0.78);
+    font-size: 0.97rem;
+    line-height: 1.65;
+  }
+
+  .metaobject-grid--coaches .metaobject-grid-card__content .text p {
+    margin: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .metaobject-grid--coaches .metaobject-grid-card__content h4 {
+      font-size: 1.6rem;
     }
   }
 {% endstylesheet %}

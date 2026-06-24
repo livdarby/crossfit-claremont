@@ -131,9 +131,16 @@
 
   .recent-blog-post__excerpt {
     margin: 0;
+    height: 63px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
     font-size: 14px;
     line-height: 1.5;
     color: rgb(var(--color-foreground-rgb) / 0.78);
+    text-overflow: ellipsis;
   }
 
   .recent-blog-post__cta {
