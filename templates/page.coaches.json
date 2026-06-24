@@ -19,7 +19,9 @@
             "text": "<p>A community built on hard work, support, and long-term fitness.</p>",
             "width": "100%",
             "max_width": "normal",
+            "desktop_max_width": 0,
             "alignment": "center",
+            "desktop_position": "",
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
@@ -65,19 +67,23 @@
           "name": "Title",
           "static": true,
           "settings": {
-            "text": "",
+            "text": "<p>Meet The Coaches</p>",
             "width": "fit-content",
             "max_width": "normal",
+            "desktop_max_width": 0,
             "alignment": "left",
-            "type_preset": "rte",
+            "type_preset": "h1",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
+            "background": false,
+            "background_color": "",
+            "corner_radius": 0,
             "color": "",
             "padding-block-start": 0,
-            "padding-block-end": 0,
+            "padding-block-end": 16,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
@@ -121,8 +127,22 @@
               "name": "Title",
               "static": true,
               "settings": {
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
                 "text": "<h4>Coach name</h4>",
-                "show_alignment": false
+                "read_only": false,
+                "alignment": "left",
+                "show_alignment": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
               },
               "blocks": {}
             },
@@ -149,7 +169,8 @@
               },
               "blocks": {}
             }
-          }
+          },
+          "block_order": []
         }
       },
       "custom_css": [],
