@@ -89,6 +89,14 @@ class FeaturedBlogPostsComponent extends Component {
       ? event.detail.articles
       : null;
 
+    if (storefrontArticles) {
+      this.#storefrontCards = storefrontArticles.map((article) =>
+        this.#mapStorefrontArticleToCard(article),
+      );
+      this.#renderFilteredCards(this.#storefrontCards);
+      return;
+    }
+
     if (tag === "all") {
       this.#storefrontCards = null;
 
@@ -100,15 +108,6 @@ class FeaturedBlogPostsComponent extends Component {
       this.#filterCards({ tag, query });
       return;
     }
-
-    if (storefrontArticles) {
-      this.#storefrontCards = storefrontArticles.map((article) =>
-        this.#mapStorefrontArticleToCard(article),
-      );
-      this.#renderFilteredCards(this.#storefrontCards);
-      return;
-    }
-
     if (this.#storefrontCards) {
       const normalizedQuery = query.toLowerCase();
       const matchingCards = this.#storefrontCards.filter((card) => {
@@ -275,6 +274,8 @@ class FeaturedBlogPostsComponent extends Component {
    * @param {{ tags: string[], title: string, html: string }[]} cards
    */
   #renderFilteredCards(cards) {
+    this.#cacheDefaultState();
+
     const grid = this.querySelector('.resource-list[data-testid="featured-blog-posts"]');
     if (!(grid instanceof HTMLElement)) return;
 
@@ -314,7 +315,8 @@ class FeaturedBlogPostsComponent extends Component {
     const url =
       article?.onlineStoreUrl ||
       (article?.handle ? `/blogs/${this.#getBlogHandle()}/${article.handle}` : "#");
-    const excerpt = this.#escapeHTML(String(article?.excerpt ?? ""));
+    const excerptSource = String(article?.excerpt ?? article?.contentHtml ?? "");
+    const excerpt = this.#escapeHTML(excerptSource);
     const date = article?.publishedAt
       ? new Intl.DateTimeFormat(undefined, {
           month: "long",

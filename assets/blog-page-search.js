@@ -7,31 +7,55 @@ class BlogPageSearchComponent extends Component {
   /** @type {AbortController | null} */
   #abortController = null;
 
+  /** @type {number | null} */
+  #searchDebounceTimer = null;
+
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener("click", this.#handleTagClick);
+    window.addEventListener("popstate", this.#handlePopState);
     this.#hydrateFromUrl();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener("click", this.#handleTagClick);
+    window.removeEventListener("popstate", this.#handlePopState);
     this.#abortController?.abort();
+    if (this.#searchDebounceTimer) {
+      window.clearTimeout(this.#searchDebounceTimer);
+      this.#searchDebounceTimer = null;
+    }
   }
 
-  onInput() {}
+  onInput(event) {
+    if (!(event.target instanceof HTMLInputElement)) return;
+
+    if (this.#searchDebounceTimer) {
+      window.clearTimeout(this.#searchDebounceTimer);
+    }
+
+    this.#searchDebounceTimer = window.setTimeout(() => {
+      this.#searchDebounceTimer = null;
+      this.#runSearch(event.target.value);
+    }, 500);
+  }
 
   handleKeydown(event) {
     if (!(event.target instanceof HTMLInputElement)) return;
     if (event.key !== "Enter") return;
 
     event.preventDefault();
-    this.#navigate(event.target.value);
+    if (this.#searchDebounceTimer) {
+      window.clearTimeout(this.#searchDebounceTimer);
+      this.#searchDebounceTimer = null;
+    }
+    this.#runSearch(event.target.value);
   }
 
   #hydrateFromUrl() {
     const url = new URL(window.location.href);
-    const tag = this.dataset.initialTag ?? "all";
+    const tag = url.searchParams.get("tag") ?? this.dataset.initialTag ?? "all";
     const query = url.searchParams.get("q") ?? "";
 
     this.#selectedTag = tag;
@@ -49,56 +73,17 @@ class BlogPageSearchComponent extends Component {
       );
     }
 
-    if (this.#selectedTag !== "all") {
+    if (this.#selectedTag !== "all" || query.trim() !== "") {
       window.setTimeout(() => {
-        this.#fetchTaggedArticles({
+        this.#fetchArticles({
           tag: this.#selectedTag,
           query,
+          basePath: this.#getCurrentPagePath(),
           updateHistory: false,
         });
       }, 0);
       return;
     }
-
-    if (query.trim() !== "") {
-      window.setTimeout(() => {
-        this.#emitChange(query);
-      }, 0);
-    }
-  }
-
-  #navigate(queryOverride) {
-    const input = this.querySelector('[ref="searchInput"]');
-    const query =
-      typeof queryOverride === "string"
-        ? queryOverride
-        : input instanceof HTMLInputElement
-          ? input.value
-          : "";
-
-    const selectedPill =
-      this.querySelector(
-        `[data-tag-pill][data-tag-value="${CSS.escape(this.#selectedTag)}"][href]`,
-      ) ?? this.querySelector('[data-tag-pill][href]');
-    const blogPath =
-      selectedPill?.getAttribute("href") ?? window.location.pathname;
-    const url = new URL(blogPath, window.location.origin);
-    const normalizedQuery = query.trim();
-
-    if (normalizedQuery === "") {
-      url.searchParams.delete("q");
-    } else {
-      url.searchParams.set("q", normalizedQuery);
-    }
-
-    url.searchParams.delete("page");
-
-    if (url.toString() === window.location.href) {
-      this.#emitChange(normalizedQuery);
-      return;
-    }
-
-    window.location.assign(url.toString());
   }
 
   #emitChange(queryOverride) {
@@ -135,17 +120,28 @@ class BlogPageSearchComponent extends Component {
 
     if (nextTag === "all") {
       this.#updateHistory({
-        basePath: pill.getAttribute("href") ?? window.location.pathname,
+        basePath: this.#getCurrentPagePath(),
+        tag: nextTag,
         query,
       });
-      this.#emitChange(query);
+      if (query === "") {
+        this.#emitChange(query);
+        return;
+      }
+
+      this.#fetchArticles({
+        tag: nextTag,
+        query,
+        basePath: this.#getCurrentPagePath(),
+        updateHistory: false,
+      });
       return;
     }
 
-    this.#fetchTaggedArticles({
+    this.#fetchArticles({
       tag: nextTag,
       query,
-      href: pill.href,
+      basePath: this.#getCurrentPagePath(),
       updateHistory: true,
     });
   };
@@ -160,7 +156,41 @@ class BlogPageSearchComponent extends Component {
     }
   }
 
-  async #fetchTaggedArticles({ tag, query, href, updateHistory }) {
+  #runSearch(queryOverride) {
+    const input = this.querySelector('[ref="searchInput"]');
+    const query =
+      typeof queryOverride === "string"
+        ? queryOverride
+        : input instanceof HTMLInputElement
+          ? input.value
+          : "";
+    const normalizedQuery = query.trim();
+    const selectedPill =
+      this.querySelector(
+        `[data-tag-pill][data-tag-value="${CSS.escape(this.#selectedTag)}"][href]`,
+      ) ?? this.querySelector('[data-tag-pill][href]');
+    const basePath =
+      this.#getCurrentPagePath() ||
+      selectedPill?.getAttribute("href") ||
+      window.location.pathname;
+
+    if (normalizedQuery === "") {
+      this.#updateHistory({ basePath, tag: this.#selectedTag, query: "" });
+      if (this.#selectedTag === "all") {
+        this.#emitChange("");
+        return;
+      }
+    }
+
+    this.#fetchArticles({
+      tag: this.#selectedTag,
+      query: normalizedQuery,
+      basePath,
+      updateHistory: true,
+    });
+  }
+
+  async #fetchArticles({ tag, query, basePath, updateHistory }) {
     const blogHandle = this.dataset.blogHandle;
     const shopDomain = this.dataset.shopDomain;
     const token = this.dataset.storefrontApiToken;
@@ -168,9 +198,14 @@ class BlogPageSearchComponent extends Component {
     const fetchLimit = Number(this.dataset.fetchLimit ?? "100");
 
     if (!blogHandle || !shopDomain || !token) {
-      if (href) {
-        window.location.assign(href);
+      if (updateHistory) {
+        this.#updateHistory({
+          basePath: basePath ?? window.location.pathname,
+          tag,
+          query,
+        });
       }
+      this.#emitChange(query);
       return;
     }
 
@@ -197,6 +232,7 @@ class BlogPageSearchComponent extends Component {
                       handle
                       tags
                       excerpt
+                      contentHtml
                       publishedAt
                       onlineStoreUrl
                       image {
@@ -230,19 +266,66 @@ class BlogPageSearchComponent extends Component {
 
       const articles = payload?.data?.blog?.articles?.nodes ?? [];
       const normalizedQuery = query.toLowerCase();
-      const matchingArticles = articles.filter((article) => {
-        const tags = Array.isArray(article?.tags) ? article.tags : [];
-        const matchesTag = tags.some((articleTag) => this.#handleize(articleTag) === tag);
-        const matchesQuery =
-          normalizedQuery === "" ||
-          String(article?.title ?? "").toLowerCase().includes(normalizedQuery);
+      const matchingArticles = articles
+        .map((article) => {
+          const plainContent = this.#stripHTML(String(article?.contentHtml ?? ""));
+          const normalizedTitle = String(article?.title ?? "").toLowerCase();
+          const normalizedContent = plainContent.toLowerCase();
+          const tags = Array.isArray(article?.tags) ? article.tags : [];
+          const matchesTag = tag === "all" || tags.some((articleTag) => this.#handleize(articleTag) === tag);
+          const titleMatchIndex =
+            normalizedQuery === "" ? 0 : normalizedTitle.indexOf(normalizedQuery);
+          const contentMatchIndex =
+            normalizedQuery === "" ? 0 : normalizedContent.indexOf(normalizedQuery);
+          const matchesQuery =
+            normalizedQuery === "" ||
+            titleMatchIndex !== -1 ||
+            contentMatchIndex !== -1;
 
-        return matchesTag && matchesQuery;
-      });
+          return {
+            article: {
+              ...article,
+              contentHtml: plainContent,
+            },
+            matchesTag,
+            matchesQuery,
+            titleMatchIndex,
+            contentMatchIndex,
+          };
+        })
+        .filter(({ matchesTag, matchesQuery }) => matchesTag && matchesQuery)
+        .sort((left, right) => {
+          const leftTitleRank = left.titleMatchIndex === -1 ? Number.POSITIVE_INFINITY : left.titleMatchIndex;
+          const rightTitleRank = right.titleMatchIndex === -1 ? Number.POSITIVE_INFINITY : right.titleMatchIndex;
+
+          if (leftTitleRank !== rightTitleRank) {
+            return leftTitleRank - rightTitleRank;
+          }
+
+          const leftContentRank =
+            left.contentMatchIndex === -1 ? Number.POSITIVE_INFINITY : left.contentMatchIndex;
+          const rightContentRank =
+            right.contentMatchIndex === -1 ? Number.POSITIVE_INFINITY : right.contentMatchIndex;
+
+          if (leftContentRank !== rightContentRank) {
+            return leftContentRank - rightContentRank;
+          }
+
+          const leftPublishedAt = Date.parse(String(left.article?.publishedAt ?? "")) || 0;
+          const rightPublishedAt = Date.parse(String(right.article?.publishedAt ?? "")) || 0;
+
+          if (leftPublishedAt !== rightPublishedAt) {
+            return rightPublishedAt - leftPublishedAt;
+          }
+
+          return String(left.article?.title ?? "").localeCompare(String(right.article?.title ?? ""));
+        })
+        .map(({ article }) => article);
 
       if (updateHistory) {
         this.#updateHistory({
-          basePath: href ?? window.location.pathname,
+          basePath: basePath ?? window.location.pathname,
+          tag,
           query,
         });
       }
@@ -259,18 +342,21 @@ class BlogPageSearchComponent extends Component {
       );
     } catch (error) {
       if (error.name === "AbortError") return;
-
-      if (href) {
-        window.location.assign(href);
-      }
+      this.#emitChange(query);
     } finally {
       this.removeAttribute("aria-busy");
       this.#abortController = null;
     }
   }
 
-  #updateHistory({ basePath, query }) {
+  #updateHistory({ basePath, tag, query }) {
     const url = new URL(basePath, window.location.origin);
+
+    if (!tag || tag === "all") {
+      url.searchParams.delete("tag");
+    } else {
+      url.searchParams.set("tag", tag);
+    }
 
     if (query === "") {
       url.searchParams.delete("q");
@@ -282,6 +368,14 @@ class BlogPageSearchComponent extends Component {
     window.history.pushState({}, "", url);
   }
 
+  #handlePopState = () => {
+    this.#hydrateFromUrl();
+  };
+
+  #getCurrentPagePath() {
+    return window.location.pathname;
+  }
+
   #handleize(value) {
     return String(value ?? "")
       .toLowerCase()
@@ -289,6 +383,12 @@ class BlogPageSearchComponent extends Component {
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
+  }
+
+  #stripHTML(value) {
+    const template = document.createElement("template");
+    template.innerHTML = value;
+    return template.content.textContent?.replace(/\s+/g, " ").trim() ?? "";
   }
 }
 
