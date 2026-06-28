@@ -1,0 +1,69 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "why_crossfit_main": {
+      "type": "why-crossfit-page",
+      "blocks": {
+        "reason_1": {
+          "type": "reason",
+          "settings": {
+            "image": "shopify://shop_images/image_73_3.png",
+            "heading": "Expert Coaching",
+            "copy": "<p>Our experienced coaches guide every session, ensuring workouts are safe, effective, and tailored to all fitness levels.</p>"
+          }
+        },
+        "reason_2": {
+          "type": "reason",
+          "settings": {
+            "image": "shopify://shop_images/image_73_4.png",
+            "heading": "A Strong Community",
+            "copy": "<p>CrossFit is about more than just workouts. Our members support each other, celebrate progress, and train together in a positive environment.</p>"
+          }
+        },
+        "reason_3": {
+          "type": "reason",
+          "settings": {
+            "image": "shopify://shop_images/image_73_6.png",
+            "heading": "Proven Training Methods",
+            "copy": "<p>Our programming combines strength training, conditioning, and skill development to help you build real, functional fitness.</p>"
+          }
+        },
+        "reason_4": {
+          "type": "reason",
+          "settings": {
+            "image": "shopify://shop_images/open_4.png",
+            "heading": "Results That Improve Everyday Life",
+            "copy": "<p>The goal is not just performance in the gym. It is feeling stronger, healthier, and more capable in daily life.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "reason_1",
+        "reason_2",
+        "reason_3",
+        "reason_4"
+      ],
+      "settings": {
+        "fallback_title": "Why CrossFit Claremont?",
+        "hero_image": "shopify://shop_images/yellow_team.png",
+        "mission_eyebrow": "Our Mission",
+        "mission_heading": "Helping People Move Better, Get Stronger, and Live Healthier",
+        "mission_copy": "<p>CrossFit is a measurable approach to fitness built on constantly varied functional movements performed at intensity. At CrossFit Claremont, our goal is to help people improve their health, fitness, and overall quality of life.</p><p>We welcome people of all ages, backgrounds, and experience levels. Whether you are stepping into a gym for the first time or have trained for years, our coaching and programming are designed to meet you where you are and help you progress.</p>",
+        "color_scheme": "scheme-3",
+        "padding-block-start": 40,
+        "padding-block-end": 56
+      }
+    }
+  },
+  "order": [
+    "why_crossfit_main"
+  ]
+}

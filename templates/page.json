@@ -19,7 +19,9 @@
             "text": "<p>A community built on hard work, support, and long-term fitness.</p>",
             "width": "100%",
             "max_width": "normal",
+            "desktop_max_width": 0,
             "alignment": "center",
+            "desktop_position": "",
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
@@ -40,7 +42,6 @@
         },
         "page-content": {
           "type": "page-content",
-          "disabled": true,
           "settings": {},
           "blocks": {}
         }

@@ -1,0 +1,410 @@
+{% liquid
+  assign page_title = page.title | default: section.settings.fallback_title
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<section class="why-crossfit-page color-{{ section.settings.color_scheme }}">
+  <div
+    class="section section--page-width spacing-style"
+    style="{% render 'spacing-style', settings: section.settings %}"
+  >
+    <div class="why-crossfit-page__intro">
+      <h1 class="why-crossfit-page__title">{{ page_title }}</h1>
+    </div>
+
+    <div class="why-crossfit-page__cards">
+      {% for block in section.blocks %}
+        {% liquid
+          assign card_image_alt = block.settings.heading
+          if block.settings.image != blank and block.settings.image.alt != blank
+            assign card_image_alt = block.settings.image.alt
+          endif
+        %}
+        <article
+          class="why-crossfit-page__card"
+          {{ block.shopify_attributes }}
+        >
+          <div class="why-crossfit-page__card-media">
+            {% if block.settings.image != blank %}
+              {{
+                block.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  class: 'why-crossfit-page__card-image',
+                  widths: '480, 720, 960, 1200',
+                  sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+                  loading: 'lazy',
+                  alt: card_image_alt
+              }}
+            {% else %}
+              <div class="why-crossfit-page__card-placeholder"></div>
+            {% endif %}
+          </div>
+
+          {% if block.settings.heading != blank %}
+            <h2 class="why-crossfit-page__card-title">{{ block.settings.heading }}</h2>
+          {% endif %}
+
+          {% if block.settings.copy != blank %}
+            <div class="why-crossfit-page__card-copy rte">
+              {{ block.settings.copy }}
+            </div>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+
+    {% if page.content != blank %}
+      <div class="why-crossfit-page__body rte">
+        {{ page.content }}
+      </div>
+    {% endif %}
+
+    <div class="why-crossfit-page__mission">
+      {% liquid
+        assign mission_image_alt = page_title
+        if section.settings.hero_image != blank and section.settings.hero_image.alt != blank
+          assign mission_image_alt = section.settings.hero_image.alt
+        endif
+      %}
+      <div class="why-crossfit-page__mission-media">
+        {% if section.settings.hero_image != blank %}
+          {{
+            section.settings.hero_image
+            | image_url: width: 2200
+            | image_tag:
+              class: 'why-crossfit-page__mission-image',
+              widths: '720, 1200, 1600, 2200',
+              sizes: '100vw',
+              loading: 'lazy',
+              alt: mission_image_alt
+          }}
+        {% endif %}
+        <div class="why-crossfit-page__mission-overlay"></div>
+      </div>
+
+      <div class="why-crossfit-page__mission-content">
+        {% if section.settings.mission_eyebrow != blank %}
+          <p class="why-crossfit-page__mission-eyebrow">{{ section.settings.mission_eyebrow }}</p>
+        {% endif %}
+
+        {% if section.settings.mission_heading != blank %}
+          <h2 class="why-crossfit-page__mission-heading">{{ section.settings.mission_heading }}</h2>
+        {% endif %}
+
+        {% if section.settings.mission_copy != blank %}
+          <div class="why-crossfit-page__mission-copy rte">
+            {{ section.settings.mission_copy }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .why-crossfit-page__intro {
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .why-crossfit-page__title,
+  .why-crossfit-page__card-title,
+  .why-crossfit-page__mission-heading {
+    margin: 0;
+    font-family: var(--font-primary--family);
+    color: var(--color-foreground-heading);
+  }
+
+  .why-crossfit-page__title {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 0.95;
+  }
+
+  .why-crossfit-page__cards {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .why-crossfit-page__card {
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .why-crossfit-page__card-media {
+    overflow: hidden;
+    border-radius: 14px;
+    aspect-ratio: 4 / 5;
+    background: rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .why-crossfit-page__card-image,
+  .why-crossfit-page__mission-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .why-crossfit-page__card-placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .why-crossfit-page__card-title {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    line-height: 0.98;
+  }
+
+  .why-crossfit-page__card-copy,
+  .why-crossfit-page__mission-copy {
+    color: rgb(var(--color-foreground-rgb) / 0.82);
+  }
+
+  .why-crossfit-page__card-copy {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .why-crossfit-page__card-copy > *:first-child,
+  .why-crossfit-page__mission-copy > *:first-child {
+    margin-top: 0;
+  }
+
+  .why-crossfit-page__card-copy > *:last-child,
+  .why-crossfit-page__mission-copy > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .why-crossfit-page__mission {
+    position: relative;
+    overflow: hidden;
+    min-height: 38rem;
+    border-radius: 0;
+    background: #111;
+  }
+
+  .why-crossfit-page__body {
+    max-width: 54rem;
+    margin: 0 0 clamp(3rem, 6vw, 5rem);
+    color: rgb(var(--color-foreground-rgb) / 0.82);
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .why-crossfit-page__body :is(h2, h3, h4) {
+    font-family: var(--font-primary--family);
+    color: var(--color-foreground-heading);
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  .why-crossfit-page__mission-media,
+  .why-crossfit-page__mission-overlay {
+    position: absolute;
+    inset: 0;
+  }
+
+  .why-crossfit-page__mission-overlay {
+    background: linear-gradient(90deg, rgb(17 17 17 / 0.18), rgb(17 17 17 / 0.68));
+  }
+
+  .why-crossfit-page__mission-content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: start;
+    gap: 1rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    color: #fff;
+  }
+
+  .why-crossfit-page__mission-eyebrow {
+    margin: 0;
+    font-family: var(--font-primary--family);
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    color: #bb35ff;
+  }
+
+  .why-crossfit-page__mission-heading {
+    max-width: 14ch;
+    font-size: clamp(2.7rem, 8vw, 6rem);
+    line-height: 0.92;
+    color: #fff;
+  }
+
+  .why-crossfit-page__mission-copy {
+    max-width: 34rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgb(255 255 255 / 0.92);
+  }
+
+  @media screen and (min-width: 750px) {
+    .why-crossfit-page__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .why-crossfit-page__card-copy {
+      font-size: 1.1rem;
+    }
+
+    .why-crossfit-page__body {
+      font-size: 1.1rem;
+    }
+
+    .why-crossfit-page__mission-content {
+      min-height: 38rem;
+      align-content: center;
+      justify-items: end;
+      margin-left: auto;
+      max-width: min(58%, 56rem);
+      text-align: right;
+    }
+
+    .why-crossfit-page__mission-copy {
+      margin-left: auto;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .why-crossfit-page__cards {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Why CrossFit Page",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "blocks": [
+    {
+      "type": "reason",
+      "name": "Reason",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Expert Coaching"
+        },
+        {
+          "type": "richtext",
+          "id": "copy",
+          "label": "Copy",
+          "default": "<p>Our experienced coaches guide every session, ensuring training is safe, effective, and tailored to all fitness levels.</p>"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Fallback title",
+      "default": "Why CrossFit Claremont?"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Mission image"
+    },
+    {
+      "type": "text",
+      "id": "mission_eyebrow",
+      "label": "Mission eyebrow",
+      "default": "Our Mission"
+    },
+    {
+      "type": "textarea",
+      "id": "mission_heading",
+      "label": "Mission heading",
+      "default": "Helping People Move Better, Get Stronger, and Live Healthier"
+    },
+    {
+      "type": "richtext",
+      "id": "mission_copy",
+      "label": "Mission copy",
+      "default": "<p>CrossFit is constantly varied functional movements performed at intensity. Our coaching and programming are designed to help people improve their health, fitness, and quality of life through measurable, repeatable training.</p><p>We welcome all ages, backgrounds, and experience levels. The goal is broad, general fitness that supports real life, not narrow specialisation.</p>"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Why CrossFit Page",
+      "blocks": {
+        "reason_1": {
+          "type": "reason",
+          "settings": {
+            "heading": "Expert Coaching",
+            "copy": "<p>Our experienced coaches guide every session, ensuring workouts are safe, effective, and tailored to all fitness levels.</p>"
+          }
+        },
+        "reason_2": {
+          "type": "reason",
+          "settings": {
+            "heading": "A Strong Community",
+            "copy": "<p>CrossFit is about more than workouts. Members support each other, celebrate progress, and train together in a positive environment.</p>"
+          }
+        },
+        "reason_3": {
+          "type": "reason",
+          "settings": {
+            "heading": "Proven Training Methods",
+            "copy": "<p>Our programming combines strength training, conditioning, and skill development to help you build real, functional fitness.</p>"
+          }
+        },
+        "reason_4": {
+          "type": "reason",
+          "settings": {
+            "heading": "Results That Improve Everyday Life",
+            "copy": "<p>The goal is not only performance in the gym, but feeling stronger, healthier, and more capable in daily life.</p>"
+          }
+        }
+      },
+      "block_order": ["reason_1", "reason_2", "reason_3", "reason_4"]
+    }
+  ]
+}
+{% endschema %}
