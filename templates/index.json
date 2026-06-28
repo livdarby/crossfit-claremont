@@ -890,8 +890,8 @@
               "type": "button",
               "name": "t:names.button",
               "settings": {
-                "label": "Learn More",
-                "link": "shopify://collections/all",
+                "label": "Meet the coaches",
+                "link": "shopify://pages/coaches",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "width": "fit-content",
@@ -1036,7 +1036,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Learn More",
-                "link": "shopify://collections/all",
+                "link": "shopify://pages/timetable",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "width": "fit-content",
@@ -1181,7 +1181,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Learn More",
-                "link": "shopify://collections/all",
+                "link": "shopify://pages/timetable",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "width": "fit-content",
@@ -1326,7 +1326,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Learn More",
-                "link": "shopify://collections/all",
+                "link": "shopify://pages/timetable",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "width": "fit-content",
@@ -1471,7 +1471,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Learn More",
-                "link": "shopify://collections/all",
+                "link": "shopify://pages/timetable",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "width": "fit-content",
