@@ -3,12 +3,21 @@
 %}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
-<section class="why-crossfit-page color-{{ section.settings.color_scheme }}">
+<section
+  class="why-crossfit-page color-{{ section.settings.color_scheme }}"
+  style="
+    {% render 'prefixed-typography-style', settings: section.settings, prefix: 'body_heading_', type: 'heading', css_var_prefix: 'why-body-heading' %}
+    {% render 'prefixed-typography-style', settings: section.settings, prefix: 'body_copy_', type: 'body', css_var_prefix: 'why-body-copy' %}
+  "
+>
   <div
     class="section section--page-width spacing-style"
     style="{% render 'spacing-style', settings: section.settings %}"
   >
-    <div class="why-crossfit-page__intro">
+    <div
+      class="why-crossfit-page__intro"
+      style="{% render 'prefixed-typography-style', settings: section.settings, prefix: 'title_', type: 'display' %}"
+    >
       <h1 class="why-crossfit-page__title">{{ page_title }}</h1>
     </div>
 
@@ -42,11 +51,19 @@
           </div>
 
           {% if block.settings.heading != blank %}
-            <h2 class="why-crossfit-page__card-title">{{ block.settings.heading }}</h2>
+            <h2
+              class="why-crossfit-page__card-title"
+              style="{% render 'prefixed-typography-style', settings: section.settings, prefix: 'card_heading_', type: 'heading' %}"
+            >
+              {{ block.settings.heading }}
+            </h2>
           {% endif %}
 
           {% if block.settings.copy != blank %}
-            <div class="why-crossfit-page__card-copy rte">
+            <div
+              class="why-crossfit-page__card-copy rte"
+              style="{% render 'prefixed-typography-style', settings: section.settings, prefix: 'card_copy_', type: 'body' %}"
+            >
               {{ block.settings.copy }}
             </div>
           {% endif %}
@@ -85,15 +102,28 @@
 
       <div class="why-crossfit-page__mission-content">
         {% if section.settings.mission_eyebrow != blank %}
-          <p class="why-crossfit-page__mission-eyebrow">{{ section.settings.mission_eyebrow }}</p>
+          <p
+            class="why-crossfit-page__mission-eyebrow"
+            style="{% render 'prefixed-typography-style', settings: section.settings, prefix: 'mission_eyebrow_', type: 'body' %}"
+          >
+            {{ section.settings.mission_eyebrow }}
+          </p>
         {% endif %}
 
         {% if section.settings.mission_heading != blank %}
-          <h2 class="why-crossfit-page__mission-heading">{{ section.settings.mission_heading }}</h2>
+          <h2
+            class="why-crossfit-page__mission-heading"
+            style="{% render 'prefixed-typography-style', settings: section.settings, prefix: 'mission_heading_', type: 'display' %}"
+          >
+            {{ section.settings.mission_heading }}
+          </h2>
         {% endif %}
 
         {% if section.settings.mission_copy != blank %}
-          <div class="why-crossfit-page__mission-copy rte">
+          <div
+            class="why-crossfit-page__mission-copy rte"
+            style="{% render 'prefixed-typography-style', settings: section.settings, prefix: 'mission_copy_', type: 'body' %}"
+          >
             {{ section.settings.mission_copy }}
           </div>
         {% endif %}
@@ -111,13 +141,16 @@
   .why-crossfit-page__card-title,
   .why-crossfit-page__mission-heading {
     margin: 0;
-    font-family: var(--font-primary--family);
-    color: var(--color-foreground-heading);
+    font-family: var(--font-family, var(--font-heading--family));
+    color: var(--color, var(--color-foreground-heading));
+    line-height: var(--line-height, normal);
+    letter-spacing: var(--letter-spacing, 0);
+    text-transform: var(--text-transform, none);
+    text-wrap: var(--text-wrap, pretty);
   }
 
   .why-crossfit-page__title {
-    font-size: clamp(3rem, 7vw, 5.5rem);
-    line-height: 0.95;
+    font-size: var(--font-size, clamp(3rem, 7vw, 5.5rem));
   }
 
   .why-crossfit-page__cards {
@@ -152,8 +185,7 @@
   }
 
   .why-crossfit-page__card-title {
-    font-size: clamp(2rem, 4vw, 2.8rem);
-    line-height: 0.98;
+    font-size: var(--font-size, clamp(2rem, 4vw, 2.8rem));
   }
 
   .why-crossfit-page__card-copy,
@@ -162,8 +194,18 @@
   }
 
   .why-crossfit-page__card-copy {
-    font-size: 1rem;
-    line-height: 1.65;
+    font-family: var(--font-family, var(--font-body--family));
+    font-size: var(--font-size, 1rem);
+    line-height: var(--line-height, 1.65);
+    letter-spacing: var(--letter-spacing, normal);
+    text-transform: var(--text-transform, none);
+    text-wrap: var(--text-wrap, pretty);
+    color: var(--color, rgb(var(--color-foreground-rgb) / 0.82));
+  }
+
+  .why-crossfit-page__card-copy p,
+  .why-crossfit-page__mission-copy p {
+    line-height: var(--font-paragraph--line-height);
   }
 
   .why-crossfit-page__card-copy > *:first-child,
@@ -187,16 +229,23 @@
   .why-crossfit-page__body {
     max-width: 54rem;
     margin: 0 0 clamp(3rem, 6vw, 5rem);
-    color: rgb(var(--color-foreground-rgb) / 0.82);
-    font-size: 1rem;
-    line-height: 1.75;
+    color: var(--why-body-copy-color, rgb(var(--color-foreground-rgb) / 0.82));
+    font-family: var(--why-body-copy-font-family, var(--font-body--family));
+    font-size: var(--why-body-copy-font-size, 1rem);
+    line-height: var(--why-body-copy-line-height, 1.75);
+    letter-spacing: var(--why-body-copy-letter-spacing, normal);
+    text-transform: var(--why-body-copy-text-transform, none);
+    text-wrap: var(--why-body-copy-text-wrap, pretty);
   }
 
   .why-crossfit-page__body :is(h2, h3, h4) {
-    font-family: var(--font-primary--family);
-    color: var(--color-foreground-heading);
-    line-height: 0.98;
-    letter-spacing: 0;
+    font-family: var(--why-body-heading-font-family, var(--font-heading--family));
+    font-size: var(--why-body-heading-font-size, 2rem);
+    color: var(--why-body-heading-color, var(--color-foreground-heading));
+    line-height: var(--why-body-heading-line-height, 0.98);
+    letter-spacing: var(--why-body-heading-letter-spacing, 0);
+    text-transform: var(--why-body-heading-text-transform, none);
+    text-wrap: var(--why-body-heading-text-wrap, pretty);
   }
 
   .why-crossfit-page__mission-media,
@@ -221,23 +270,30 @@
 
   .why-crossfit-page__mission-eyebrow {
     margin: 0;
-    font-family: var(--font-primary--family);
-    font-size: clamp(1.2rem, 2vw, 1.6rem);
-    color: #bb35ff;
+    font-family: var(--font-family, var(--font-heading--family));
+    font-size: var(--font-size, clamp(1.2rem, 2vw, 1.6rem));
+    line-height: var(--line-height, normal);
+    letter-spacing: var(--letter-spacing, normal);
+    text-transform: var(--text-transform, none);
+    text-wrap: var(--text-wrap, pretty);
+    color: var(--color, #bb35ff);
   }
 
   .why-crossfit-page__mission-heading {
     max-width: 14ch;
-    font-size: clamp(2.7rem, 8vw, 6rem);
-    line-height: 0.92;
-    color: #fff;
+    font-size: var(--font-size, clamp(2.7rem, 8vw, 6rem));
+    color: var(--color, #fff);
   }
 
   .why-crossfit-page__mission-copy {
     max-width: 34rem;
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: rgb(255 255 255 / 0.92);
+    font-family: var(--font-family, var(--font-body--family));
+    font-size: var(--font-size, 1.05rem);
+    line-height: var(--line-height, 1.7);
+    letter-spacing: var(--letter-spacing, normal);
+    text-transform: var(--text-transform, none);
+    text-wrap: var(--text-wrap, pretty);
+    color: var(--color, rgb(255 255 255 / 0.92));
   }
 
   @media screen and (min-width: 750px) {
@@ -310,15 +366,667 @@
   ],
   "settings": [
     {
+      "type": "header",
+      "content": "Page title typography"
+    },
+    {
       "type": "text",
       "id": "fallback_title",
       "label": "Fallback title",
       "default": "Why CrossFit Claremont?"
     },
     {
+      "type": "select",
+      "id": "title_font",
+      "label": "Title font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-heading--family)"
+    },
+    {
+      "type": "select",
+      "id": "title_font_size",
+      "label": "Title size",
+      "options": [
+        { "value": "3rem", "label": "48px" },
+        { "value": "3.5rem", "label": "56px" },
+        { "value": "4.5rem", "label": "72px" },
+        { "value": "5.5rem", "label": "88px" }
+      ],
+      "default": "5.5rem"
+    },
+    {
+      "type": "select",
+      "id": "title_line_height",
+      "label": "Title line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "tight"
+    },
+    {
+      "type": "select",
+      "id": "title_letter_spacing",
+      "label": "Title letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "title_case",
+      "label": "Title case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "title_wrap",
+      "label": "Title wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "title_color",
+      "label": "Title color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "Text" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" },
+        { "value": "var(--color-primary)", "label": "Link" }
+      ],
+      "default": "var(--color-foreground-heading)"
+    },
+    {
+      "type": "header",
+      "content": "Feature card heading typography"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_font",
+      "label": "Card heading font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-heading--family)"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_font_size",
+      "label": "Card heading size",
+      "options": [
+        { "value": "1.5rem", "label": "24px" },
+        { "value": "2rem", "label": "32px" },
+        { "value": "2.5rem", "label": "40px" }
+      ],
+      "default": "2.5rem"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_line_height",
+      "label": "Card heading line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "tight"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_letter_spacing",
+      "label": "Card heading letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_case",
+      "label": "Card heading case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_wrap",
+      "label": "Card heading wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_color",
+      "label": "Card heading color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "Text" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" },
+        { "value": "var(--color-primary)", "label": "Link" }
+      ],
+      "default": "var(--color-foreground-heading)"
+    },
+    {
+      "type": "header",
+      "content": "Feature card copy typography"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_font",
+      "label": "Card copy font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-body--family)"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_font_size",
+      "label": "Card copy size",
+      "options": [
+        { "value": "0.875rem", "label": "14px" },
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.125rem", "label": "18px" },
+        { "value": "1.25rem", "label": "20px" }
+      ],
+      "default": "1rem"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_line_height",
+      "label": "Card copy line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_letter_spacing",
+      "label": "Card copy letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_case",
+      "label": "Card copy case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_wrap",
+      "label": "Card copy wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_color",
+      "label": "Card copy color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "Text" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" },
+        { "value": "var(--color-primary)", "label": "Link" }
+      ],
+      "default": "var(--color-foreground)"
+    },
+    {
+      "type": "header",
+      "content": "Mission eyebrow typography"
+    },
+    {
       "type": "image_picker",
       "id": "hero_image",
       "label": "Mission image"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_font",
+      "label": "Mission eyebrow font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-heading--family)"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_font_size",
+      "label": "Mission eyebrow size",
+      "options": [
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.25rem", "label": "20px" },
+        { "value": "1.5rem", "label": "24px" }
+      ],
+      "default": "1.5rem"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_line_height",
+      "label": "Mission eyebrow line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_letter_spacing",
+      "label": "Mission eyebrow letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_case",
+      "label": "Mission eyebrow case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_wrap",
+      "label": "Mission eyebrow wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_color",
+      "label": "Mission eyebrow color",
+      "options": [
+        { "value": "#bb35ff", "label": "Purple" },
+        { "value": "#ffffff", "label": "White" },
+        { "value": "var(--color-primary)", "label": "Link" }
+      ],
+      "default": "#bb35ff"
+    },
+    {
+      "type": "header",
+      "content": "Mission heading typography"
+    },
+    {
+      "type": "select",
+      "id": "mission_heading_font",
+      "label": "Mission heading font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-heading--family)"
+    },
+    {
+      "type": "select",
+      "id": "mission_heading_font_size",
+      "label": "Mission heading size",
+      "options": [
+        { "value": "3rem", "label": "48px" },
+        { "value": "4.5rem", "label": "72px" },
+        { "value": "5.5rem", "label": "88px" },
+        { "value": "7.5rem", "label": "120px" }
+      ],
+      "default": "5.5rem"
+    },
+    {
+      "type": "select",
+      "id": "mission_heading_line_height",
+      "label": "Mission heading line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "tight"
+    },
+    {
+      "type": "select",
+      "id": "mission_heading_letter_spacing",
+      "label": "Mission heading letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "mission_heading_case",
+      "label": "Mission heading case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "mission_heading_wrap",
+      "label": "Mission heading wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "mission_heading_color",
+      "label": "Mission heading color",
+      "options": [
+        { "value": "#ffffff", "label": "White" },
+        { "value": "#bb35ff", "label": "Purple" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" }
+      ],
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Mission copy typography"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_font",
+      "label": "Mission copy font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-body--family)"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_font_size",
+      "label": "Mission copy size",
+      "options": [
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.125rem", "label": "18px" },
+        { "value": "1.25rem", "label": "20px" }
+      ],
+      "default": "1.125rem"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_line_height",
+      "label": "Mission copy line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_letter_spacing",
+      "label": "Mission copy letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_case",
+      "label": "Mission copy case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_wrap",
+      "label": "Mission copy wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_color",
+      "label": "Mission copy color",
+      "options": [
+        { "value": "#ffffff", "label": "White" },
+        { "value": "rgb(255 255 255 / 0.92)", "label": "Soft white" },
+        { "value": "var(--color-foreground)", "label": "Text" }
+      ],
+      "default": "rgb(255 255 255 / 0.92)"
+    },
+    {
+      "type": "header",
+      "content": "Page body heading typography"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_font",
+      "label": "Body heading font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-heading--family)"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_font_size",
+      "label": "Body heading size",
+      "options": [
+        { "value": "1.5rem", "label": "24px" },
+        { "value": "2rem", "label": "32px" },
+        { "value": "2.5rem", "label": "40px" }
+      ],
+      "default": "2rem"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_line_height",
+      "label": "Body heading line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "tight"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_letter_spacing",
+      "label": "Body heading letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_case",
+      "label": "Body heading case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_wrap",
+      "label": "Body heading wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_color",
+      "label": "Body heading color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "Text" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" },
+        { "value": "var(--color-primary)", "label": "Link" }
+      ],
+      "default": "var(--color-foreground-heading)"
+    },
+    {
+      "type": "header",
+      "content": "Page body copy typography"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_font",
+      "label": "Body copy font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-body--family)"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_font_size",
+      "label": "Body copy size",
+      "options": [
+        { "value": "0.875rem", "label": "14px" },
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.125rem", "label": "18px" },
+        { "value": "1.25rem", "label": "20px" }
+      ],
+      "default": "1rem"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_line_height",
+      "label": "Body copy line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_letter_spacing",
+      "label": "Body copy letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_case",
+      "label": "Body copy case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_wrap",
+      "label": "Body copy wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_color",
+      "label": "Body copy color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "Text" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" },
+        { "value": "var(--color-primary)", "label": "Link" }
+      ],
+      "default": "var(--color-foreground)"
     },
     {
       "type": "text",
