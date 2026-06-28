@@ -61,35 +61,11 @@
     },
     "blog_page_search_Hh4K9R": {
       "type": "blog-page-search",
-      "blocks": {
-        "heading": {
-          "type": "_heading",
-          "static": true,
-          "settings": {
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "text": "",
-            "read_only": false,
-            "alignment": "center",
-            "show_alignment": true,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
       "settings": {
         "blog": "wod",
         "heading": "Search programs",
         "placeholder": "Search program titles",
+        "storefront_api_token": "21c7ce8c899894cddbbd2e8f862b59e2",
         "alignment": "center",
         "search_width": 100,
         "color_scheme": "scheme-2",
@@ -229,6 +205,8 @@
         "carousel_on_mobile": false,
         "post_limit": 6,
         "paginate_blog_cards": true,
+        "archive_link": "",
+        "archive_label": "See all blogs",
         "columns": 3,
         "mobile_columns": "1",
         "mobile_card_size": "60cqw",

@@ -20,9 +20,13 @@ class FeaturedBlogPostsComponent extends Component {
   /** @type {boolean} */
   #defaultPaginationHidden = false;
 
+  /** @type {{ tags: string[], title: string, html: string }[] | null} */
+  #storefrontCards = null;
+
   connectedCallback() {
     super.connectedCallback();
     this.#resetFilterStateCache();
+    this.#enhanceCards();
     document.addEventListener(
       "blog-page-search:change",
       this.#handleSearchChange,
@@ -66,6 +70,7 @@ class FeaturedBlogPostsComponent extends Component {
       });
 
       this.#resetFilterStateCache();
+      this.#enhanceCards();
       history.pushState({}, "", url);
     } catch (error) {
       if (error.name !== "AbortError") {
@@ -80,9 +85,42 @@ class FeaturedBlogPostsComponent extends Component {
   #handleSearchChange = async (event) => {
     const tag = event.detail?.tag ?? "all";
     const query = (event.detail?.query ?? "").trim();
+    const storefrontArticles = Array.isArray(event.detail?.articles)
+      ? event.detail.articles
+      : null;
 
-    if (tag === "all" && query === "") {
-      this.#restoreDefaultGrid();
+    if (tag === "all") {
+      this.#storefrontCards = null;
+
+      if (query === "") {
+        this.#restoreDefaultGrid();
+        return;
+      }
+
+      this.#filterCards({ tag, query });
+      return;
+    }
+
+    if (storefrontArticles) {
+      this.#storefrontCards = storefrontArticles.map((article) =>
+        this.#mapStorefrontArticleToCard(article),
+      );
+      this.#renderFilteredCards(this.#storefrontCards);
+      return;
+    }
+
+    if (this.#storefrontCards) {
+      const normalizedQuery = query.toLowerCase();
+      const matchingCards = this.#storefrontCards.filter((card) => {
+        const matchesTag = tag === "all" || card.tags.includes(tag);
+        const matchesQuery =
+          normalizedQuery === "" ||
+          card.title.toLowerCase().includes(normalizedQuery);
+
+        return matchesTag && matchesQuery;
+      });
+
+      this.#renderFilteredCards(matchingCards);
       return;
     }
 
@@ -97,6 +135,7 @@ class FeaturedBlogPostsComponent extends Component {
 
     grid.innerHTML = this.#defaultGridHTML;
     this.removeAttribute("data-filtered");
+    this.#enhanceCards();
 
     const emptyState = this.querySelector('[ref="emptyState"]');
     if (emptyState instanceof HTMLElement) {
@@ -196,6 +235,7 @@ class FeaturedBlogPostsComponent extends Component {
     this.#defaultGridHTML = null;
     this.#defaultEmptyStateHidden = true;
     this.#defaultPaginationHidden = false;
+    this.#storefrontCards = null;
   }
 
   /**
@@ -240,6 +280,7 @@ class FeaturedBlogPostsComponent extends Component {
 
     this.setAttribute("data-filtered", "true");
     grid.innerHTML = cards.map((card) => card.html).join("");
+    this.#enhanceCards();
 
     const emptyState = this.querySelector('[ref="emptyState"]');
     if (emptyState instanceof HTMLElement) {
@@ -250,6 +291,208 @@ class FeaturedBlogPostsComponent extends Component {
     if (paginationNav instanceof HTMLElement) {
       paginationNav.hidden = true;
     }
+  }
+
+  /**
+   * @param {{
+   *   title?: string,
+   *   tags?: string[],
+   *   excerpt?: string,
+   *   publishedAt?: string,
+   *   onlineStoreUrl?: string,
+   *   handle?: string,
+   *   image?: { url?: string, altText?: string | null }
+   * }} article
+   */
+  #mapStorefrontArticleToCard(article) {
+    const tags = Array.isArray(article?.tags)
+      ? article.tags
+          .map((tag) => this.#handleize(tag))
+          .filter(Boolean)
+      : [];
+    const title = String(article?.title ?? "");
+    const url =
+      article?.onlineStoreUrl ||
+      (article?.handle ? `/blogs/${this.#getBlogHandle()}/${article.handle}` : "#");
+    const excerpt = this.#escapeHTML(String(article?.excerpt ?? ""));
+    const date = article?.publishedAt
+      ? new Intl.DateTimeFormat(undefined, {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        }).format(new Date(article.publishedAt))
+      : "";
+    const buttonLabel = this.dataset.buttonLabel ?? "Read more";
+    const image = article?.image?.url
+      ? `
+        <div class="featured-blog-posts-card__image">
+          <img
+            class="resource-image__image"
+            src="${this.#escapeAttribute(article.image.url)}"
+            alt="${this.#escapeAttribute(article.image.altText || title)}"
+            loading="lazy"
+          >
+        </div>
+      `
+      : `
+        <div class="featured-blog-posts-card__image featured-blog-posts-card__image--placeholder">
+          <span>No image</span>
+        </div>
+      `;
+
+    return {
+      tags,
+      title,
+      html: `
+        <div
+          class="resource-list__item"
+          data-tags="${this.#escapeAttribute(tags.join("|"))}"
+          data-title="${this.#escapeAttribute(title)}"
+        >
+          <article class="featured-blog-posts-card featured-blog-posts-card--api">
+            <div class="featured-blog-posts-card__inner">
+              ${image}
+              <div class="featured-blog-posts-card__content featured-blog-posts-card__content--api">
+                ${date ? `<p class="featured-blog-posts-card__meta">${this.#escapeHTML(date)}</p>` : ""}
+                <h4 class="featured-blog-posts-card__title">${this.#escapeHTML(title)}</h4>
+                ${excerpt ? `<p class="featured-blog-posts-card__excerpt">${excerpt}</p>` : ""}
+                <span class="button-secondary featured-blog-posts-card__button">${this.#escapeHTML(buttonLabel)}</span>
+              </div>
+              <a class="featured-blog-posts-card__link" href="${this.#escapeAttribute(url)}" aria-label="${this.#escapeAttribute(title)}"></a>
+            </div>
+          </article>
+        </div>
+      `,
+    };
+  }
+
+  #getBlogHandle() {
+    const search = document.querySelector("blog-page-search-component");
+    return search?.dataset.blogHandle ?? "";
+  }
+
+  #handleize(value) {
+    return String(value ?? "")
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  #escapeHTML(value) {
+    return value
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  #escapeAttribute(value) {
+    return this.#escapeHTML(String(value ?? ""));
+  }
+
+  #enhanceCards() {
+    for (const card of this.querySelectorAll(".resource-list__item")) {
+      if (!(card instanceof HTMLElement)) continue;
+
+      const title = card.querySelector("h4");
+      if (title instanceof HTMLElement) {
+        title.classList.add("featured-blog-posts-card__title");
+      }
+
+      if (card.dataset.hasExcerpt !== "false") continue;
+
+      const fallbackExcerpt = (card.dataset.fallbackExcerpt ?? "").trim();
+      if (fallbackExcerpt === "") continue;
+
+      const content = card.querySelector(".featured-blog-posts-card__content");
+      if (!(content instanceof HTMLElement)) continue;
+
+      const emptyExcerptContainer = content.querySelector(".blog-post-card__content-text");
+      if (
+        emptyExcerptContainer instanceof HTMLElement &&
+        emptyExcerptContainer.textContent?.trim() === ""
+      ) {
+        emptyExcerptContainer.classList.add("featured-blog-posts-card__excerpt--fallback");
+        emptyExcerptContainer.innerHTML = `<p>${this.#escapeHTML(this.#decodeHTML(fallbackExcerpt))}</p>`;
+        continue;
+      }
+
+      const existingFallback = content.querySelector(".featured-blog-posts-card__excerpt--fallback");
+      if (existingFallback) continue;
+
+      const fallbackNode = this.#createFallbackExcerptNode(card, fallbackExcerpt);
+      if (!fallbackNode) continue;
+
+      const button = content.querySelector(".button, .button-secondary");
+      if (button instanceof HTMLElement) {
+        content.insertBefore(fallbackNode, button);
+      } else {
+        content.appendChild(fallbackNode);
+      }
+    }
+  }
+
+  /**
+   * @param {HTMLElement} card
+   * @param {string} fallbackExcerpt
+   */
+  #createFallbackExcerptNode(card, fallbackExcerpt) {
+    const decodedExcerpt = this.#decodeHTML(fallbackExcerpt);
+    const excerptTemplate = this.#findExcerptTemplate(card);
+
+    if (excerptTemplate instanceof HTMLElement) {
+      const clone = excerptTemplate.cloneNode(true);
+      clone.classList.add("featured-blog-posts-card__excerpt--fallback");
+
+      if (clone.matches("rte-formatter")) {
+        clone.innerHTML = `<p>${this.#escapeHTML(decodedExcerpt)}</p>`;
+        return clone;
+      }
+
+      const paragraph = clone.querySelector("p");
+      if (paragraph instanceof HTMLElement) {
+        paragraph.textContent = decodedExcerpt;
+      } else {
+        clone.textContent = decodedExcerpt;
+      }
+
+      return clone;
+    }
+
+    const fallbackNode = document.createElement("p");
+    fallbackNode.className = "featured-blog-posts-card__excerpt featured-blog-posts-card__excerpt--fallback";
+    fallbackNode.textContent = decodedExcerpt;
+    return fallbackNode;
+  }
+
+  /**
+   * @param {HTMLElement} card
+   */
+  #findExcerptTemplate(card) {
+    const siblingTemplate = card.parentElement?.querySelector(
+      ".resource-list__item:not([data-has-excerpt='false']) .featured-blog-posts-card__content > .rte, .resource-list__item:not([data-has-excerpt='false']) .featured-blog-posts-card__content > .featured-blog-posts-card__excerpt",
+    );
+    if (siblingTemplate instanceof HTMLElement) {
+      return siblingTemplate;
+    }
+
+    const componentTemplate = this.querySelector(
+      ".featured-blog-posts-card__content > .rte, .featured-blog-posts-card__content > .featured-blog-posts-card__excerpt",
+    );
+    if (componentTemplate instanceof HTMLElement) {
+      return componentTemplate;
+    }
+
+    return null;
+  }
+
+  #decodeHTML(value) {
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = value;
+    return textarea.value;
   }
 }
 

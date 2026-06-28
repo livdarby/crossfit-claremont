@@ -50,52 +50,56 @@
     </div>
 
     {% liquid
-      assign crossfit_content = article.metafields.blog.crossfit_content
-      assign flow_content = article.metafields.blog.flow_content
-      assign hyrox_content = article.metafields.blog.hyrox_content
-      assign weightlifting_content = article.metafields.blog.weightlifting_content
+      assign program_content_metafields = section.settings.program_content_metafields | default: 'crossfit_content,flow_content,hyrox_content,weightlifting_content,fitness_content'
+      assign program_content_metafield_keys = program_content_metafields | newline_to_br | replace: '<br />', ',' | split: ','
     %}
-    {% if crossfit_content != blank
-      or flow_content != blank
-      or hyrox_content != blank
-      or weightlifting_content != blank
-    %}
+
+    {% capture wod_program_sections %}
+      {% for raw_metafield_key in program_content_metafield_keys %}
+        {% liquid
+          assign metafield_key = raw_metafield_key | strip
+          assign program_content = article.metafields.blog[metafield_key]
+        %}
+
+        {% if metafield_key != blank and metafield_key contains '_content' and program_content != blank %}
+          {% liquid
+            assign section_title = metafield_key | replace: '_content', '' | replace: '_', ' '
+            assign section_title_words = section_title | split: ' '
+            assign section_title = ''
+
+            for word in section_title_words
+              assign normalized_word = word | downcase
+
+              case normalized_word
+                when 'crossfit'
+                  assign formatted_word = 'CrossFit'
+                when 'hyrox'
+                  assign formatted_word = 'HYROX'
+                else
+                  assign formatted_word = normalized_word | capitalize
+              endcase
+
+              assign section_title = section_title | append: formatted_word
+
+              unless forloop.last
+                assign section_title = section_title | append: ' '
+              endunless
+            endfor
+          %}
+
+          <section class="wod-program-section">
+            <h2 class="wod-program-section__title">{{ section_title }}</h2>
+            <div class="wod-program-section__card">
+              {{ program_content | metafield_tag }}
+            </div>
+          </section>
+        {% endif %}
+      {% endfor %}
+    {% endcapture %}
+
+    {% if wod_program_sections != blank %}
       <div class="wod-program-sections">
-        {% if crossfit_content != blank %}
-          <section class="wod-program-section">
-            <h2 class="wod-program-section__title">CrossFit</h2>
-            <div class="wod-program-section__card">
-              {{ crossfit_content | metafield_tag }}
-            </div>
-          </section>
-        {% endif %}
-
-        {% if flow_content != blank %}
-          <section class="wod-program-section">
-            <h2 class="wod-program-section__title">Flow</h2>
-            <div class="wod-program-section__card">
-              {{ flow_content | metafield_tag }}
-            </div>
-          </section>
-        {% endif %}
-
-        {% if hyrox_content != blank %}
-          <section class="wod-program-section">
-            <h2 class="wod-program-section__title">HYROX</h2>
-            <div class="wod-program-section__card">
-              {{ hyrox_content | metafield_tag }}
-            </div>
-          </section>
-        {% endif %}
-
-        {% if weightlifting_content != blank %}
-          <section class="wod-program-section">
-            <h2 class="wod-program-section__title">Weightlifting</h2>
-            <div class="wod-program-section__card">
-              {{ weightlifting_content | metafield_tag }}
-            </div>
-          </section>
-        {% endif %}
+        {{ wod_program_sections }}
       </div>
     {% endif %}
 
@@ -304,6 +308,7 @@
   .article-links-block__list .button,
   .article-links-block__list .button-secondary {
     width: auto;
+    cursor: pointer;
   }
 
   .article-links-block__list .link {
@@ -592,6 +597,13 @@
         }
       ],
       "default": "link"
+    },
+    {
+      "type": "textarea",
+      "id": "program_content_metafields",
+      "label": "Program content metafields",
+      "info": "Comma or line separated keys from the blog namespace. Example: crossfit_content, fitness_content",
+      "default": "crossfit_content\nflow_content\nhyrox_content\nweightlifting_content\nfitness_content"
     },
     {
       "type": "header",

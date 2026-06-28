@@ -15,7 +15,14 @@
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 
-<blog-page-search-component data-initial-tag="{{ initial_tag }}">
+<blog-page-search-component
+  data-initial-tag="{{ initial_tag }}"
+  data-blog-handle="{{ source_blog.handle }}"
+  data-shop-domain="{{ shop.permanent_domain }}"
+  data-storefront-api-token="{{ section.settings.storefront_api_token | escape }}"
+  data-storefront-api-version="2025-01"
+  data-fetch-limit="100"
+>
   <div
     class="
       section
@@ -259,6 +266,12 @@
       "id": "placeholder",
       "label": "Placeholder",
       "default": "Search program titles"
+    },
+    {
+      "type": "text",
+      "id": "storefront_api_token",
+      "label": "Storefront API token",
+      "info": "Required for AJAX tag filtering. Use a Storefront API token with unauthenticated article access."
     },
     {
       "type": "select",

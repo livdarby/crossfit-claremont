@@ -188,6 +188,7 @@
         "top_links_heading": "",
         "top_links_menu": "wod-blog-links",
         "top_links_style": "link",
+        "program_content_metafields": "crossfit_content\nflow_content\nhyrox_content\nweightlifting_content\nfitness_content\nperformance_content",
         "padding-block-start": 40,
         "padding-block-end": 24
       }
