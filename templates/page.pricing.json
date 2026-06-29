@@ -29,7 +29,7 @@
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
-            "color": "var(--color-foreground-heading)",
+            "color": "var(--color-foreground)",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -86,7 +86,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>All prices are based on direct debit plan ᐧ Discount apply for military, students and first responders</p>",
+            "text": "<p>All prices are based on direct debit plan ᐧ Discounts apply for military, students and first responders</p>",
             "width": "fit-content",
             "max_width": "normal",
             "desktop_max_width": 0,
