@@ -1,0 +1,442 @@
+{% liquid
+  assign pricing_entries = blank
+  assign pricing_entry_handles = blank
+  assign metaobject_type = section.settings.metaobject_type | strip
+  assign max_column_position = 50
+
+  if metaobject_type != blank and shop.metaobjects[metaobject_type] != blank
+    assign pricing_entries = shop.metaobjects[metaobject_type].values
+  endif
+
+  if pricing_entries != blank
+    capture pricing_entry_handles
+      for expected_position in (1..50)
+        for pricing_entry in pricing_entries
+          assign entry_position = pricing_entry.column_position.value | default: 0
+
+          if entry_position == expected_position
+            echo pricing_entry.system.handle
+            echo '||'
+          endif
+        endfor
+      endfor
+
+      for pricing_entry in pricing_entries
+        assign entry_position = pricing_entry.column_position.value | default: 0
+
+        if entry_position < 1 or entry_position > max_column_position
+          echo pricing_entry.system.handle
+          echo '||'
+        endif
+      endfor
+    endcapture
+  endif
+
+  assign visible_column_count = 1
+  assign pricing_entry_handles_array = pricing_entry_handles | split: '||'
+
+  for pricing_entry_handle in pricing_entry_handles_array
+    if pricing_entry_handle != blank
+      assign visible_column_count = visible_column_count | plus: 1
+    endif
+  endfor
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+
+<section
+  class="
+    section
+    section--{{ section.settings.section_width }}
+    color-{{ section.settings.color_scheme }}
+    pricing-section
+    spacing-style
+    gap-style
+  "
+  style="
+    {% render 'spacing-style', settings: section.settings %}
+    {% render 'gap-style', value: section.settings.gap %}
+    --pricing-column-count: {{ visible_column_count }};
+  "
+>
+  {% if section.settings.eyebrow != blank
+    or section.settings.heading != blank
+    or section.settings.subheading != blank
+  %}
+    <div class="pricing-section__header">
+      {% if section.settings.eyebrow != blank %}
+        <p class="pricing-section__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2
+          class="pricing-section__heading {{ section.settings.heading_type_preset }}"
+          style="--color: {{ section.settings.heading_color }};"
+        >
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <div class="pricing-section__subheading rte">
+          {{ section.settings.subheading }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="pricing-section__table-wrap">
+    <table class="pricing-section__table">
+      <colgroup>
+        <col style="width: 200px;">
+        {% if pricing_entry_handles_array != blank %}
+          {% for pricing_entry_handle in pricing_entry_handles_array %}
+            {% if pricing_entry_handle != blank %}
+              <col style="width: 125px;">
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </colgroup>
+      <thead>
+        <tr>
+          <th scope="col">{{ section.settings.label_column_heading }}</th>
+
+          {% if pricing_entry_handles_array != blank %}
+            {% for pricing_entry_handle in pricing_entry_handles_array %}
+              {% if pricing_entry_handle != blank %}
+                {% for pricing_entry in pricing_entries %}
+                  {% if pricing_entry.system.handle == pricing_entry_handle %}
+                    {% liquid
+                      assign tier_label = pricing_entry.payment_frequency.value
+
+                      if tier_label == blank
+                        assign tier_label = pricing_entry.name.value | default: pricing_entry.name | default: pricing_entry.system.handle | replace: '-', ' ' | capitalize
+                      endif
+
+                      if tier_label == 'Unlimited Studio B'
+                        assign tier_label = 'Unlimited & Studio B'
+                      endif
+                    %}
+                    <th scope="col">
+                      {% render 'pricing-column-label', label: tier_label %}
+                    </th>
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </tr>
+      </thead>
+
+      <tbody>
+        {% if pricing_entry_handles_array != blank %}
+          {% for i in (1..5) %}
+            {% liquid
+              assign row_label = blank
+              assign row_field = blank
+
+              case i
+                when 1
+                  assign row_label = 'Monthly'
+                  assign row_field = 'monthly'
+                when 2
+                  assign row_label = 'Fortnightly'
+                  assign row_field = 'fortnightly'
+                when 3
+                  assign row_label = 'Weekly'
+                  assign row_field = 'weekly'
+                when 4
+                  assign row_label = 'Drop In'
+                  assign row_field = 'drop_in'
+                when 5
+                  assign row_label = 'Kids Punchcard'
+                  assign row_field = 'kids_punchcard'
+              endcase
+            %}
+
+            <tr>
+              <th scope="row">{{ row_label }}</th>
+
+              {% for pricing_entry_handle in pricing_entry_handles_array %}
+                {% if pricing_entry_handle != blank %}
+                  {% for pricing_entry in pricing_entries %}
+                    {% if pricing_entry.system.handle == pricing_entry_handle %}
+                      {% liquid
+                        assign value = pricing_entry[row_field]
+                      %}
+                      <td>
+                        {% if value.type == 'money' %}
+                          {{ value.value | money_without_trailing_zeros }}
+                        {% elsif value.type == 'rich_text_field' %}
+                          {{ value | metafield_tag }}
+                        {% else %}
+                          {{ value.value | default: value }}
+                        {% endif %}
+                      </td>
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        {% elsif request.design_mode %}
+          <tr>
+            <td colspan="{{ visible_column_count }}">
+              No pricing entries found for the `{{ metaobject_type }}` metaobject definition.
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% stylesheet %}
+  .pricing-section__header {
+    max-width: 48rem;
+  }
+
+  .pricing-section__eyebrow {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-heading--family);
+    font-size: 0.875rem;
+    line-height: var(--font-paragraph--line-height);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.72);
+  }
+
+  .pricing-section__heading {
+    margin: 0;
+    color: var(--color, var(--color-foreground-heading));
+  }
+
+  .pricing-section__subheading {
+    color: rgb(var(--color-foreground-rgb) / 0.82);
+  }
+
+  .pricing-section__subheading > *:first-child {
+    margin-top: 0;
+  }
+
+  .pricing-section__subheading > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .pricing-section__table-wrap {
+    overflow-x: auto;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+    border-radius: 1rem;
+    background: rgb(var(--color-background-rgb));
+    box-shadow: 0 18px 40px rgb(0 0 0 / 0.04);
+    padding: 0;
+  }
+
+  .pricing-section__table {
+    width: max(100%, calc(200px + (var(--pricing-column-count) - 1) * 125px));
+    border-collapse: collapse;
+    table-layout: fixed;
+    height: 100%;
+  }
+
+  .pricing-section__table th,
+  .pricing-section__table td {
+    padding: 1rem 1.25rem;
+    text-align: center;
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+    vertical-align: middle;
+  }
+
+  .pricing-section__table thead th {
+    font-family: var(--font-heading--family);
+    font-size: 1rem;
+    line-height: var(--line-height--heading-normal);
+    color: var(--color-foreground-heading);
+    background: rgb(var(--color-foreground-rgb) / 0.03);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    text-transform: uppercase;
+  }
+
+  .pricing-column-label {
+    display: block;
+  }
+
+  .pricing-column-label__main,
+  .pricing-column-label__suffix {
+    display: block;
+  }
+
+  .pricing-section__table tbody th {
+    font-family: var(--font-heading--family);
+    font-size: 1.125rem;
+    line-height: var(--line-height--heading-tight);
+    color: var(--color-foreground-heading);
+    white-space: nowrap;
+  }
+
+  .pricing-section__table tbody td {
+    color: rgb(var(--color-foreground-rgb) / 0.82);
+    white-space: nowrap;
+  }
+
+  .pricing-section__table th:first-child {
+    width: 200px;
+    min-width: 200px;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: rgb(var(--color-background-rgb));
+  }
+
+  .pricing-section__table thead th:first-child {
+    z-index: 2;
+    background: #eeede9;
+  }
+
+  .pricing-section__table tbody tr:last-child th,
+  .pricing-section__table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .pricing-section__table th,
+    .pricing-section__table td {
+      padding: 0.875rem 1rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Pricing",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Memberships"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Pricing"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Compare membership options pulled directly from your pricing metaobjects.</p>"
+    },
+    {
+      "type": "select",
+      "id": "heading_type_preset",
+      "label": "Heading preset",
+      "options": [
+        { "value": "h1", "label": "Heading 1" },
+        { "value": "h2", "label": "Heading 2" },
+        { "value": "h3", "label": "Heading 3" },
+        { "value": "h4", "label": "Heading 4" },
+        { "value": "h5", "label": "Heading 5" },
+        { "value": "h6", "label": "Heading 6" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_color",
+      "label": "Heading color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "Text" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" },
+        { "value": "var(--color-link)", "label": "Link" }
+      ],
+      "default": "var(--color-foreground-heading)"
+    },
+    {
+      "type": "header",
+      "content": "Metaobject source"
+    },
+    {
+      "type": "text",
+      "id": "metaobject_type",
+      "label": "Metaobject definition handle",
+      "default": "pricing"
+    },
+    {
+      "type": "text",
+      "id": "label_column_heading",
+      "label": "Row label column heading",
+      "default": "Frequency"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        { "value": "page-width", "label": "Page" },
+        { "value": "full-width", "label": "Full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pricing"
+    }
+  ]
+}
+{% endschema %}

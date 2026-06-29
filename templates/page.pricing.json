@@ -1,0 +1,239 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<p>Membership options built for different training schedules and goals.</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "desktop_max_width": 0,
+            "alignment": "center",
+            "desktop_position": "",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "disabled": true,
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "scheme-3",
+        "padding-block-start": 40,
+        "padding-block-end": 24
+      }
+    },
+    "pricing_main": {
+      "type": "pricing",
+      "custom_css": [
+        ".pricing-section__heading,.pricing-section__subheading {padding-bottom: 1.2rem;}"
+      ],
+      "settings": {
+        "eyebrow": "Memberships",
+        "heading": "Pricing",
+        "subheading": "<p>Choose the membership structure that matches how often you want to train.</p>",
+        "heading_type_preset": "h2",
+        "heading_color": "var(--color-foreground-heading)",
+        "metaobject_type": "pricing",
+        "label_column_heading": "",
+        "section_width": "page-width",
+        "gap": 24,
+        "color_scheme": "scheme-3",
+        "padding-block-start": 0,
+        "padding-block-end": 56
+      }
+    },
+    "section_xNxYMp": {
+      "type": "section",
+      "blocks": {
+        "text_tdxpfL": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>All prices are based on direct debit plan ᐧ Discount apply for military, students and first responders</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "desktop_max_width": 0,
+            "alignment": "left",
+            "desktop_position": "",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_tdxpfL"
+      ],
+      "name": "t:names.rich_text_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-2",
+        "desktop_image_height": 0,
+        "desktop_image_max_width": 0,
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 24
+      }
+    },
+    "section_3KKhAK": {
+      "type": "section",
+      "blocks": {
+        "text_U33hxk": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>There are no membership contracts or time periods.</p><p>To put your membership on hold or cancel, we require a minimum of 3 business days notice. Our minumum hold period is two weeks.</p><p>All members new to CrossFit will be required to complete an \"Foundations\" program where we teach you the movements and integrate you into the intensity and methodology. The program is design to set you up for long term success.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "desktop_max_width": 0,
+            "alignment": "left",
+            "desktop_position": "",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_eKqP3P": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Get in touch",
+            "link": "shopify://pages/contact",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "padding-block-start": 0,
+            "padding-block-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_U33hxk",
+        "button_eKqP3P"
+      ],
+      "name": "t:names.rich_text_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "small",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-5",
+        "desktop_image_height": 0,
+        "desktop_image_max_width": 0,
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    }
+  },
+  "order": [
+    "main",
+    "pricing_main",
+    "section_xNxYMp",
+    "section_3KKhAK"
+  ]
+}
