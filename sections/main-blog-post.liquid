@@ -13,48 +13,63 @@
   "
 >
   {% render 'wod-password-gate', color_scheme: section.settings.color_scheme %}
-  <header>
-    {%- content_for 'block', id: 'blog-post-title', type: 'text' %}
-    {%- content_for 'block', id: 'blog-post-details', type: '_blog-post-info-text' %}
-  </header>
+  <div id="wod-page-content" class="wod-page-content">
+    <header>
+      {%- content_for 'block', id: 'blog-post-title', type: 'text' %}
+      {%- content_for 'block', id: 'blog-post-details', type: '_blog-post-info-text' %}
+    </header>
 
-  <div class="blog-post-top-blocks">
-    {% liquid
-      assign top_links_menu = section.settings.top_links_menu
-      assign top_links = top_links_menu.links
-    %}
+    <div class="blog-post-top-blocks">
+      {% liquid
+        assign top_links_menu = section.settings.top_links_menu
+        assign top_links = top_links_menu.links
+      %}
 
-    {% if top_links != blank %}
-      <div class="article-links-block article-links-block--{{ section.settings.top_links_style }}">
-        {% if section.settings.top_links_heading != blank %}
-          <p class="article-links-block__heading">
-            {{ section.settings.top_links_heading }}
-          </p>
-        {% endif %}
+      {% if top_links != blank %}
+        <div class="article-links-block article-links-block--{{ section.settings.top_links_style }}">
+          {% if section.settings.top_links_heading != blank %}
+            <p class="article-links-block__heading">
+              {{ section.settings.top_links_heading }}
+            </p>
+          {% endif %}
 
-        <div class="article-links-block__list">
-          {% for link in top_links %}
-            <a
-              href="{{ link.url }}"
-              class="{{ section.settings.top_links_style }}"
-              {% if link.current %}
-                aria-current="page"
-              {% endif %}
-            >
-              {{ link.title | escape }}
-            </a>
-          {% endfor %}
+          <div class="article-links-block__list">
+            {% for link in top_links %}
+              <a
+                href="{{ link.url }}"
+                class="{{ section.settings.top_links_style }}"
+                {% if link.current %}
+                  aria-current="page"
+                {% endif %}
+              >
+                {{ link.title | escape }}
+              </a>
+            {% endfor %}
+          </div>
         </div>
-      </div>
-    {% endif %}
-  </div>
+      {% endif %}
+    </div>
 
-  <div id="wod-content"></div>
+    <div id="wod-content"></div>
+  </div>
 </div>
 
 {% stylesheet %}
   .wod-page-shell {
     width: 100%;
+  }
+
+  .wod-page-content {
+    transition:
+      filter 220ms ease,
+      transform 220ms ease;
+  }
+
+  .wod-page-content--locked {
+    filter: blur(3px);
+    transform: scale(0.99);
+    pointer-events: none;
+    user-select: none;
   }
 
   .wod-gate,
@@ -64,10 +79,227 @@
     margin-right: auto;
   }
 
+  #wod-content.is-loading {
+    width: 100%;
+  }
+
+  .wod-content-skeleton {
+    display: grid;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .wod-content-skeleton__intro,
+  .wod-content-skeleton__section,
+  .wod-content-skeleton__card {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .wod-content-skeleton__heading,
+  .wod-content-skeleton__line {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: rgb(83 6 120 / 0.08);
+  }
+
+  .wod-content-skeleton__heading::after,
+  .wod-content-skeleton__line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.7), transparent);
+    animation: wod-content-skeleton-shimmer 1.4s ease-in-out infinite;
+  }
+
+  .wod-content-skeleton__heading {
+    width: min(12rem, 45%);
+    height: 1.6rem;
+    border-radius: 999px;
+  }
+
+  .wod-content-skeleton__line {
+    height: 0.95rem;
+    border-radius: 999px;
+  }
+
+  .wod-content-skeleton__line--short {
+    width: 34%;
+  }
+
+  .wod-content-skeleton__line--medium {
+    width: 58%;
+  }
+
+  .wod-content-skeleton__line--long {
+    width: 100%;
+  }
+
+  .wod-content-skeleton__card {
+    padding: 1.25rem 1.125rem;
+    border-radius: 10px;
+    background: #ebe7e0;
+  }
+
+  @keyframes wod-content-skeleton-shimmer {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
   .blog-post-comments-container {
     width: 100%;
     max-width: var(--normal-content-width);
     margin: 0 auto;
+  }
+
+  .wod-gate-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgb(16 12 9 / 0.48);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease;
+    z-index: 39;
+  }
+
+  .wod-gate {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    width: 100%;
+    min-height: 60vh;
+    max-height: 60vh;
+    max-width: none;
+    margin: 0;
+    padding: 1.5rem 1rem calc(1rem + env(safe-area-inset-bottom));
+    background: rgb(var(--color-background-rgb));
+    box-shadow: 0 -18px 45px rgb(0 0 0 / 0.18);
+    border-radius: 18px 18px 0 0;
+    transform: translateY(calc(100% + 2rem));
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+    display: none;
+    max-width: 420px;
+    margin: 80px auto;
+    padding: 32px;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    text-align: center;
+    background: #fff;
+  }
+
+  .wod-gate.is-active {
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .wod-gate.is-active + .wod-gate-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .wod-gate__inner {
+    width: 100%;
+    max-width: var(--normal-content-width);
+    min-height: 100%;
+    margin: 0 auto;
+    align-content: start;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .wod-gate h2,
+  .wod-gate p {
+    margin: 0;
+  }
+
+  .wod-gate h2 {
+    font-family: 'Oswald';
+    font-size: 1.8rem;
+    line-height: 0.95;
+  }
+
+  .wod-gate p {
+    color: rgb(var(--color-foreground-rgb) / 0.74);
+  }
+
+  #wod-gate-form {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  #wod-password {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.16);
+    border-radius: 999px;
+    background: white;
+    color: var(--color-foreground);
+  }
+
+  #wod-gate-form button {
+    width: 100%;
+  }
+
+  #wod-password:disabled,
+  .wod-gate__submit.button:disabled {
+    cursor: wait;
+  }
+
+  #wod-password:disabled {
+    opacity: 0.72;
+  }
+
+  .wod-gate__submit.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    background: #530678;
+    color: #fff;
+    border-color: #530678;
+  }
+
+  .wod-gate__submit.button:hover {
+    background: rgb(83 6 120 / 0.88);
+    border-color: rgb(83 6 120 / 0.88);
+    color: #fff;
+  }
+
+  .wod-gate__spinner {
+    display: none;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid rgb(255 255 255 / 0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: wod-gate-spin 0.7s linear infinite;
+  }
+
+  .wod-gate.is-loading .wod-gate__spinner {
+    display: block;
+  }
+
+  @keyframes wod-gate-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .wod-error {
+    display: none;
+    color: #b42318;
+    font-size: 0.95rem;
+  }
+
+  body.wod-gate-open {
+    overflow: hidden;
   }
 
   .blog-post-comments {
@@ -114,7 +346,7 @@
   .blog-post-top-blocks {
     width: 100%;
     max-width: var(--normal-content-width);
-    margin: 0 auto 1rem;
+    margin: 24px auto;
   }
 
   .blog-post-top-blocks > * + * {
@@ -332,6 +564,20 @@
   }
 
   @media screen and (min-width: 750px) {
+    .wod-gate {
+      padding: 2rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom));
+    }
+
+    #wod-gate-form {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+    }
+
+    #wod-gate-form button {
+      width: auto;
+      min-width: 10rem;
+    }
+
     .wod-program-section__card .metafield-rich_text_field li {
       font-size: 18px;
     }

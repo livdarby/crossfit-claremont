@@ -328,7 +328,7 @@
 
 <header-component
   id="header-component"
-  class="{{ class }}"
+  class="{{ class }} template-{{ template.suffix }}"
   data-theme-color="rgb({{ section.settings.color_scheme_top.settings.background.rgb }})"
   {% if transparent %}
     transparent="{{ transparent }}"
@@ -491,7 +491,9 @@
       color: var(--color-foreground);
       text-decoration: none;
       border-radius: 999px;
-      transition: background-color var(--animation-speed-fast) var(--animation-easing), color var(--animation-speed-fast) var(--animation-easing);
+      transition:
+        background-color var(--animation-speed-fast) var(--animation-easing),
+        color var(--animation-speed-fast) var(--animation-easing);
     }
 
     .header-quick-links__link:hover {
