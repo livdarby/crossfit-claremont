@@ -469,7 +469,7 @@
             "text": "<p>Helping People Move Better, Get Stronger, and Live Healthier</p>",
             "width": "fit-content",
             "max_width": "narrow",
-            "desktop_max_width": 0,
+            "desktop_max_width": 600,
             "alignment": "left",
             "desktop_position": "",
             "type_preset": "h1",
@@ -496,7 +496,7 @@
             "text": "<p>At CrossFit Claremont, our goal is simple — to help people improve their health, fitness, and overall quality of life.<br/><br/>We welcome people of all ages, backgrounds, and fitness levels. Whether you're stepping into a gym for the first time or you’ve been training for years, our coaching and programming are designed to meet you where you are and help you progress.<br/><br/>Our focus has always been on delivering an inclusive and supportive training environment where members feel encouraged, challenged, and motivated to become their best.</p>",
             "width": "fit-content",
             "max_width": "narrow",
-            "desktop_max_width": 0,
+            "desktop_max_width": 600,
             "alignment": "left",
             "desktop_position": "",
             "type_preset": "paragraph",
@@ -523,6 +523,10 @@
         "text_6jxHMb",
         "text_WYgEfC"
       ],
+      "custom_css": [
+        ".hero__content-wrapper {max-width: 614px;}",
+        "@media screen and (min-width: 750px) {.hero__content-wrapper {margin-right: 0px; }}"
+      ],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
@@ -541,7 +545,7 @@
         "vertical_alignment": "center",
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "flex-start",
-        "desktop_horizontal_alignment_flex_direction_column": "flex-end",
+        "desktop_horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 18,
         "section_width": "page-width",
@@ -576,7 +580,7 @@
             "max_width": "narrow",
             "desktop_max_width": 0,
             "alignment": "left",
-            "desktop_position": "",
+            "desktop_position": "center",
             "type_preset": "h3",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
@@ -1112,7 +1116,7 @@
         "group_MHnRMU"
       ],
       "custom_css": [
-        "@media screen and (min-width: 769px) {.layout-panel-flex--row {flex-wrap: wrap; column-gap: 15px; } .layout-panel-flex--row .text-block {width: 100%; } .group-block {min-height: 100%; }}"
+        "@media screen and (min-width: 769px) {.hero__container {padding: 64px 0; } .layout-panel-flex--row {flex-wrap: wrap; column-gap: 15px; } .layout-panel-flex--row .text-block {width: 100%; } .group-block {min-height: 100%; }}"
       ],
       "name": "Why Us?",
       "settings": {
@@ -1189,7 +1193,7 @@
           "static": true,
           "settings": {
             "alignment": "left",
-            "gap": 8,
+            "gap": 6,
             "content_overlay": true,
             "inherit_color_scheme": true,
             "color_scheme": "",
@@ -1203,6 +1207,25 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "button_Xxn97f": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Learn More",
+                "link": "shopify://pages/coaches",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "override_link_color": true,
+                "link_color": "#b83df3",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
             "image": {
               "type": "_metaobject-grid-image",
               "static": true,
@@ -1219,9 +1242,9 @@
               "type": "_heading",
               "static": true,
               "settings": {
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
+                "type_preset": "custom",
+                "font": "var(--font-heading--family)",
+                "font_size": "1.5rem",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
@@ -1261,10 +1284,14 @@
               "blocks": {}
             }
           },
-          "block_order": []
+          "block_order": [
+            "button_Xxn97f"
+          ]
         }
       },
-      "custom_css": [],
+      "custom_css": [
+        ".metaobject-grid-card__content div {color: #fff;}"
+      ],
       "name": "Metaobject: Grid",
       "settings": {
         "metaobject_type": "coaches",
@@ -1424,6 +1451,8 @@
                 "link": "shopify://collections/all",
                 "open_in_new_tab": false,
                 "style_class": "button",
+                "override_link_color": false,
+                "link_color": "#530678",
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fit-content",

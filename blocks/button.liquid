@@ -43,6 +43,20 @@
       "default": "button"
     },
     {
+      "type": "checkbox",
+      "id": "override_link_color",
+      "label": "Override link color",
+      "default": false,
+      "visible_if": "{{ block.settings.style_class == \"link\" }}"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color",
+      "default": "#530678",
+      "visible_if": "{{ block.settings.style_class == \"link\" and block.settings.override_link_color }}"
+    },
+    {
       "type": "header",
       "content": "t:content.size"
     },

@@ -85,6 +85,10 @@
   %}
 {% endcapture %}
 
+{% capture additional_blocks %}
+  {% content_for 'blocks' %}
+{% endcapture %}
+
 <div
   class="
     metaobject-grid-card spacing-style border-style
@@ -124,6 +128,7 @@
         <p class="metaobject-grid-card__eyebrow">{{ eyebrow_content }}</p>
       {% endif %}
       {{ description }}
+      {{ additional_blocks }}
     </div>
   </div>
 </div>
@@ -192,12 +197,7 @@
     align-items: flex-start;
     height: auto;
     color: var(--color-white);
-    background: linear-gradient(
-      to top,
-      rgb(0 0 0 / 0.62) 0%,
-      rgb(0 0 0 / 0.28) 45%,
-      rgb(0 0 0 / 0) 100%
-    );
+    background: linear-gradient(to top, rgb(0 0 0 / 0.62) 0%, rgb(0 0 0 / 0.28) 45%, rgb(0 0 0 / 0) 100%);
   }
 
   .metaobject-grid-card--overlay .metaobject-grid-card__content :is(h1, h2, h3, h4, h5, h6, p, a, span) {
@@ -231,7 +231,7 @@
   }
 
   .metaobject-grid--coaches .metaobject-grid-card__inner {
-    gap: 1.1rem;
+    gap: var(--gap);
   }
 
   .metaobject-grid--coaches .resource-list__item,
@@ -245,8 +245,8 @@
   }
 
   .metaobject-grid--coaches .metaobject-grid-card__content {
-    gap: 0.55rem;
-    padding: 0 0.2rem;
+    gap: var(--gap);
+    padding: 0 20px 20px;
   }
 
   .metaobject-grid--coaches .metaobject-grid-card__content h4 {
@@ -279,7 +279,7 @@
   }
 
   .metaobject-grid--testimonials .metaobject-grid-card__inner {
-    gap: 0.9rem;
+    gap: var(--gap);
   }
 
   .metaobject-grid--testimonials .metaobject-grid-card__image {
@@ -290,7 +290,7 @@
   }
 
   .metaobject-grid--testimonials .metaobject-grid-card__content {
-    gap: 0.45rem;
+    gap: var(--gap);
   }
 
   .metaobject-grid--testimonials .metaobject-grid-card__content h4 {
@@ -322,7 +322,7 @@
       display: grid;
       grid-template-columns: 4.75rem minmax(0, 1fr);
       align-items: start;
-      gap: 1rem;
+      gap: var(--gap);
     }
 
     .metaobject-grid--testimonials .metaobject-grid-card__content {
@@ -339,7 +339,7 @@
       display: grid;
       grid-template-columns: 4rem minmax(0, 1fr);
       align-items: start;
-      gap: 0.85rem;
+      gap: var(--gap);
     }
 
     .metaobject-grid--testimonials .metaobject-grid-card__content h4 {
@@ -370,6 +370,9 @@
     },
     {
       "type": "_metaobject-grid-description"
+    },
+    {
+      "type": "button"
     }
   ],
   "settings": [
