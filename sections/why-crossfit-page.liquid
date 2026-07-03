@@ -1,7 +1,3 @@
-{% liquid
-  assign page_title = page.title | default: section.settings.fallback_title
-%}
-
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <section
   class="why-crossfit-page color-{{ section.settings.color_scheme }}"
@@ -14,13 +10,6 @@
     class="section section--page-width spacing-style"
     style="{% render 'spacing-style', settings: section.settings %}"
   >
-    <div
-      class="why-crossfit-page__intro"
-      style="{% render 'prefixed-typography-style', settings: section.settings, prefix: 'title_', type: 'display' %}"
-    >
-      <h1 class="why-crossfit-page__title">{{ page_title }}</h1>
-    </div>
-
     <div class="why-crossfit-page__cards">
       {% for block in section.blocks %}
         {% liquid
@@ -112,8 +101,8 @@
 
         {% if section.settings.mission_heading != blank %}
           <h2
-            class="why-crossfit-page__mission-heading"
-            style="{% render 'prefixed-typography-style', settings: section.settings, prefix: 'mission_heading_', type: 'display' %}"
+            class="why-crossfit-page__mission-heading {{ section.settings.mission_heading_type_preset }} {{ section.settings.mission_heading_type_preset }}"
+            style="--color: {{ section.settings.mission_heading_color }};"
           >
             {{ section.settings.mission_heading }}
           </h2>
@@ -232,7 +221,7 @@
     color: var(--why-body-copy-color, rgb(var(--color-foreground-rgb) / 0.82));
     font-family: var(--why-body-copy-font-family, var(--font-body--family));
     font-size: var(--why-body-copy-font-size, 1rem);
-    line-height: var(--why-body-copy-line-height, 1.75);
+    line-height: 25.6px;
     letter-spacing: var(--why-body-copy-letter-spacing, normal);
     text-transform: var(--why-body-copy-text-transform, none);
     text-wrap: var(--why-body-copy-text-wrap, pretty);
@@ -281,7 +270,6 @@
 
   .why-crossfit-page__mission-heading {
     max-width: 14ch;
-    font-size: var(--font-size, clamp(2.7rem, 8vw, 6rem));
     color: var(--color, #fff);
   }
 
@@ -365,94 +353,6 @@
     }
   ],
   "settings": [
-    {
-      "type": "header",
-      "content": "Page title typography"
-    },
-    {
-      "type": "text",
-      "id": "fallback_title",
-      "label": "Fallback title",
-      "default": "Why CrossFit Claremont?"
-    },
-    {
-      "type": "select",
-      "id": "title_font",
-      "label": "Title font",
-      "options": [
-        { "value": "var(--font-body--family)", "label": "Body" },
-        { "value": "var(--font-subheading--family)", "label": "Subheading" },
-        { "value": "var(--font-heading--family)", "label": "Heading" },
-        { "value": "var(--font-accent--family)", "label": "Accent" }
-      ],
-      "default": "var(--font-heading--family)"
-    },
-    {
-      "type": "select",
-      "id": "title_font_size",
-      "label": "Title size",
-      "options": [
-        { "value": "3rem", "label": "48px" },
-        { "value": "3.5rem", "label": "56px" },
-        { "value": "4.5rem", "label": "72px" },
-        { "value": "5.5rem", "label": "88px" }
-      ],
-      "default": "5.5rem"
-    },
-    {
-      "type": "select",
-      "id": "title_line_height",
-      "label": "Title line height",
-      "options": [
-        { "value": "tight", "label": "Tight" },
-        { "value": "normal", "label": "Normal" },
-        { "value": "loose", "label": "Loose" }
-      ],
-      "default": "tight"
-    },
-    {
-      "type": "select",
-      "id": "title_letter_spacing",
-      "label": "Title letter spacing",
-      "options": [
-        { "value": "tight", "label": "Tight" },
-        { "value": "normal", "label": "Normal" },
-        { "value": "loose", "label": "Loose" }
-      ],
-      "default": "normal"
-    },
-    {
-      "type": "select",
-      "id": "title_case",
-      "label": "Title case",
-      "options": [
-        { "value": "none", "label": "Default" },
-        { "value": "uppercase", "label": "Uppercase" }
-      ],
-      "default": "none"
-    },
-    {
-      "type": "select",
-      "id": "title_wrap",
-      "label": "Title wrap",
-      "options": [
-        { "value": "pretty", "label": "Pretty" },
-        { "value": "balance", "label": "Balance" },
-        { "value": "nowrap", "label": "None" }
-      ],
-      "default": "pretty"
-    },
-    {
-      "type": "select",
-      "id": "title_color",
-      "label": "Title color",
-      "options": [
-        { "value": "var(--color-foreground)", "label": "Text" },
-        { "value": "var(--color-foreground-heading)", "label": "Heading" },
-        { "value": "var(--color-primary)", "label": "Link" }
-      ],
-      "default": "var(--color-foreground-heading)"
-    },
     {
       "type": "header",
       "content": "Feature card heading typography"
@@ -708,81 +608,28 @@
     },
     {
       "type": "select",
-      "id": "mission_heading_font",
-      "label": "Mission heading font",
+      "id": "mission_heading_type_preset",
+      "label": "Preset",
       "options": [
-        { "value": "var(--font-body--family)", "label": "Body" },
-        { "value": "var(--font-subheading--family)", "label": "Subheading" },
-        { "value": "var(--font-heading--family)", "label": "Heading" },
-        { "value": "var(--font-accent--family)", "label": "Accent" }
+        { "value": "h1", "label": "Heading 1" },
+        { "value": "h2", "label": "Heading 2" },
+        { "value": "h3", "label": "Heading 3" },
+        { "value": "h4", "label": "Heading 4" },
+        { "value": "h5", "label": "Heading 5" },
+        { "value": "h6", "label": "Heading 6" }
       ],
-      "default": "var(--font-heading--family)"
-    },
-    {
-      "type": "select",
-      "id": "mission_heading_font_size",
-      "label": "Mission heading size",
-      "options": [
-        { "value": "3rem", "label": "48px" },
-        { "value": "4.5rem", "label": "72px" },
-        { "value": "5.5rem", "label": "88px" },
-        { "value": "7.5rem", "label": "120px" }
-      ],
-      "default": "5.5rem"
-    },
-    {
-      "type": "select",
-      "id": "mission_heading_line_height",
-      "label": "Mission heading line height",
-      "options": [
-        { "value": "tight", "label": "Tight" },
-        { "value": "normal", "label": "Normal" },
-        { "value": "loose", "label": "Loose" }
-      ],
-      "default": "tight"
-    },
-    {
-      "type": "select",
-      "id": "mission_heading_letter_spacing",
-      "label": "Mission heading letter spacing",
-      "options": [
-        { "value": "tight", "label": "Tight" },
-        { "value": "normal", "label": "Normal" },
-        { "value": "loose", "label": "Loose" }
-      ],
-      "default": "normal"
-    },
-    {
-      "type": "select",
-      "id": "mission_heading_case",
-      "label": "Mission heading case",
-      "options": [
-        { "value": "none", "label": "Default" },
-        { "value": "uppercase", "label": "Uppercase" }
-      ],
-      "default": "none"
-    },
-    {
-      "type": "select",
-      "id": "mission_heading_wrap",
-      "label": "Mission heading wrap",
-      "options": [
-        { "value": "pretty", "label": "Pretty" },
-        { "value": "balance", "label": "Balance" },
-        { "value": "nowrap", "label": "None" }
-      ],
-      "default": "pretty"
+      "default": "h2"
     },
     {
       "type": "select",
       "id": "mission_heading_color",
-      "label": "Mission heading color",
+      "label": "Color",
       "options": [
-        { "value": "#ffffff", "label": "White" },
-        { "value": "#bb35ff", "label": "Purple" },
-        { "value": "var(--color-foreground-heading)", "label": "Heading" }
+        { "value": "var(--color-foreground)", "label": "Text" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" },
+        { "value": "var(--color-link)", "label": "Link" }
       ],
-      "default": "#ffffff"
+      "default": "var(--color-foreground-heading)"
     },
     {
       "type": "header",

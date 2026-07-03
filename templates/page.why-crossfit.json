@@ -9,6 +9,72 @@
  */
 {
   "sections": {
+    "section_7WadzQ": {
+      "type": "section",
+      "blocks": {
+        "text_fUTRbi": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>Why CrossFit?</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "desktop_max_width": 0,
+            "alignment": "left",
+            "desktop_position": "",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_fUTRbi"
+      ],
+      "name": "t:names.rich_text_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-2",
+        "desktop_image_height": 0,
+        "desktop_image_max_width": 0,
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 38,
+        "padding-block-end": 38
+      }
+    },
     "why_crossfit_main": {
       "type": "why-crossfit-page",
       "blocks": {
@@ -52,16 +118,8 @@
         "reason_4"
       ],
       "settings": {
-        "fallback_title": "Why CrossFit Claremont?",
-        "title_font": "var(--font-heading--family)",
-        "title_font_size": "5.5rem",
-        "title_line_height": "tight",
-        "title_letter_spacing": "normal",
-        "title_case": "none",
-        "title_wrap": "pretty",
-        "title_color": "var(--color-foreground-heading)",
         "card_heading_font": "var(--font-heading--family)",
-        "card_heading_font_size": "2.5rem",
+        "card_heading_font_size": "1.5rem",
         "card_heading_line_height": "tight",
         "card_heading_letter_spacing": "normal",
         "card_heading_case": "none",
@@ -82,12 +140,6 @@
         "mission_eyebrow_case": "none",
         "mission_eyebrow_wrap": "pretty",
         "mission_eyebrow_color": "#bb35ff",
-        "mission_heading_font": "var(--font-heading--family)",
-        "mission_heading_font_size": "5.5rem",
-        "mission_heading_line_height": "tight",
-        "mission_heading_letter_spacing": "normal",
-        "mission_heading_case": "none",
-        "mission_heading_wrap": "pretty",
         "mission_heading_color": "#ffffff",
         "mission_copy_font": "var(--font-body--family)",
         "mission_copy_font_size": "1.125rem",
@@ -97,7 +149,7 @@
         "mission_copy_wrap": "pretty",
         "mission_copy_color": "rgb(255 255 255 / 0.92)",
         "body_heading_font": "var(--font-heading--family)",
-        "body_heading_font_size": "2rem",
+        "body_heading_font_size": "1.5rem",
         "body_heading_line_height": "tight",
         "body_heading_letter_spacing": "normal",
         "body_heading_case": "none",
@@ -109,12 +161,12 @@
         "body_copy_letter_spacing": "normal",
         "body_copy_case": "none",
         "body_copy_wrap": "pretty",
-        "body_copy_color": "var(--color-foreground)",
+        "body_copy_color": "var(--color-primary)",
         "mission_eyebrow": "Our Mission",
         "mission_heading": "Helping People Move Better, Get Stronger, and Live Healthier",
         "mission_copy": "<p>CrossFit is a measurable approach to fitness built on constantly varied functional movements performed at intensity. At CrossFit Claremont, our goal is to help people improve their health, fitness, and overall quality of life.</p><p>We welcome people of all ages, backgrounds, and experience levels. Whether you are stepping into a gym for the first time or have trained for years, our coaching and programming are designed to meet you where you are and help you progress.</p>",
         "color_scheme": "scheme-3",
-        "padding-block-start": 40,
+        "padding-block-start": 0,
         "padding-block-end": 56
       }
     },
@@ -263,6 +315,8 @@
                 "link": "shopify://pages/contact",
                 "open_in_new_tab": false,
                 "style_class": "button",
+                "override_link_color": false,
+                "link_color": "#530678",
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fit-content",
@@ -315,6 +369,7 @@
     }
   },
   "order": [
+    "section_7WadzQ",
     "why_crossfit_main",
     "section_iRD3xd"
   ]

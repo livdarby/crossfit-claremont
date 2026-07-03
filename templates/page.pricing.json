@@ -20,11 +20,39 @@
             "width": "100%",
             "max_width": "normal",
             "desktop_max_width": 0,
-            "alignment": "center",
-            "desktop_position": "",
+            "alignment": "left",
+            "desktop_position": "left",
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_iMrxcJ": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Choose the membership structure that matches how often you want to train.</p>",
+            "width": "100%",
+            "max_width": "none",
+            "desktop_max_width": 0,
+            "alignment": "left",
+            "desktop_position": "",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
@@ -49,11 +77,15 @@
       },
       "block_order": [
         "heading",
+        "text_iMrxcJ",
         "page-content"
+      ],
+      "custom_css": [
+        "@media screen and (min-width: 769px) {.page-width-content {grid-template-columns: 99px 650px auto; }}"
       ],
       "settings": {
         "content_direction": "column",
-        "gap": 32,
+        "gap": 16,
         "color_scheme": "scheme-3",
         "padding-block-start": 40,
         "padding-block-end": 24
@@ -62,19 +94,23 @@
     "pricing_main": {
       "type": "pricing",
       "custom_css": [
-        ".pricing-section__heading,.pricing-section__subheading {padding-bottom: 1.2rem;}"
+        ".pricing-section__heading,.pricing-section__subheading {padding-bottom: 1.2rem;}",
+        "@media screen and (min-width: 769px) {.pricing-section__table-wrap {margin-left: 50px; }}"
       ],
       "settings": {
-        "eyebrow": "Memberships",
-        "heading": "Pricing",
-        "subheading": "<p>Choose the membership structure that matches how often you want to train.</p>",
+        "eyebrow": "",
+        "heading": "",
+        "subheading": "",
         "heading_type_preset": "h2",
         "heading_color": "var(--color-foreground-heading)",
         "metaobject_type": "pricing",
         "label_column_heading": "",
+        "additional_info": "All these memberships include access to all of our different classes, unlimited Open Gym, access to our weightlifting program and online Mobility and Endurance programs.",
+        "studio_b_additional_info": "Plus access to Studio B.",
+        "drop_in_disclaimer": "*10 sessions for school kids. 6 month expiry. 40% discount on memberships available.",
         "section_width": "page-width",
         "gap": 24,
-        "color_scheme": "scheme-3",
+        "color_scheme": "scheme-2",
         "padding-block-start": 0,
         "padding-block-end": 56
       }
@@ -184,6 +220,8 @@
             "link": "shopify://pages/contact",
             "open_in_new_tab": false,
             "style_class": "button",
+            "override_link_color": false,
+            "link_color": "#530678",
             "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fit-content",

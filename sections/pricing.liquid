@@ -166,6 +166,9 @@
                         assign value = pricing_entry[row_field]
                       %}
                       <td>
+                        {%- if forloop.index == 3 and row_field == 'kids_punchcard' -%}
+                          <span class="drop__in-disclaimer">{{ section.settings.drop_in_disclaimer }}</span>
+                        {%- endif -%}
                         {% if value.type == 'money' %}
                           {{ value.value | money_without_trailing_zeros }}
                         {% elsif value.type == 'rich_text_field' %}
@@ -183,10 +186,9 @@
             {% if forloop.index == 3 %}
               <tr>
                 <td colspan="{{ visible_column_count | minus: 1 }}" class="pricing__additional-info">
-                  All these memberships include access to all of our different classes, unlimited Open Gym, access to
-                  our weightlifting program and online Mobility and Endurance programs.
+                  {{ section.settings.additional_info }}
                 </td>
-                <td class="pricing__additional-info studio-b">Plus access to Studio B.</td>
+                <td class="pricing__additional-info studio-b">{{ section.settings.studio_b_additional_info }}</td>
               </tr>
             {% endif %}
           {% endfor %}
@@ -211,6 +213,15 @@
     color: white !important; */
     color: white !important;
     background-color: #530678 !important;
+
+    @media screen and (min-width: 769px) {
+      font-size: 14px;
+    }
+  }
+
+  .drop__in-disclaimer {
+    font-size: 10px;
+    font-weight: 500;
 
     @media screen and (min-width: 769px) {
       font-size: 14px;
@@ -347,7 +358,8 @@
     }
 
     .pricing-section__table-wrap {
-      margin: 0 auto;
+      margin-left: 0px;
+      margin-right: auto;
     }
   }
 {% endstylesheet %}
@@ -419,6 +431,24 @@
       "id": "label_column_heading",
       "label": "Row label column heading",
       "default": "Frequency"
+    },
+    {
+      "type": "textarea",
+      "id": "additional_info",
+      "label": "Additional info",
+      "default": "All these memberships include access to all of our different classes, unlimited Open Gym, access to our weightlifting program and online Mobility and Endurance programs."
+    },
+    {
+      "type": "text",
+      "id": "studio_b_additional_info",
+      "label": "Studio B additional info",
+      "default": "Plus access to Studio B."
+    },
+    {
+      "type": "text",
+      "id": "drop_in_disclaimer",
+      "label": "Drop in disclaimer",
+      "default": "drop in disclaimer"
     },
     {
       "type": "header",
