@@ -12,19 +12,19 @@
     "main": {
       "type": "main-page",
       "blocks": {
-        "heading": {
+        "text_WGhm4E": {
           "type": "text",
-          "name": "Title",
+          "name": "t:names.text",
           "settings": {
             "text": "<p>Real stories from members building strength, confidence, and consistency at CrossFit Claremont.</p>",
-            "width": "100%",
-            "max_width": "narrow",
-            "desktop_max_width": 760,
-            "alignment": "center",
-            "desktop_position": "",
-            "type_preset": "h3",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
+            "width": "fit-content",
+            "max_width": "normal",
+            "desktop_max_width": 0,
+            "alignment": "left",
+            "desktop_position": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
@@ -48,8 +48,11 @@
         }
       },
       "block_order": [
-        "heading",
+        "text_WGhm4E",
         "page-content"
+      ],
+      "custom_css": [
+        "@media screen and (min-width: 769px) {.page-width-content {grid-template-columns: 99px 700px auto; }}"
       ],
       "settings": {
         "content_direction": "column",
@@ -67,13 +70,13 @@
           "name": "Title",
           "static": true,
           "settings": {
-            "text": "<p>Testimonials</p>",
+            "text": "<p>TESTIMONIALS</p>",
             "width": "fit-content",
             "max_width": "normal",
             "desktop_max_width": 0,
             "alignment": "left",
-            "type_preset": "h3",
-            "font": "var(--font-body--family)",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
             "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
@@ -173,7 +176,9 @@
           "block_order": []
         }
       },
-      "custom_css": [],
+      "custom_css": [
+        "@media screen and (min-width: 769px) {.shopify-block, .metaobject-grid-card {margin-left: 56px; }}"
+      ],
       "name": "Metaobject: Grid",
       "settings": {
         "metaobject_type": "testimonials",

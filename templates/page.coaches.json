@@ -20,8 +20,8 @@
             "width": "100%",
             "max_width": "normal",
             "desktop_max_width": 0,
-            "alignment": "center",
-            "desktop_position": "",
+            "alignment": "left",
+            "desktop_position": "left",
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
@@ -51,6 +51,9 @@
         "heading",
         "page-content"
       ],
+      "custom_css": [
+        "@media screen and (min-width: 769px) {.page-width-content {grid-template-columns: 40px 614px auto; }}"
+      ],
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -74,14 +77,14 @@
             "alignment": "left",
             "type_preset": "custom",
             "font": "var(--font-heading--family)",
-            "font_size": "0.875rem",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "uppercase",
             "background": false,
             "background_color": "",
             "corner_radius": 0,
-            "color": "#530678",
+            "color": "",
             "padding-block-start": 0,
             "padding-block-end": 12,
             "padding-inline-start": 0,
@@ -174,8 +177,8 @@
         }
       },
       "custom_css": [
-        ".text-block--static-metaobject-title { color: rgb(var(--color-foreground-rgb) / 0.72); }",
-        ".text-block--static-metaobject-title > * { letter-spacing: 0.08em; line-height: var(--font-paragraph--line-height); }"
+        ".text-block--static-metaobject-title {color: rgb(var(--color-foreground-rgb) / 0.72);}",
+        ".text-block--static-metaobject-title > * {letter-spacing: 0.08em; line-height: var(--font-paragraph--line-height);}"
       ],
       "name": "Metaobject: Grid",
       "settings": {

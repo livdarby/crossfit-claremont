@@ -52,7 +52,7 @@
         "page-content"
       ],
       "custom_css": [
-        "@media screen and (min-width: 769px) {.page-width-content {grid-template-columns: 99px 614px auto; }}"
+        "@media screen and (min-width: 750px) {.page-width-content {grid-template-columns: 40px 640px auto; }}"
       ],
       "settings": {
         "content_direction": "column",

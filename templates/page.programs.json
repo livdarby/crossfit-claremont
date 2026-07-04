@@ -68,7 +68,7 @@
         "storefront_api_token": "21c7ce8c899894cddbbd2e8f862b59e2",
         "alignment": "center",
         "search_width": 100,
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-3",
         "padding-block-start": 0,
         "padding-block-end": 24
       }
@@ -217,6 +217,7 @@
         "section_width": "page-width",
         "gap": 12,
         "color_scheme": "scheme-2",
+        "program_content_metafields": "crossfit_content\nflow_content\nhyrox_content\nweightlifting_content\nfitness_content",
         "padding-block-start": 48,
         "padding-block-end": 48
       }
