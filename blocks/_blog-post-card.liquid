@@ -13,6 +13,7 @@
   <div class="blog-post-card__content">
     <a
       href="{{ article.url }}"
+      class="blog-post-card__heading-link"
       data-testid="blog-post-link"
     >
       {%- content_for 'block', id: 'heading', type: '_heading', text: article.title -%}
@@ -26,6 +27,15 @@
     %}
 
     {% content_for 'block', id: 'content', type: '_blog-post-description', article: article, show_read_more: true %}
+
+    {% if block_settings.show_button %}
+      <a
+        href="{{ article.url }}"
+        class="blog-post-card__button button"
+      >
+        {{ block_settings.button_label | default: 'View Program' }}
+      </a>
+    {% endif %}
   </div>
 </div>
 
@@ -71,24 +81,37 @@
     }
   }
 
-  .blog-post-card__content a {
+  .blog-post-card__heading-link {
     display: block;
     text-wrap: pretty;
     text-decoration: none;
     padding-block-start: 0.75rem;
   }
 
-  .blog-post-card__content a:hover,
-  .blog-post-card__content a:hover [style*='--color: var(--color-primary)'] {
+  .blog-post-card__heading-link:hover,
+  .blog-post-card__heading-link:hover [style*='--color: var(--color-primary)'] {
     color: var(--color-primary-hover);
   }
 
-  .blog-post-card__content a:hover [style*='--color: var(--color-foreground-heading)'] {
+  .blog-post-card__heading-link:hover [style*='--color: var(--color-foreground-heading)'] {
     color: rgb(var(--color-foreground-heading-rgb) / var(--opacity-subdued-text));
   }
 
-  .blog-post-card__content a:hover [style*='--color: var(--color-foreground)'] {
+  .blog-post-card__heading-link:hover [style*='--color: var(--color-foreground)'] {
     color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .blog-post-card__button {
+    margin-block-start: 1.5rem;
+    align-self: flex-start;
+  }
+
+  .blog-post-card[style*='--text-align: center'] .blog-post-card__button {
+    align-self: center;
+  }
+
+  .blog-post-card[style*='--text-align: right'] .blog-post-card__button {
+    align-self: flex-end;
   }
 {% endstylesheet %}
 
@@ -101,6 +124,19 @@
       "id": "alignment",
       "label": "t:settings.alignment",
       "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "View Program",
+      "visible_if": "{{ block.settings.show_button }}"
     }
   ]
 }

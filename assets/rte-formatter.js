@@ -1,4 +1,4 @@
-import { Component } from '@theme/component';
+import { Component } from "@theme/component";
 
 /**
  * A custom element that formats rte content for easier styling
@@ -6,7 +6,7 @@ import { Component } from '@theme/component';
 class RTEFormatter extends Component {
   connectedCallback() {
     super.connectedCallback();
-    this.querySelectorAll('table').forEach(this.#formatTable);
+    this.querySelectorAll("table").forEach(this.#formatTable);
   }
 
   /**
@@ -14,8 +14,8 @@ class RTEFormatter extends Component {
    * @param {HTMLTableElement} table
    */
   #formatTable(table) {
-    const wrapper = document.createElement('div');
-    wrapper.classList.add('rte-table-wrapper');
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("rte-table-wrapper");
     const parent = table.parentNode;
     if (parent) {
       parent.insertBefore(wrapper, table);
@@ -24,6 +24,6 @@ class RTEFormatter extends Component {
   }
 }
 
-if (!customElements.get('rte-formatter')) {
-  customElements.define('rte-formatter', RTEFormatter);
+if (!customElements.get("rte-formatter")) {
+  customElements.define("rte-formatter", RTEFormatter);
 }

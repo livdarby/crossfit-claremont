@@ -3,14 +3,16 @@
  * @returns {function} The requestIdleCallback function
  */
 export const requestIdleCallback =
-  typeof window.requestIdleCallback == 'function' ? window.requestIdleCallback : setTimeout;
+  typeof window.requestIdleCallback == "function"
+    ? window.requestIdleCallback
+    : setTimeout;
 
 /**
  * Returns a promise that resolves after yielding to the main thread.
  * @see https://web.dev/articles/optimize-long-tasks#scheduler-yield
  */
 export const yieldToMainThread = () => {
-  if ('yield' in scheduler) {
+  if ("yield" in scheduler) {
     // @ts-ignore - TypeScript doesn't recognize the yield method yet.
     return scheduler.yield();
   }
@@ -27,7 +29,10 @@ export const yieldToMainThread = () => {
  * @returns {boolean} True if the device is a low power device, false otherwise
  */
 export function isLowPowerDevice() {
-  return Number(navigator.hardwareConcurrency) <= 2 || Number(navigator.deviceMemory) <= 2;
+  return (
+    Number(navigator.hardwareConcurrency) <= 2 ||
+    Number(navigator.deviceMemory) <= 2
+  );
 }
 
 /**
@@ -35,7 +40,7 @@ export function isLowPowerDevice() {
  * @returns {boolean} True if the browser supports View Transitions API, false otherwise
  */
 export function supportsViewTransitions() {
-  return typeof document.startViewTransition === 'function';
+  return typeof document.startViewTransition === "function";
 }
 
 /**
@@ -51,10 +56,10 @@ export const viewTransition = {
  * @type {{ [key: string]: () => Promise<(() => void) | undefined> }}
  */
 const viewTransitionTypes = {
-  'product-grid': async () => {
-    const grid = document.querySelector('.product-grid');
+  "product-grid": async () => {
+    const grid = document.querySelector(".product-grid");
     const productCards = /** @type {HTMLElement[]} */ ([
-      ...document.querySelectorAll('.product-grid .product-grid__item'),
+      ...document.querySelectorAll(".product-grid .product-grid__item"),
     ]);
 
     if (!grid || !productCards.length) return;
@@ -65,20 +70,23 @@ const viewTransitionTypes = {
 
         productCards.forEach((card, index) => {
           if (index < cardsToAnimate) {
-            card.style.setProperty('view-transition-name', `product-card-${card.dataset.productId}`);
+            card.style.setProperty(
+              "view-transition-name",
+              `product-card-${card.dataset.productId}`,
+            );
           } else {
-            card.style.setProperty('content-visibility', 'hidden');
+            card.style.setProperty("content-visibility", "hidden");
           }
         });
 
         resolve(null);
-      })
+      }),
     );
 
     return () =>
       productCards.forEach((card) => {
-        card.style.removeProperty('view-transition-name');
-        card.style.removeProperty('content-visibility');
+        card.style.removeProperty("view-transition-name");
+        card.style.removeProperty("content-visibility");
       });
   },
 };
@@ -91,7 +99,11 @@ const viewTransitionTypes = {
  */
 export function startViewTransition(callback, types) {
   // Check if the API is supported and transitions are desired
-  if (!supportsViewTransitions() || isLowPowerDevice() || prefersReducedMotion()) {
+  if (
+    !supportsViewTransitions() ||
+    isLowPowerDevice() ||
+    prefersReducedMotion()
+  ) {
     callback();
     return Promise.resolve();
   }
@@ -144,17 +156,21 @@ export function startViewTransition(callback, types) {
  * @param {FetchConfig['headers']} [config.headers] The headers of the request
  * @returns {RequestInit} The fetch configuration object
  */
-export function fetchConfig(type = 'json', config = {}) {
+export function fetchConfig(type = "json", config = {}) {
   /** @type {Headers} */
-  const headers = { 'Content-Type': 'application/json', Accept: `application/${type}`, ...config.headers };
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: `application/${type}`,
+    ...config.headers,
+  };
 
-  if (type === 'javascript') {
-    headers['X-Requested-With'] = 'XMLHttpRequest';
-    delete headers['Content-Type'];
+  if (type === "javascript") {
+    headers["X-Requested-With"] = "XMLHttpRequest";
+    delete headers["Content-Type"];
   }
 
   return {
-    method: 'POST',
+    method: "POST",
     headers: /** @type {HeadersInit} */ (headers),
     body: config.body,
   };
@@ -221,7 +237,7 @@ export function throttle(fn, delay) {
  * A media query for reduced motion
  * @type {MediaQueryList}
  */
-const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 
 /**
  * Check if the user prefers reduced motion
@@ -238,8 +254,8 @@ export function prefersReducedMotion() {
  */
 export function normalizeString(str) {
   return str
-    .normalize('NFD')
-    .replace(/\p{Diacritic}/gu, '')
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
     .toLowerCase();
 }
 
@@ -248,10 +264,10 @@ export function normalizeString(str) {
  * @param {() => void} callback The function to call when the document is ready.
  */
 export function onDocumentLoaded(callback) {
-  if (document.readyState === 'complete') {
+  if (document.readyState === "complete") {
     callback();
   } else {
-    window.addEventListener('load', callback);
+    window.addEventListener("load", callback);
   }
 }
 
@@ -261,8 +277,8 @@ export function onDocumentLoaded(callback) {
  * @param {() => void} callback The function to call when the DOM is ready.
  */
 export function onDocumentReady(callback) {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', callback);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", callback);
   } else {
     callback();
   }
@@ -276,8 +292,8 @@ export function onDocumentReady(callback) {
 export function removeWillChangeOnAnimationEnd(event) {
   const target = event.target;
   if (target && target instanceof HTMLElement) {
-    target.style.setProperty('will-change', 'unset');
-    target.removeEventListener('animationend', removeWillChangeOnAnimationEnd);
+    target.style.setProperty("will-change", "unset");
+    target.removeEventListener("animationend", removeWillChangeOnAnimationEnd);
   }
 }
 
@@ -288,7 +304,11 @@ export function removeWillChangeOnAnimationEnd(event) {
  * @param {Object} [options] The options to pass to `Element.getAnimations`.
  * @returns {Promise<void>} A promise that resolves when all animations are finished.
  */
-export function onAnimationEnd(elements, callback, options = { subtree: true }) {
+export function onAnimationEnd(
+  elements,
+  callback,
+  options = { subtree: true },
+) {
   const animations = Array.isArray(elements)
     ? elements.flatMap((element) => element.getAnimations(options))
     : elements.getAnimations(options);
@@ -311,7 +331,10 @@ export function onAnimationEnd(elements, callback, options = { subtree: true }) 
  * @returns {boolean} True if the click is outside the element, false otherwise.
  */
 export function isClickedOutside(event, element) {
-  if (event.target instanceof HTMLDialogElement || !(event.target instanceof Element)) {
+  if (
+    event.target instanceof HTMLDialogElement ||
+    !(event.target instanceof Element)
+  ) {
     return !isPointWithinElement(event.clientX, event.clientY, element);
   }
 
@@ -335,7 +358,7 @@ export function isPointWithinElement(x, y, element) {
  * A media query for large screens
  * @type {MediaQueryList}
  */
-export const mediaQueryLarge = matchMedia('(min-width: 750px)');
+export const mediaQueryLarge = matchMedia("(min-width: 750px)");
 
 /**
  * Check if the current breakpoint is mobile
@@ -358,7 +381,7 @@ export function isDesktopBreakpoint() {
  * @returns {boolean} True if the device is a touch device, false otherwise
  */
 export function isTouchDevice() {
-  return 'ontouchstart' in window && navigator.maxTouchPoints > 0;
+  return "ontouchstart" in window && navigator.maxTouchPoints > 0;
 }
 
 /**
@@ -441,22 +464,29 @@ export function getVisibleElements(root, elements, ratio = 1, axis) {
   const rootRect = root.getBoundingClientRect();
 
   return elements.filter((element) => {
-    const { width, height, top, right, left, bottom } = element.getBoundingClientRect();
+    const { width, height, top, right, left, bottom } =
+      element.getBoundingClientRect();
 
     if (ratio < 1) {
       const intersectionLeft = Math.max(rootRect.left, left);
       const intersectionRight = Math.min(rootRect.right, right);
-      const intersectionWidth = Math.max(0, intersectionRight - intersectionLeft);
+      const intersectionWidth = Math.max(
+        0,
+        intersectionRight - intersectionLeft,
+      );
 
-      if (axis === 'x') {
+      if (axis === "x") {
         return width > 0 && intersectionWidth / width >= ratio;
       }
 
       const intersectionTop = Math.max(rootRect.top, top);
       const intersectionBottom = Math.min(rootRect.bottom, bottom);
-      const intersectionHeight = Math.max(0, intersectionBottom - intersectionTop);
+      const intersectionHeight = Math.max(
+        0,
+        intersectionBottom - intersectionTop,
+      );
 
-      if (axis === 'y') {
+      if (axis === "y") {
         return height > 0 && intersectionHeight / height >= ratio;
       }
 
@@ -468,12 +498,12 @@ export function getVisibleElements(root, elements, ratio = 1, axis) {
     }
 
     const isWithinX = left >= rootRect.left && right <= rootRect.right;
-    if (axis === 'x') {
+    if (axis === "x") {
       return isWithinX;
     }
 
     const isWithinY = top >= rootRect.top && bottom <= rootRect.bottom;
-    if (axis === 'y') {
+    if (axis === "y") {
       return isWithinY;
     }
 
@@ -488,11 +518,11 @@ export function getIOSVersion() {
   if (!isIOS) return null;
 
   const version = userAgent.match(/OS ([\d_]+)/)?.[1];
-  const [major, minor] = version?.split('_') || [];
+  const [major, minor] = version?.split("_") || [];
   if (!version || !major) return null;
 
   return {
-    fullString: version.replace('_', '.'),
+    fullString: version.replace("_", "."),
     major: parseInt(major, 10),
     minor: minor ? parseInt(minor, 10) : 0,
   };
@@ -524,18 +554,27 @@ function getCardsToAnimate(grid, cards) {
   if (visibleHeight <= 0) return 0;
 
   /** @type {import('product-card').ProductCard | null} */
-  const cardSample = itemSample.querySelector('product-card');
+  const cardSample = itemSample.querySelector("product-card");
   const gridStyle = getComputedStyle(grid);
 
-  const galleryAspectRatio = cardSample?.refs?.cardGallery?.style.getPropertyValue('--gallery-aspect-ratio') || '';
+  const galleryAspectRatio =
+    cardSample?.refs?.cardGallery?.style.getPropertyValue(
+      "--gallery-aspect-ratio",
+    ) || "";
   let aspectRatio = parseFloat(galleryAspectRatio) || 0.5;
-  if (galleryAspectRatio?.includes('/')) {
-    const [width = '1', height = '2'] = galleryAspectRatio.split('/');
+  if (galleryAspectRatio?.includes("/")) {
+    const [width = "1", height = "2"] = galleryAspectRatio.split("/");
     aspectRatio = parseInt(width, 10) / parseInt(height, 10);
   }
 
-  const cardGap = parseInt(cardSample?.refs?.productCardLink?.style.getPropertyValue('--product-card-gap') || '') || 12;
-  const gridGap = parseInt(gridStyle.getPropertyValue('--product-grid-gap')) || 12;
+  const cardGap =
+    parseInt(
+      cardSample?.refs?.productCardLink?.style.getPropertyValue(
+        "--product-card-gap",
+      ) || "",
+    ) || 12;
+  const gridGap =
+    parseInt(gridStyle.getPropertyValue("--product-grid-gap")) || 12;
 
   // Assume only a couple of lines of text in the card details (title and price).
   // If the title wraps into more lines, we might just animate more cards, but that's fine.
@@ -545,13 +584,18 @@ function getCardsToAnimate(grid, cards) {
 
   // Always use the zoom-out state card width
   const cardWidth = isMobile ? Math.round((gridRect.width - gridGap) / 2) : 100;
-  const cardHeight = Math.round(cardWidth / aspectRatio) + cardGap + detailsSize;
+  const cardHeight =
+    Math.round(cardWidth / aspectRatio) + cardGap + detailsSize;
 
   // Calculate the number of cards that fit in the visible area:
   // - The width estimation is pretty accurate, we can ignore decimals.
   // - The height estimation needs to account for peeking rows, so we round up.
-  const columnsInGrid = isMobile ? 2 : Math.floor((gridRect.width + gridGap) / (cardWidth + gridGap));
-  const rowsInGrid = Math.ceil((visibleHeight - gridGap) / (cardHeight + gridGap));
+  const columnsInGrid = isMobile
+    ? 2
+    : Math.floor((gridRect.width + gridGap) / (cardWidth + gridGap));
+  const rowsInGrid = Math.ceil(
+    (visibleHeight - gridGap) / (cardHeight + gridGap),
+  );
 
   return columnsInGrid * rowsInGrid;
 }
@@ -567,12 +611,12 @@ export function preloadImage(src) {
 
 export class TextComponent extends HTMLElement {
   shimmer() {
-    this.setAttribute('shimmer', '');
+    this.setAttribute("shimmer", "");
   }
 }
 
-if (!customElements.get('text-component')) {
-  customElements.define('text-component', TextComponent);
+if (!customElements.get("text-component")) {
+  customElements.define("text-component", TextComponent);
 }
 
 /**
@@ -580,8 +624,8 @@ if (!customElements.get('text-component')) {
  * @param {Element} [container] - The container to reset the shimmer attribute on.
  */
 export function resetShimmer(container = document.body) {
-  const shimmer = container.querySelectorAll('[shimmer]');
-  shimmer.forEach((item) => item.removeAttribute('shimmer'));
+  const shimmer = container.querySelectorAll("[shimmer]");
+  shimmer.forEach((item) => item.removeAttribute("shimmer"));
 }
 
 /**
@@ -589,9 +633,11 @@ export function resetShimmer(container = document.body) {
  * @param {string} color - The color value (e.g., 'rgb(255, 255, 255)')
  */
 export function changeMetaThemeColor(color) {
-  const metaThemeColor = document.head.querySelector('meta[name="theme-color"]');
+  const metaThemeColor = document.head.querySelector(
+    'meta[name="theme-color"]',
+  );
   if (metaThemeColor && color) {
-    metaThemeColor.setAttribute('content', color);
+    metaThemeColor.setAttribute("content", color);
   }
 }
 
@@ -602,7 +648,7 @@ export function changeMetaThemeColor(color) {
  * @returns {string | null} The view parameter value, or null if it doesn't exist
  */
 export function getViewParameterValue() {
-  return new URLSearchParams(window.location.search).get('view');
+  return new URLSearchParams(window.location.search).get("view");
 }
 
 /**
@@ -614,7 +660,7 @@ export function getViewParameterValue() {
  * @returns {number|T} The parsed integer or default value
  */
 export function parseIntOrDefault(value, defaultValue) {
-  if (value === null || value === undefined || value === '') {
+  if (value === null || value === undefined || value === "") {
     return defaultValue;
   }
   const parsed = parseInt(value.toString());
@@ -662,8 +708,12 @@ export const scheduler = new Scheduler();
  */
 export function oncePerEditorSession(element, sessionKeyName, callback) {
   const isInThemeEditor = window.Shopify?.designMode;
-  const shopifyEditorSectionId = JSON.parse(element.dataset.shopifyEditorSection || '{}').id;
-  const shopifyEditorBlockId = JSON.parse(element.dataset.shopifyEditorBlock || '{}').id;
+  const shopifyEditorSectionId = JSON.parse(
+    element.dataset.shopifyEditorSection || "{}",
+  ).id;
+  const shopifyEditorBlockId = JSON.parse(
+    element.dataset.shopifyEditorBlock || "{}",
+  ).id;
   const editorId = shopifyEditorSectionId || shopifyEditorBlockId;
   const uniqueSessionKey = `${sessionKeyName}-${editorId}`;
 
@@ -671,7 +721,7 @@ export function oncePerEditorSession(element, sessionKeyName, callback) {
 
   callback();
 
-  if (isInThemeEditor) sessionStorage.setItem(uniqueSessionKey, 'true');
+  if (isInThemeEditor) sessionStorage.setItem(uniqueSessionKey, "true");
 
   return;
 }
@@ -703,12 +753,16 @@ export class ResizeNotifier extends ResizeObserver {
  * Sets the menuStyle dataset attribute on the header component element.
  */
 export function setHeaderMenuStyle() {
-  const headerComponent = /** @type {HTMLElement} | null */ (document.querySelector('#header-component'));
+  const headerComponent = /** @type {HTMLElement} | null */ (
+    document.querySelector("#header-component")
+  );
   if (headerComponent) {
     window.requestAnimationFrame(() => {
-      const overflowList = headerComponent?.querySelector('overflow-list');
-      const hasReachedMinimum = overflowList && overflowList.hasAttribute('minimum-reached');
-      headerComponent.dataset.menuStyle = isTouchDevice() || hasReachedMinimum ? 'drawer' : 'menu';
+      const overflowList = headerComponent?.querySelector("overflow-list");
+      const hasReachedMinimum =
+        overflowList && overflowList.hasAttribute("minimum-reached");
+      headerComponent.dataset.menuStyle =
+        isTouchDevice() || hasReachedMinimum ? "drawer" : "menu";
     });
   }
 }
@@ -720,8 +774,8 @@ export function setHeaderMenuStyle() {
  * @returns {number} The height of the header group
  */
 export function calculateHeaderGroupHeight(
-  header = document.querySelector('#header-component'),
-  headerGroup = document.querySelector('#header-group')
+  header = document.querySelector("#header-component"),
+  headerGroup = document.querySelector("#header-group"),
 ) {
   if (!headerGroup) return 0;
 
@@ -734,7 +788,11 @@ export function calculateHeaderGroupHeight(
   }
 
   // If the header is transparent and has a sibling section, add the height of the header to the total height
-  if (header instanceof HTMLElement && header.hasAttribute('transparent') && header.parentElement?.nextElementSibling) {
+  if (
+    header instanceof HTMLElement &&
+    header.hasAttribute("transparent") &&
+    header.parentElement?.nextElementSibling
+  ) {
     return totalHeight + header.offsetHeight;
   }
 
@@ -746,25 +804,29 @@ export function calculateHeaderGroupHeight(
  * Avoids expensive :has() selectors
  */
 function updateTransparentHeaderOffset() {
-  const header = document.querySelector('#header-component');
-  const headerGroup = document.querySelector('#header-group');
-  const hasHeaderSection = headerGroup?.querySelector('.header-section');
-  if (!hasHeaderSection || !header?.hasAttribute('transparent')) {
-    document.body.style.setProperty('--transparent-header-offset-boolean', '0');
+  const header = document.querySelector("#header-component");
+  const headerGroup = document.querySelector("#header-group");
+  const hasHeaderSection = headerGroup?.querySelector(".header-section");
+  if (!hasHeaderSection || !header?.hasAttribute("transparent")) {
+    document.body.style.setProperty("--transparent-header-offset-boolean", "0");
     return;
   }
 
-  const hasImmediateSection = hasHeaderSection.nextElementSibling?.classList.contains('shopify-section');
+  const hasImmediateSection =
+    hasHeaderSection.nextElementSibling?.classList.contains("shopify-section");
 
-  const shouldApplyOffset = !hasImmediateSection ? '1' : '0';
-  document.body.style.setProperty('--transparent-header-offset-boolean', shouldApplyOffset);
+  const shouldApplyOffset = !hasImmediateSection ? "1" : "0";
+  document.body.style.setProperty(
+    "--transparent-header-offset-boolean",
+    shouldApplyOffset,
+  );
 }
 
 /**
  * Initialize and maintain header height CSS variables.
  */
 function updateHeaderHeights() {
-  const header = document.querySelector('header-component');
+  const header = document.querySelector("header-component");
 
   // Early exit if no header - nothing to do
   if (!(header instanceof HTMLElement)) return;
@@ -772,14 +834,22 @@ function updateHeaderHeights() {
   // Calculate initial heights
   const headerHeight = header.offsetHeight;
   const headerGroupHeight = calculateHeaderGroupHeight(header);
-  const headerTopRow = /** @type {HTMLElement} | null */ (header.querySelector('.header__row--top'));
+  const headerTopRow = /** @type {HTMLElement} | null */ (
+    header.querySelector(".header__row--top")
+  );
 
-  document.body.style.setProperty('--header-height', `${headerHeight}px`);
-  document.body.style.setProperty('--header-group-height', `${headerGroupHeight}px`);
+  document.body.style.setProperty("--header-height", `${headerHeight}px`);
+  document.body.style.setProperty(
+    "--header-group-height",
+    `${headerGroupHeight}px`,
+  );
 
   if (headerTopRow) {
     window.requestAnimationFrame(function () {
-      header.style.setProperty('--top-row-height', `${headerTopRow.offsetHeight}px`);
+      header.style.setProperty(
+        "--top-row-height",
+        `${headerTopRow.offsetHeight}px`,
+      );
     });
   }
 }
@@ -791,7 +861,7 @@ export function updateAllHeaderCustomProperties() {
 }
 
 // Theme is not defined in some layouts, like the gift card page
-if (typeof Theme !== 'undefined') {
+if (typeof Theme !== "undefined") {
   Theme.utilities = {
     ...Theme.utilities,
     scheduler: scheduler,

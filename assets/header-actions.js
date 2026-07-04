@@ -1,5 +1,5 @@
-import { Component } from '@theme/component';
-import { ThemeEvents } from '@theme/events';
+import { Component } from "@theme/component";
+import { ThemeEvents } from "@theme/events";
 
 /**
  * Header actions component that manages cart notifications.
@@ -10,7 +10,7 @@ import { ThemeEvents } from '@theme/events';
  * @extends {Component<Refs>}
  */
 class HeaderActions extends Component {
-  requiredRefs = ['liveRegion'];
+  requiredRefs = ["liveRegion"];
 
   connectedCallback() {
     super.connectedCallback();
@@ -34,6 +34,6 @@ class HeaderActions extends Component {
   };
 }
 
-if (!customElements.get('header-actions')) {
-  customElements.define('header-actions', HeaderActions);
+if (!customElements.get("header-actions")) {
+  customElements.define("header-actions", HeaderActions);
 }

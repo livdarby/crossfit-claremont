@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "main": {
       "type": "main-page",
@@ -15,10 +16,12 @@
           "type": "text",
           "name": "Title",
           "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
+            "text": "<p>A community built on hard work, support, and long-term fitness.</p>",
             "width": "100%",
             "max_width": "normal",
-            "alignment": "left",
+            "desktop_max_width": 0,
+            "alignment": "center",
+            "desktop_position": "",
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
@@ -26,7 +29,7 @@
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
-            "color": "",
+            "color": "var(--color-foreground-heading)",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -50,9 +53,9 @@
       "settings": {
         "content_direction": "column",
         "gap": 32,
-        "color_scheme": "",
+        "color_scheme": "scheme-3",
         "padding-block-start": 40,
-        "padding-block-end": 80
+        "padding-block-end": 24
       }
     }
   },

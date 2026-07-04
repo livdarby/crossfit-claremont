@@ -1,8 +1,19 @@
-import { Component } from '@theme/component';
-import { fetchConfig, preloadImage, onAnimationEnd, yieldToMainThread } from '@theme/utilities';
-import { ThemeEvents, CartAddEvent, CartErrorEvent, CartUpdateEvent, VariantUpdateEvent } from '@theme/events';
-import { cartPerformance } from '@theme/performance';
-import { morph } from '@theme/morph';
+import { Component } from "@theme/component";
+import {
+  fetchConfig,
+  preloadImage,
+  onAnimationEnd,
+  yieldToMainThread,
+} from "@theme/utilities";
+import {
+  ThemeEvents,
+  CartAddEvent,
+  CartErrorEvent,
+  CartUpdateEvent,
+  VariantUpdateEvent,
+} from "@theme/events";
+import { cartPerformance } from "@theme/performance";
+import { morph } from "@theme/morph";
 
 // Error message display duration - gives users time to read the message
 const ERROR_MESSAGE_DISPLAY_DURATION = 10000;
@@ -29,7 +40,7 @@ const SUCCESS_MESSAGE_DISPLAY_DURATION = 5000;
  * @extends Component<AddToCartRefs>
  */
 export class AddToCartComponent extends Component {
-  requiredRefs = ['addToCartButton'];
+  requiredRefs = ["addToCartButton"];
 
   /** @type {number[] | undefined} */
   #resetTimeouts = /** @type {number[]} */ ([]);
@@ -37,16 +48,18 @@ export class AddToCartComponent extends Component {
   connectedCallback() {
     super.connectedCallback();
 
-    this.addEventListener('pointerenter', this.#preloadImage);
+    this.addEventListener("pointerenter", this.#preloadImage);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
     if (this.#resetTimeouts) {
-      this.#resetTimeouts.forEach(/** @param {number} timeoutId */ (timeoutId) => clearTimeout(timeoutId));
+      this.#resetTimeouts.forEach(
+        /** @param {number} timeoutId */ (timeoutId) => clearTimeout(timeoutId),
+      );
     }
-    this.removeEventListener('pointerenter', this.#preloadImage);
+    this.removeEventListener("pointerenter", this.#preloadImage);
   }
 
   /**
@@ -68,11 +81,13 @@ export class AddToCartComponent extends Component {
    * @param {MouseEvent & {target: HTMLElement}} event - The click event.
    */
   handleClick(event) {
-    const form = this.closest('form');
+    const form = this.closest("form");
     if (!form?.checkValidity()) return;
 
     // Check if adding would exceed max before animating
-    const productForm = /** @type {ProductFormComponent | null} */ (this.closest('product-form-component'));
+    const productForm = /** @type {ProductFormComponent | null} */ (
+      this.closest("product-form-component")
+    );
     const quantitySelector = productForm?.refs.quantitySelector;
     if (quantitySelector?.canAddToCart) {
       const validation = quantitySelector.canAddToCart();
@@ -81,9 +96,9 @@ export class AddToCartComponent extends Component {
         return;
       }
     }
-    if (this.refs.addToCartButton.dataset.puppet !== 'true') {
-      const animationEnabled = this.dataset.addToCartAnimation === 'true';
-      if (animationEnabled && !event.target.closest('.quick-add-modal')) {
+    if (this.refs.addToCartButton.dataset.puppet !== "true") {
+      const animationEnabled = this.dataset.addToCartAnimation === "true";
+      if (animationEnabled && !event.target.closest(".quick-add-modal")) {
         this.#animateFlyToCart();
       }
       this.animateAddToCart();
@@ -103,21 +118,23 @@ export class AddToCartComponent extends Component {
    */
   #animateFlyToCart() {
     const { addToCartButton } = this.refs;
-    const cartIcon = document.querySelector('.header-actions__cart-icon');
+    const cartIcon = document.querySelector(".header-actions__cart-icon");
 
     const image = this.dataset.productVariantMedia;
 
     if (!cartIcon || !addToCartButton || !image) return;
 
-    const flyToCartElement = /** @type {FlyToCart} */ (document.createElement('fly-to-cart'));
+    const flyToCartElement = /** @type {FlyToCart} */ (
+      document.createElement("fly-to-cart")
+    );
 
-    let flyToCartClass = addToCartButton.classList.contains('quick-add__button')
-      ? 'fly-to-cart--quick'
-      : 'fly-to-cart--main';
+    let flyToCartClass = addToCartButton.classList.contains("quick-add__button")
+      ? "fly-to-cart--quick"
+      : "fly-to-cart--main";
 
     flyToCartElement.classList.add(flyToCartClass);
-    flyToCartElement.style.setProperty('background-image', `url(${image})`);
-    flyToCartElement.style.setProperty('--start-opacity', '0');
+    flyToCartElement.style.setProperty("background-image", `url(${image})`);
+    flyToCartElement.style.setProperty("--start-opacity", "0");
     flyToCartElement.source = addToCartButton;
     flyToCartElement.destination = cartIcon;
 
@@ -136,11 +153,13 @@ export class AddToCartComponent extends Component {
     }
 
     // Clear all existing timeouts
-    this.#resetTimeouts.forEach(/** @param {number} timeoutId */ (timeoutId) => clearTimeout(timeoutId));
+    this.#resetTimeouts.forEach(
+      /** @param {number} timeoutId */ (timeoutId) => clearTimeout(timeoutId),
+    );
     this.#resetTimeouts = [];
 
-    if (addToCartButton.dataset.added !== 'true') {
-      addToCartButton.dataset.added = 'true';
+    if (addToCartButton.dataset.added !== "true") {
+      addToCartButton.dataset.added = "true";
     }
 
     // The onAnimationEnd can trigger a style recalculation so we yield to the main thread first.
@@ -149,12 +168,12 @@ export class AddToCartComponent extends Component {
 
     // Create new timeout and store it in the array
     const timeoutId = setTimeout(() => {
-      addToCartButton.removeAttribute('data-added');
+      addToCartButton.removeAttribute("data-added");
 
       // Remove this timeout from the array
       const index = this.#resetTimeouts.indexOf(timeoutId);
       if (index > -1) {
-        this.#resetTimeouts.splice(index, 1); 
+        this.#resetTimeouts.splice(index, 1);
       }
     }, 800);
 
@@ -162,8 +181,8 @@ export class AddToCartComponent extends Component {
   };
 }
 
-if (!customElements.get('add-to-cart-component')) {
-  customElements.define('add-to-cart-component', AddToCartComponent);
+if (!customElements.get("add-to-cart-component")) {
+  customElements.define("add-to-cart-component", AddToCartComponent);
 }
 
 /**
@@ -189,7 +208,7 @@ if (!customElements.get('add-to-cart-component')) {
  * @extends Component<ProductFormRefs>
  */
 class ProductFormComponent extends Component {
-  requiredRefs = ['variantId', 'liveRegion'];
+  requiredRefs = ["variantId", "liveRegion"];
   #abortController = new AbortController();
 
   /** @type {number | undefined} */
@@ -205,12 +224,20 @@ class ProductFormComponent extends Component {
     super.connectedCallback();
 
     const { signal } = this.#abortController;
-    const target = this.closest('.shopify-section, dialog, product-card');
-    target?.addEventListener(ThemeEvents.variantUpdate, this.#onVariantUpdate, { signal });
-    target?.addEventListener(ThemeEvents.variantSelected, this.#onVariantSelected, { signal });
+    const target = this.closest(".shopify-section, dialog, product-card");
+    target?.addEventListener(ThemeEvents.variantUpdate, this.#onVariantUpdate, {
+      signal,
+    });
+    target?.addEventListener(
+      ThemeEvents.variantSelected,
+      this.#onVariantSelected,
+      { signal },
+    );
 
     // Listen for cart updates to sync data-cart-quantity
-    document.addEventListener(ThemeEvents.cartUpdate, this.#onCartUpdate, { signal });
+    document.addEventListener(ThemeEvents.cartUpdate, this.#onCartUpdate, {
+      signal,
+    });
   }
 
   disconnectedCallback() {
@@ -225,14 +252,20 @@ class ProductFormComponent extends Component {
    * @returns {number} The cart quantity for the current variant
    */
   #updateCartQuantityFromData(cart) {
-    const variantIdInput = /** @type {HTMLInputElement | null} */ (this.querySelector('input[name="id"]'));
+    const variantIdInput = /** @type {HTMLInputElement | null} */ (
+      this.querySelector('input[name="id"]')
+    );
     if (!variantIdInput?.value || !cart?.items) return 0;
 
-    const cartItem = cart.items.find((item) => item.variant_id.toString() === variantIdInput.value.toString());
+    const cartItem = cart.items.find(
+      (item) => item.variant_id.toString() === variantIdInput.value.toString(),
+    );
     const cartQty = cartItem ? cartItem.quantity : 0;
 
     // Use public API to update quantity selector
-    const quantitySelector = /** @type {any | undefined} */ (this.querySelector('quantity-selector-component'));
+    const quantitySelector = /** @type {any | undefined} */ (
+      this.querySelector("quantity-selector-component")
+    );
     if (quantitySelector?.setCartQuantity) {
       quantitySelector.setCartQuantity(cartQty);
     }
@@ -248,17 +281,19 @@ class ProductFormComponent extends Component {
    * @returns {Promise<Cart | null>} The cart object, or null if fetch fails.
    */
   async #fetchAndUpdateCartQuantity() {
-    const variantIdInput = /** @type {HTMLInputElement | null} */ (this.querySelector('input[name="id"]'));
+    const variantIdInput = /** @type {HTMLInputElement | null} */ (
+      this.querySelector('input[name="id"]')
+    );
     if (!variantIdInput?.value) return null;
 
     try {
-      const response = await fetch('/cart.js');
+      const response = await fetch("/cart.js");
       const cart = await response.json();
 
       this.#updateCartQuantityFromData(cart);
       return cart;
     } catch (error) {
-      console.error('Failed to fetch cart quantity:', error);
+      console.error("Failed to fetch cart quantity:", error);
       return null;
     }
   }
@@ -269,7 +304,11 @@ class ProductFormComponent extends Component {
    */
   #onCartUpdate = async (event) => {
     // Skip if this event came from this component
-    if (event.detail?.sourceId === this.id || event.detail?.data?.source === 'product-form-component') return;
+    if (
+      event.detail?.sourceId === this.id ||
+      event.detail?.data?.source === "product-form-component"
+    )
+      return;
 
     const cart = /** @type {Cart} */ (event.detail?.resource);
     if (cart?.items) {
@@ -300,12 +339,20 @@ class ProductFormComponent extends Component {
 
   /** @returns {string | undefined} */
   #getIntendedVariantId() {
-    return new URL(window.location.href).searchParams.get('variant') || this.refs.variantId?.value || undefined;
+    return (
+      new URL(window.location.href).searchParams.get("variant") ||
+      this.refs.variantId?.value ||
+      undefined
+    );
   }
 
   /** @returns {number} */
   #getQuantity() {
-    return Number(this.refs.quantitySelector?.getValue?.()) || Number(this.dataset.quantityDefault) || 1;
+    return (
+      Number(this.refs.quantitySelector?.getValue?.()) ||
+      Number(this.dataset.quantityDefault) ||
+      1
+    );
   }
 
   /**
@@ -318,19 +365,20 @@ class ProductFormComponent extends Component {
 
     if (this.#timeout) clearTimeout(this.#timeout);
 
-    const allAddToCartContainers = /** @type {NodeListOf<AddToCartComponent>} */ (
-      this.querySelectorAll('add-to-cart-component')
-    );
+    const allAddToCartContainers =
+      /** @type {NodeListOf<AddToCartComponent>} */ (
+        this.querySelectorAll("add-to-cart-component")
+      );
 
     if (!overrideVariantId) {
       const anyButtonDisabled = Array.from(allAddToCartContainers).some(
-        (container) => container.refs.addToCartButton?.disabled
+        (container) => container.refs.addToCartButton?.disabled,
       );
       if (anyButtonDisabled) return;
     }
 
-    const form = this.querySelector('form');
-    if (!form) throw new Error('Product form element missing');
+    const form = this.querySelector("form");
+    if (!form) throw new Error("Product form element missing");
 
     if (!overrideVariantId && this.refs.quantitySelector?.canAddToCart) {
       const validation = this.refs.quantitySelector.canAddToCart();
@@ -340,10 +388,13 @@ class ProductFormComponent extends Component {
           container.disable();
         }
 
-        const errorTemplate = this.dataset.quantityErrorMax || '';
-        const errorMessage = errorTemplate.replace('{{ maximum }}', validation.maxQuantity?.toString() || '');
+        const errorTemplate = this.dataset.quantityErrorMax || "";
+        const errorMessage = errorTemplate.replace(
+          "{{ maximum }}",
+          validation.maxQuantity?.toString() || "",
+        );
         if (addToCartTextError) {
-          addToCartTextError.classList.remove('hidden');
+          addToCartTextError.classList.remove("hidden");
 
           const textNode = addToCartTextError.childNodes[2];
           if (textNode) {
@@ -358,7 +409,7 @@ class ProductFormComponent extends Component {
           if (this.#timeout) clearTimeout(this.#timeout);
           this.#timeout = setTimeout(() => {
             if (!addToCartTextError) return;
-            addToCartTextError.classList.add('hidden');
+            addToCartTextError.classList.add("hidden");
             this.#clearLiveRegionText();
           }, ERROR_MESSAGE_DISPLAY_DURATION);
         }
@@ -376,39 +427,46 @@ class ProductFormComponent extends Component {
     const formData = new FormData(form);
 
     if (overrideVariantId) {
-      formData.set('id', overrideVariantId);
+      formData.set("id", overrideVariantId);
     }
     if (overrideQuantity !== undefined) {
-      formData.set('quantity', overrideQuantity.toString());
+      formData.set("quantity", overrideQuantity.toString());
     }
 
-    const cartItemsComponents = document.querySelectorAll('cart-items-component');
+    const cartItemsComponents = document.querySelectorAll(
+      "cart-items-component",
+    );
     let cartItemComponentsSectionIds = [];
     cartItemsComponents.forEach((item) => {
       if (item instanceof HTMLElement && item.dataset.sectionId) {
         cartItemComponentsSectionIds.push(item.dataset.sectionId);
       }
-      formData.append('sections', cartItemComponentsSectionIds.join(','));
+      formData.append("sections", cartItemComponentsSectionIds.join(","));
     });
 
-    const fetchCfg = fetchConfig('javascript', { body: formData });
+    const fetchCfg = fetchConfig("javascript", { body: formData });
 
     fetch(Theme.routes.cart_add_url, {
       ...fetchCfg,
       headers: {
         ...fetchCfg.headers,
-        Accept: 'text/html',
+        Accept: "text/html",
       },
     })
       .then((response) => response.json())
       .then(async (response) => {
         if (response.status) {
           this.dispatchEvent(
-            new CartErrorEvent(form.getAttribute('id') || '', response.message, response.description, response.errors)
+            new CartErrorEvent(
+              form.getAttribute("id") || "",
+              response.message,
+              response.description,
+              response.errors,
+            ),
           );
 
           if (!addToCartTextError) return;
-          addToCartTextError.classList.remove('hidden');
+          addToCartTextError.classList.remove("hidden");
 
           // Reuse the text node if the user is spam-clicking
           const textNode = addToCartTextError.childNodes[2];
@@ -424,7 +482,7 @@ class ProductFormComponent extends Component {
 
           this.#timeout = setTimeout(() => {
             if (!addToCartTextError) return;
-            addToCartTextError.classList.add('hidden');
+            addToCartTextError.classList.add("hidden");
 
             // Clear the announcement
             this.#clearLiveRegionText();
@@ -435,29 +493,35 @@ class ProductFormComponent extends Component {
           this.dispatchEvent(
             new CartAddEvent({}, this.id, {
               didError: true,
-              source: 'product-form-component',
-              itemCount: Number(formData.get('quantity')) || Number(this.dataset.quantityDefault),
+              source: "product-form-component",
+              itemCount:
+                Number(formData.get("quantity")) ||
+                Number(this.dataset.quantityDefault),
               productId: this.dataset.productId,
-            })
+            }),
           );
 
           return;
         } else {
-          const id = formData.get('id');
+          const id = formData.get("id");
 
           if (addToCartTextError) {
-            addToCartTextError.classList.add('hidden');
-            addToCartTextError.removeAttribute('aria-live');
+            addToCartTextError.classList.add("hidden");
+            addToCartTextError.removeAttribute("aria-live");
           }
 
-          if (!id) throw new Error('Form ID is required');
+          if (!id) throw new Error("Form ID is required");
 
           // Add aria-live region to inform screen readers that the item was added
           // Get the added text from any add-to-cart button
-          const anyAddToCartButton = allAddToCartContainers[0]?.refs.addToCartButton;
+          const anyAddToCartButton =
+            allAddToCartContainers[0]?.refs.addToCartButton;
           if (anyAddToCartButton) {
-            const addedTextElement = anyAddToCartButton.querySelector('.add-to-cart-text--added');
-            const addedText = addedTextElement?.textContent?.trim() || Theme.translations.added;
+            const addedTextElement = anyAddToCartButton.querySelector(
+              ".add-to-cart-text--added",
+            );
+            const addedText =
+              addedTextElement?.textContent?.trim() || Theme.translations.added;
 
             this.#setLiveRegionText(addedText);
 
@@ -471,11 +535,13 @@ class ProductFormComponent extends Component {
 
           this.dispatchEvent(
             new CartAddEvent(cart ?? undefined, id.toString(), {
-              source: 'product-form-component',
-              itemCount: Number(formData.get('quantity')) || Number(this.dataset.quantityDefault),
+              source: "product-form-component",
+              itemCount:
+                Number(formData.get("quantity")) ||
+                Number(this.dataset.quantityDefault),
               productId: this.dataset.productId,
               sections: response.sections,
-            })
+            }),
           );
         }
       })
@@ -484,7 +550,7 @@ class ProductFormComponent extends Component {
       })
       .finally(() => {
         if (event) {
-          cartPerformance.measureFromEvent('add:user-action', event);
+          cartPerformance.measureFromEvent("add:user-action", event);
         }
       });
   }
@@ -497,7 +563,9 @@ class ProductFormComponent extends Component {
 
     if (this.#timeout) clearTimeout(this.#timeout);
 
-    const cartItemsComponents = document.querySelectorAll('cart-items-component');
+    const cartItemsComponents = document.querySelectorAll(
+      "cart-items-component",
+    );
     const cartItemComponentsSectionIds = [];
     for (const item of cartItemsComponents) {
       if (item instanceof HTMLElement && item.dataset.sectionId) {
@@ -510,14 +578,14 @@ class ProductFormComponent extends Component {
         id: Number(item.variantId),
         quantity: item.quantity,
       })),
-      sections: cartItemComponentsSectionIds.join(','),
+      sections: cartItemComponentsSectionIds.join(","),
     };
 
     fetch(Theme.routes.cart_add_url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(payload),
     })
@@ -525,21 +593,28 @@ class ProductFormComponent extends Component {
       .then(async (response) => {
         if (response.status) {
           this.dispatchEvent(
-            new CartErrorEvent(this.id, response.message, response.description, response.errors)
+            new CartErrorEvent(
+              this.id,
+              response.message,
+              response.description,
+              response.errors,
+            ),
           );
 
           if (addToCartTextError) {
-            addToCartTextError.classList.remove('hidden');
+            addToCartTextError.classList.remove("hidden");
             const textNode = addToCartTextError.childNodes[2];
             if (textNode) {
               textNode.textContent = response.message;
             } else {
-              addToCartTextError.appendChild(document.createTextNode(response.message));
+              addToCartTextError.appendChild(
+                document.createTextNode(response.message),
+              );
             }
             this.#setLiveRegionText(response.message);
 
             this.#timeout = setTimeout(() => {
-              addToCartTextError.classList.add('hidden');
+              addToCartTextError.classList.add("hidden");
               this.#clearLiveRegionText();
             }, ERROR_MESSAGE_DISPLAY_DURATION);
           }
@@ -547,40 +622,51 @@ class ProductFormComponent extends Component {
           this.dispatchEvent(
             new CartAddEvent({}, this.id, {
               didError: true,
-              source: 'product-form-component',
+              source: "product-form-component",
               itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
               productId: this.dataset.productId,
-            })
+            }),
           );
           return;
         }
 
         if (addToCartTextError) {
-          addToCartTextError.classList.add('hidden');
-          addToCartTextError.removeAttribute('aria-live');
+          addToCartTextError.classList.add("hidden");
+          addToCartTextError.removeAttribute("aria-live");
         }
 
-        const allAddToCartContainers = /** @type {NodeListOf<AddToCartComponent>} */ (
-          this.querySelectorAll('add-to-cart-component')
-        );
-        const anyAddToCartButton = allAddToCartContainers[0]?.refs.addToCartButton;
+        const allAddToCartContainers =
+          /** @type {NodeListOf<AddToCartComponent>} */ (
+            this.querySelectorAll("add-to-cart-component")
+          );
+        const anyAddToCartButton =
+          allAddToCartContainers[0]?.refs.addToCartButton;
         if (anyAddToCartButton) {
-          const addedTextElement = anyAddToCartButton.querySelector('.add-to-cart-text--added');
-          const addedText = addedTextElement?.textContent?.trim() || Theme.translations.added;
+          const addedTextElement = anyAddToCartButton.querySelector(
+            ".add-to-cart-text--added",
+          );
+          const addedText =
+            addedTextElement?.textContent?.trim() || Theme.translations.added;
           this.#setLiveRegionText(addedText);
-          setTimeout(() => this.#clearLiveRegionText(), SUCCESS_MESSAGE_DISPLAY_DURATION);
+          setTimeout(
+            () => this.#clearLiveRegionText(),
+            SUCCESS_MESSAGE_DISPLAY_DURATION,
+          );
         }
 
         const cart = await this.#fetchAndUpdateCartQuantity();
 
-        const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+        const totalQuantity = items.reduce(
+          (sum, item) => sum + item.quantity,
+          0,
+        );
         this.dispatchEvent(
           new CartAddEvent(cart ?? undefined, this.id, {
-            source: 'product-form-component',
+            source: "product-form-component",
             itemCount: totalQuantity,
             productId: this.dataset.productId,
             sections: response.sections,
-          })
+          }),
         );
       })
       .catch((error) => {
@@ -601,7 +687,7 @@ class ProductFormComponent extends Component {
       }
 
       // Show/hide based on quantity
-      quantityLabel.classList.toggle('hidden', cartQty === 0);
+      quantityLabel.classList.toggle("hidden", cartQty === 0);
     }
   }
 
@@ -615,7 +701,7 @@ class ProductFormComponent extends Component {
 
   #clearLiveRegionText() {
     const liveRegion = this.refs.liveRegion;
-    liveRegion.textContent = '';
+    liveRegion.textContent = "";
   }
 
   /**
@@ -624,13 +710,20 @@ class ProductFormComponent extends Component {
    * @param {Element | null | undefined} newElement - The new element from the server response
    * @param {Element | null} [insertReferenceElement] - Element to insert before if adding new element
    */
-  #morphOrUpdateElement(currentElement, newElement, insertReferenceElement = null) {
+  #morphOrUpdateElement(
+    currentElement,
+    newElement,
+    insertReferenceElement = null,
+  ) {
     if (currentElement && newElement) {
       morph(currentElement, newElement);
     } else if (currentElement && !newElement) {
       currentElement.remove();
     } else if (!currentElement && newElement && insertReferenceElement) {
-      insertReferenceElement.insertAdjacentElement('beforebegin', /** @type {Element} */ (newElement.cloneNode(true)));
+      insertReferenceElement.insertAdjacentElement(
+        "beforebegin",
+        /** @type {Element} */ (newElement.cloneNode(true)),
+      );
     }
   }
 
@@ -645,7 +738,7 @@ class ProductFormComponent extends Component {
     }
 
     const { variantId } = this.refs;
-    variantId.value = event.detail.resource?.id ?? '';
+    variantId.value = event.detail.resource?.id ?? "";
 
     this.#variantChangeInProgress = false;
 
@@ -655,39 +748,56 @@ class ProductFormComponent extends Component {
       this.#processBatchAddToCart(queuedItems);
     }
 
-    const { addToCartButtonContainer: currentAddToCartButtonContainer, acceleratedCheckoutButtonContainer } = this.refs;
-    const currentAddToCartButton = currentAddToCartButtonContainer?.refs.addToCartButton;
+    const {
+      addToCartButtonContainer: currentAddToCartButtonContainer,
+      acceleratedCheckoutButtonContainer,
+    } = this.refs;
+    const currentAddToCartButton =
+      currentAddToCartButtonContainer?.refs.addToCartButton;
 
     // Update state and text for add-to-cart button
-    if (!currentAddToCartButtonContainer || (!currentAddToCartButton && !acceleratedCheckoutButtonContainer)) return;
+    if (
+      !currentAddToCartButtonContainer ||
+      (!currentAddToCartButton && !acceleratedCheckoutButtonContainer)
+    )
+      return;
 
     // Update the button state
-    if (event.detail.resource == null || event.detail.resource.available == false) {
+    if (
+      event.detail.resource == null ||
+      event.detail.resource.available == false
+    ) {
       currentAddToCartButtonContainer.disable();
     } else {
       currentAddToCartButtonContainer.enable();
     }
 
-    const newAddToCartButton = event.detail.data.html.querySelector('product-form-component [ref="addToCartButton"]');
+    const newAddToCartButton = event.detail.data.html.querySelector(
+      'product-form-component [ref="addToCartButton"]',
+    );
     if (newAddToCartButton && currentAddToCartButton) {
       morph(currentAddToCartButton, newAddToCartButton);
     }
 
     if (acceleratedCheckoutButtonContainer) {
-      if (event.detail.resource == null || event.detail.resource.available == false) {
-        acceleratedCheckoutButtonContainer?.setAttribute('hidden', 'true');
+      if (
+        event.detail.resource == null ||
+        event.detail.resource.available == false
+      ) {
+        acceleratedCheckoutButtonContainer?.setAttribute("hidden", "true");
       } else {
-        acceleratedCheckoutButtonContainer?.removeAttribute('hidden');
+        acceleratedCheckoutButtonContainer?.removeAttribute("hidden");
       }
     }
 
     // Set the data attribute for the product variant media if it exists
     if (event.detail.resource) {
-      const productVariantMedia = event.detail.resource.featured_media?.preview_image?.src;
+      const productVariantMedia =
+        event.detail.resource.featured_media?.preview_image?.src;
       if (productVariantMedia) {
         this.refs.addToCartButtonContainer?.setAttribute(
-          'data-product-variant-media',
-          productVariantMedia + '&width=100'
+          "data-product-variant-media",
+          productVariantMedia + "&width=100",
         );
       }
     }
@@ -704,41 +814,60 @@ class ProductFormComponent extends Component {
 
     // Update quantity selector's min/max/step attributes and cart quantity for the new variant
     const newQuantityInput = /** @type {HTMLInputElement | null} */ (
-      event.detail.data.html.querySelector('quantity-selector-component input[ref="quantityInput"]')
+      event.detail.data.html.querySelector(
+        'quantity-selector-component input[ref="quantityInput"]',
+      )
     );
 
     if (quantitySelector?.updateConstraints && newQuantityInput) {
-      quantitySelector.updateConstraints(newQuantityInput.min, newQuantityInput.max || null, newQuantityInput.step);
+      quantitySelector.updateConstraints(
+        newQuantityInput.min,
+        newQuantityInput.max || null,
+        newQuantityInput.step,
+      );
     }
 
-    const newQuantityRules = event.detail.data.html.querySelector('.quantity-rules');
+    const newQuantityRules =
+      event.detail.data.html.querySelector(".quantity-rules");
     const isQuantityRulesChanging = !!quantityRules !== !!newQuantityRules;
 
-    const newPricePerItem = event.detail.data.html.querySelector('price-per-item');
+    const newPricePerItem =
+      event.detail.data.html.querySelector("price-per-item");
     const isPricePerItemChanging = !!pricePerItem !== !!newPricePerItem;
 
-    if ((isQuantityRulesChanging || isPricePerItemChanging) && quantitySelector) {
+    if (
+      (isQuantityRulesChanging || isPricePerItemChanging) &&
+      quantitySelector
+    ) {
       // Store quantity value before morphing entire container
       const currentQuantityValue = quantitySelector.getValue?.();
 
-      const newProductFormButtons = event.detail.data.html.querySelector('.product-form-buttons');
+      const newProductFormButtons = event.detail.data.html.querySelector(
+        ".product-form-buttons",
+      );
 
       if (productFormButtons && newProductFormButtons) {
         morph(productFormButtons, newProductFormButtons);
 
         // Get the NEW quantity selector after morphing and update its constraints
         const newQuantityInputElement = /** @type {HTMLInputElement | null} */ (
-          event.detail.data.html.querySelector('quantity-selector-component input[ref="quantityInput"]')
+          event.detail.data.html.querySelector(
+            'quantity-selector-component input[ref="quantityInput"]',
+          )
         );
 
-        if (this.refs.quantitySelector?.updateConstraints && newQuantityInputElement && currentQuantityValue) {
+        if (
+          this.refs.quantitySelector?.updateConstraints &&
+          newQuantityInputElement &&
+          currentQuantityValue
+        ) {
           // Temporarily set the old value so updateConstraints can snap it properly
           this.refs.quantitySelector.setValue(currentQuantityValue);
           // updateConstraints will snap to valid increment if needed
           this.refs.quantitySelector.updateConstraints(
             newQuantityInputElement.min,
             newQuantityInputElement.max || null,
-            newQuantityInputElement.step
+            newQuantityInputElement.step,
           );
         }
       }
@@ -746,23 +875,37 @@ class ProductFormComponent extends Component {
       // Update elements individually when layout isn't changing
       /** @type {Array<[string, HTMLElement | undefined, HTMLElement | undefined]>} */
       const morphTargets = [
-        ['.quantity-label', quantityLabel, quantitySelector],
-        ['.quantity-rules', quantityRules, this.refs.productFormButtons],
-        ['price-per-item', pricePerItem, quantitySelectorWrapper],
+        [".quantity-label", quantityLabel, quantitySelector],
+        [".quantity-rules", quantityRules, this.refs.productFormButtons],
+        ["price-per-item", pricePerItem, quantitySelectorWrapper],
       ];
 
       for (const [selector, currentElement, fallback] of morphTargets) {
-        this.#morphOrUpdateElement(currentElement, event.detail.data.html.querySelector(selector), fallback);
+        this.#morphOrUpdateElement(
+          currentElement,
+          event.detail.data.html.querySelector(selector),
+          fallback,
+        );
       }
     }
 
     // Morph volume pricing if it exists
     const currentVolumePricing = this.refs.volumePricing;
-    const newVolumePricing = event.detail.data.html.querySelector('volume-pricing');
-    this.#morphOrUpdateElement(currentVolumePricing, newVolumePricing, this.refs.productFormButtons);
+    const newVolumePricing =
+      event.detail.data.html.querySelector("volume-pricing");
+    this.#morphOrUpdateElement(
+      currentVolumePricing,
+      newVolumePricing,
+      this.refs.productFormButtons,
+    );
 
     const hasB2BFeatures =
-      quantityRules || newQuantityRules || pricePerItem || newPricePerItem || currentVolumePricing || newVolumePricing;
+      quantityRules ||
+      newQuantityRules ||
+      pricePerItem ||
+      newPricePerItem ||
+      currentVolumePricing ||
+      newVolumePricing;
 
     if (!hasB2BFeatures) return;
 
@@ -776,6 +919,6 @@ class ProductFormComponent extends Component {
   };
 }
 
-if (!customElements.get('product-form-component')) {
-  customElements.define('product-form-component', ProductFormComponent);
+if (!customElements.get("product-form-component")) {
+  customElements.define("product-form-component", ProductFormComponent);
 }

@@ -1,5 +1,5 @@
-import { Component } from '@theme/component';
-import { ThemeEvents } from '@theme/events';
+import { Component } from "@theme/component";
+import { ThemeEvents } from "@theme/events";
 
 /**
  * Displays dynamic per-item pricing based on quantity and volume pricing tiers.
@@ -35,7 +35,7 @@ class PricePerItemComponent extends Component {
    * Parses price breaks from data attributes
    */
   #parsePriceBreaks() {
-    const minQuantity = parseInt(this.dataset.minQuantity || '') || 1;
+    const minQuantity = parseInt(this.dataset.minQuantity || "") || 1;
     const { variantPrice, priceBreaks: priceBreaksData } = this.dataset;
 
     // Start with base price tier
@@ -64,8 +64,14 @@ class PricePerItemComponent extends Component {
     const { signal } = this.#abortController;
 
     // Listen on document to catch all events (more reliable than form-only)
-    document.addEventListener(ThemeEvents.quantitySelectorUpdate, this.#handleQuantityUpdate, { signal });
-    document.addEventListener(ThemeEvents.cartUpdate, this.#handleCartUpdate, { signal });
+    document.addEventListener(
+      ThemeEvents.quantitySelectorUpdate,
+      this.#handleQuantityUpdate,
+      { signal },
+    );
+    document.addEventListener(ThemeEvents.cartUpdate, this.#handleCartUpdate, {
+      signal,
+    });
   }
 
   /**
@@ -74,8 +80,13 @@ class PricePerItemComponent extends Component {
    */
   #handleQuantityUpdate = (event) => {
     // Only respond to updates for our variant's quantity selector
-    const form = this.closest('product-form-component');
-    if (!form || !(event.target instanceof Node) || !form.contains(event.target)) return;
+    const form = this.closest("product-form-component");
+    if (
+      !form ||
+      !(event.target instanceof Node) ||
+      !form.contains(event.target)
+    )
+      return;
 
     this.#updatePriceDisplay();
   };
@@ -92,12 +103,15 @@ class PricePerItemComponent extends Component {
    * @returns {number}
    */
   #getCurrentQuantity() {
-    const form = this.closest('product-form-component');
-    const quantityInput = /** @type {HTMLInputElement | null} */ (form?.querySelector('input[name="quantity"]'));
+    const form = this.closest("product-form-component");
+    const quantityInput = /** @type {HTMLInputElement | null} */ (
+      form?.querySelector('input[name="quantity"]')
+    );
     if (!quantityInput) return 1;
 
     // Read the current cart quantity from the data attribute
-    const cartQty = parseInt(quantityInput.getAttribute('data-cart-quantity') || '0') || 0;
+    const cartQty =
+      parseInt(quantityInput.getAttribute("data-cart-quantity") || "0") || 0;
     // Read the current input value (quantity to add)
     const inputQty = parseInt(quantityInput.value) || 1;
 
@@ -114,7 +128,8 @@ class PricePerItemComponent extends Component {
 
     // Price breaks are sorted descending, find first tier that quantity qualifies for
     const priceBreak =
-      this.#priceBreaks.find((pb) => quantity >= pb.quantity) ?? this.#priceBreaks[this.#priceBreaks.length - 1];
+      this.#priceBreaks.find((pb) => quantity >= pb.quantity) ??
+      this.#priceBreaks[this.#priceBreaks.length - 1];
 
     if (priceBreak) {
       this.refs.pricePerItemText.innerHTML = `${this.dataset.atText} ${priceBreak.price}/${this.dataset.eachText}`;
@@ -129,6 +144,6 @@ class PricePerItemComponent extends Component {
   };
 }
 
-if (!customElements.get('price-per-item')) {
-  customElements.define('price-per-item', PricePerItemComponent);
+if (!customElements.get("price-per-item")) {
+  customElements.define("price-per-item", PricePerItemComponent);
 }

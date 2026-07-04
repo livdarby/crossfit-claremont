@@ -1,4 +1,4 @@
-[part='list'] {
+[part="list"] {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
@@ -22,22 +22,22 @@
   }
 }
 
-[part='list'],
-[part='overflow-list'],
-[part='placeholder'] {
+[part="list"],
+[part="overflow-list"],
+[part="placeholder"] {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 /* Make sure the "more" slot can be measured */
-slot[name='more']:not([hidden]) {
+slot[name="more"]:not([hidden]) {
   display: flex;
   height: 100%;
   align-items: center;
 }
 
-slot[name='more'] .button {
+slot[name="more"] .button {
   cursor: pointer;
   border: none;
   background: none;
@@ -51,18 +51,18 @@ slot[name='more'] .button {
   -webkit-font-smoothing: antialiased;
 }
 
-[part='overflow'] {
+[part="overflow"] {
   display: none;
 }
 
-[part='placeholder'] {
+[part="placeholder"] {
   visibility: hidden;
   width: 0;
   height: 0;
 }
 
 :host([disabled]) {
-  slot[name='more'] {
+  slot[name="more"] {
     display: none;
   }
 }

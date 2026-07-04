@@ -1,5 +1,47 @@
-
 {% assign block_settings = block.settings %}
+
+{%- style -%}
+  .details {
+    padding: 12px 16px 0;
+    margin-bottom: 12px;
+  }
+
+  .details[open] {
+    background-color: {{ block.settings.background }};
+    border-block-start-color: transparent !important;
+    border-radius: 8px;
+  }
+
+  .icon-plus svg ellipse,
+  .icon-plus svg path,
+  .icon-plus svg {
+    transition:
+      transform 220ms ease,
+      opacity 220ms ease,
+      fill 220ms ease,
+      stroke 220ms ease;
+  }
+
+  .icon-plus svg path {
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  .icon-plus svg ellipse {
+    opacity: 0.1;
+  }
+
+  .details[open] > summary .icon-plus svg ellipse {
+    opacity: 1;
+    fill: #530678;
+  }
+
+  .details[open] > summary .icon-plus svg path {
+    transform: rotate(45deg);
+    stroke: #fff;
+  }
+{%- endstyle -%}
+
 
 {% capture accordion_row_children %}
   <details
@@ -72,6 +114,11 @@
     {
       "type": "header",
       "content": "t:content.icon"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "t:settings.background_color"
     },
     {
       "type": "select",

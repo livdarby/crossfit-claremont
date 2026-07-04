@@ -1,6 +1,10 @@
-import { Component } from '@theme/component';
-import { debounce, onDocumentLoaded, setHeaderMenuStyle } from '@theme/utilities';
-import { MegaMenuHoverEvent } from '@theme/events';
+import { Component } from "@theme/component";
+import {
+  debounce,
+  onDocumentLoaded,
+  setHeaderMenuStyle,
+} from "@theme/utilities";
+import { MegaMenuHoverEvent } from "@theme/events";
 
 /**
  * A custom element that manages a header menu.
@@ -15,7 +19,7 @@ import { MegaMenuHoverEvent } from '@theme/events';
  * @extends {Component<Refs>}
  */
 class HeaderMenu extends Component {
-  requiredRefs = ['overflowMenu'];
+  requiredRefs = ["overflowMenu"];
 
   /**
    * @type {MutationObserver | null}
@@ -26,18 +30,24 @@ class HeaderMenu extends Component {
     super.connectedCallback();
 
     onDocumentLoaded(this.#preloadImages);
-    window.addEventListener('resize', this.#resizeListener);
-    this.overflowMenu?.addEventListener('pointerleave', this.#overflowSubmenuListener);
+    window.addEventListener("resize", this.#resizeListener);
+    this.overflowMenu?.addEventListener(
+      "pointerleave",
+      this.#overflowSubmenuListener,
+    );
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    window.removeEventListener('resize', this.#resizeListener);
-    document.body.removeEventListener('pointermove', this.#onPointerMove);
+    window.removeEventListener("resize", this.#resizeListener);
+    document.body.removeEventListener("pointermove", this.#onPointerMove);
     if (this.#state.activeItem) {
       this.#stopPointerTracking(this.#state.activeItem);
     }
-    this.overflowMenu?.removeEventListener('pointerleave', this.#overflowSubmenuListener);
+    this.overflowMenu?.removeEventListener(
+      "pointerleave",
+      this.#overflowSubmenuListener,
+    );
     this.#cleanupMutationObserver();
   }
 
@@ -88,7 +98,7 @@ class HeaderMenu extends Component {
     if (moving) {
       this.#pointerIdleTimer = setTimeout(() => {
         if (this.#state.activeItem) {
-          this.#state.activeItem.dataset.safetyBox = 'false';
+          this.#state.activeItem.dataset.safetyBox = "false";
           this.#reconcilePointerTarget();
         }
       }, 50);
@@ -106,9 +116,11 @@ class HeaderMenu extends Component {
     requestAnimationFrame(() => {
       const target = document.elementFromPoint(x, y);
       if (!target) return;
-      const listItem = target.closest('.menu-list__list-item');
+      const listItem = target.closest(".menu-list__list-item");
       if (listItem && !listItem.contains(this.#state.activeItem)) {
-        listItem.dispatchEvent(new PointerEvent('pointerenter', { bubbles: false }));
+        listItem.dispatchEvent(
+          new PointerEvent("pointerenter", { bubbles: false }),
+        );
       }
     });
   }
@@ -122,13 +134,20 @@ class HeaderMenu extends Component {
     if (previousItem) {
       this.#stopPointerTracking(previousItem);
     } else {
-      document.body.addEventListener('pointermove', this.#onPointerMove);
+      document.body.addEventListener("pointermove", this.#onPointerMove);
     }
 
     const rect = item.getBoundingClientRect();
-    const isOverlap = this.headerComponent?.hasAttribute('data-submenu-overlap-bottom-row');
-    const boundary = isOverlap ? this.headerComponent?.querySelector('.header__row--top') : this.headerComponent;
-    item.style.setProperty('--box-height', `${(boundary?.getBoundingClientRect().bottom ?? 0) - rect.top}px`);
+    const isOverlap = this.headerComponent?.hasAttribute(
+      "data-submenu-overlap-bottom-row",
+    );
+    const boundary = isOverlap
+      ? this.headerComponent?.querySelector(".header__row--top")
+      : this.headerComponent;
+    item.style.setProperty(
+      "--box-height",
+      `${(boundary?.getBoundingClientRect().bottom ?? 0) - rect.top}px`,
+    );
   }
 
   /**
@@ -138,7 +157,7 @@ class HeaderMenu extends Component {
   #stopPointerTracking(item) {
     clearTimeout(this.#pointerIdleTimer);
     this.#pointerIdleTimer = undefined;
-    item.style.removeProperty('--box-height');
+    item.style.removeProperty("--box-height");
     delete item.dataset.safetyBox;
   }
 
@@ -146,7 +165,9 @@ class HeaderMenu extends Component {
    * Get the overflow menu
    */
   get overflowMenu() {
-    return /** @type {HTMLElement | null} */ (this.refs.overflowMenu?.shadowRoot?.querySelector('[part="overflow"]'));
+    return /** @type {HTMLElement | null} */ (
+      this.refs.overflowMenu?.shadowRoot?.querySelector('[part="overflow"]')
+    );
   }
 
   /**
@@ -154,11 +175,15 @@ class HeaderMenu extends Component {
    * @returns {boolean}
    */
   get overflowListHovered() {
-    return this.refs.overflowMenu?.shadowRoot?.querySelector('[part="overflow-list"]')?.matches(':hover') ?? false;
+    return (
+      this.refs.overflowMenu?.shadowRoot
+        ?.querySelector('[part="overflow-list"]')
+        ?.matches(":hover") ?? false
+    );
   }
 
   get headerComponent() {
-    return /** @type {HTMLElement | null} */ (this.closest('header-component'));
+    return /** @type {HTMLElement | null} */ (this.closest("header-component"));
   }
 
   /**
@@ -174,19 +199,19 @@ class HeaderMenu extends Component {
 
     if (!item || item == this.#state.activeItem) return;
 
-    const isDefaultSlot = event.target.slot === '';
+    const isDefaultSlot = event.target.slot === "";
 
     this.dataset.overflowExpanded = (!isDefaultSlot).toString();
 
     const previouslyActiveItem = this.#state.activeItem;
 
     if (previouslyActiveItem) {
-      previouslyActiveItem.ariaExpanded = 'false';
+      previouslyActiveItem.ariaExpanded = "false";
     }
 
     this.#state.activeItem = item;
-    this.ariaExpanded = 'true';
-    item.ariaExpanded = 'true';
+    this.ariaExpanded = "true";
+    item.ariaExpanded = "true";
 
     let submenu = findSubmenu(item);
     const hasSubmenu = Boolean(submenu);
@@ -197,7 +222,7 @@ class HeaderMenu extends Component {
 
     if (submenu) {
       // Mark submenu as active for content-visibility optimization
-      submenu.dataset.active = '';
+      submenu.dataset.active = "";
 
       // Cleanup any existing mutation observer from previous menu activations
       this.#cleanupMutationObserver();
@@ -208,13 +233,19 @@ class HeaderMenu extends Component {
           // Double requestAnimationFrame to ensure the height is properly calculated and not defaulting to the contain-intrinsic-size
           requestAnimationFrame(() => {
             if (submenu.offsetHeight > 0) {
-              this.headerComponent?.style.setProperty('--submenu-height', `${submenu.offsetHeight}px`);
+              this.headerComponent?.style.setProperty(
+                "--submenu-height",
+                `${submenu.offsetHeight}px`,
+              );
               this.#cleanupMutationObserver();
             }
           });
         });
       });
-      this.#submenuMutationObserver.observe(submenu, { childList: true, subtree: true });
+      this.#submenuMutationObserver.observe(submenu, {
+        childList: true,
+        subtree: true,
+      });
 
       // Auto-disconnect after 500ms to prevent memory leaks
       setTimeout(() => {
@@ -242,9 +273,12 @@ class HeaderMenu extends Component {
       finalHeight = 0;
     }
 
-    this.headerComponent.style.setProperty('--submenu-height', `${finalHeight}px`);
+    this.headerComponent.style.setProperty(
+      "--submenu-height",
+      `${finalHeight}px`,
+    );
     this.#setFullOpenHeaderHeight(finalHeight);
-    this.style.setProperty('--submenu-opacity', '1');
+    this.style.setProperty("--submenu-opacity", "1");
     this.#startPointerTracking(item, previouslyActiveItem);
   };
 
@@ -256,11 +290,16 @@ class HeaderMenu extends Component {
     if (!(event.target instanceof Element)) return;
 
     const menu = findSubmenu(this.#state.activeItem);
-    const isMovingWithinMenu = event.relatedTarget instanceof Node && menu?.contains(document.activeElement);
+    const isMovingWithinMenu =
+      event.relatedTarget instanceof Node &&
+      menu?.contains(document.activeElement);
     const isMovingToSubmenu =
-      event.relatedTarget instanceof Node && event.type === 'blur' && menu?.contains(event.relatedTarget);
+      event.relatedTarget instanceof Node &&
+      event.type === "blur" &&
+      menu?.contains(event.relatedTarget);
     const isMovingToOverflowMenu =
-      event.relatedTarget instanceof Node && event.relatedTarget.parentElement?.matches('[slot="overflow"]');
+      event.relatedTarget instanceof Node &&
+      event.relatedTarget.parentElement?.matches('[slot="overflow"]');
 
     if (isMovingWithinMenu || isMovingToOverflowMenu || isMovingToSubmenu) {
       if (this.#state.activeItem) {
@@ -280,21 +319,22 @@ class HeaderMenu extends Component {
     if (!item || item != this.#state.activeItem) return;
 
     // Don't deactivate if the overflow menu or overflow list is still being hovered
-    if (this.overflowListHovered || this.overflowMenu?.matches(':hover')) return;
+    if (this.overflowListHovered || this.overflowMenu?.matches(":hover"))
+      return;
 
-    this.headerComponent?.style.setProperty('--submenu-height', '0px');
+    this.headerComponent?.style.setProperty("--submenu-height", "0px");
     this.#setFullOpenHeaderHeight(0);
-    this.style.setProperty('--submenu-opacity', '0');
-    this.dataset.overflowExpanded = 'false';
+    this.style.setProperty("--submenu-opacity", "0");
+    this.dataset.overflowExpanded = "false";
 
     const submenu = findSubmenu(item);
 
-    document.body.removeEventListener('pointermove', this.#onPointerMove);
+    document.body.removeEventListener("pointermove", this.#onPointerMove);
     this.#stopPointerTracking(item);
 
     this.#state.activeItem = null;
-    this.ariaExpanded = 'false';
-    item.ariaExpanded = 'false';
+    this.ariaExpanded = "false";
+    item.ariaExpanded = "false";
 
     // Remove active state from submenu after animation completes
     if (submenu) {
@@ -303,7 +343,9 @@ class HeaderMenu extends Component {
   };
 
   #getOverflowListLinksHeight() {
-    const slottedMenuLinks = this.overflowMenu?.querySelector('slot')?.assignedElements();
+    const slottedMenuLinks = this.overflowMenu
+      ?.querySelector("slot")
+      ?.assignedElements();
     if (!slottedMenuLinks) return this.overflowMenu?.offsetHeight || 0;
 
     /**
@@ -311,7 +353,9 @@ class HeaderMenu extends Component {
      */
     const mapSubmenus = (cb) => {
       slottedMenuLinks.forEach((link) => {
-        const submenu = /** @type {HTMLElement | null} */ (link.querySelector('[ref="submenu[]"]'));
+        const submenu = /** @type {HTMLElement | null} */ (
+          link.querySelector('[ref="submenu[]"]')
+        );
         if (submenu) {
           cb(submenu);
         }
@@ -319,11 +363,11 @@ class HeaderMenu extends Component {
     };
 
     mapSubmenus((submenu) => {
-      submenu.style.setProperty('display', 'none');
+      submenu.style.setProperty("display", "none");
     });
     const height = this.overflowMenu?.offsetHeight || 0;
     mapSubmenus((submenu) => {
-      submenu.style.removeProperty('display');
+      submenu.style.removeProperty("display");
     });
     return height;
   }
@@ -335,17 +379,26 @@ class HeaderMenu extends Component {
   #setFullOpenHeaderHeight(submenuHeight) {
     if (!this.headerComponent) return;
 
-    const isOverlapSituation = this.headerComponent.hasAttribute('data-submenu-overlap-bottom-row');
+    const isOverlapSituation = this.headerComponent.hasAttribute(
+      "data-submenu-overlap-bottom-row",
+    );
 
     const headerVisibleHeight =
       isOverlapSituation && this.headerComponent.offsetHeight > 0
-        ? /** @type {HTMLElement | null} */ (this.headerComponent.querySelector('.header__row--top'))?.offsetHeight ?? 0
+        ? /** @type {HTMLElement | null} */ ((
+            this.headerComponent.querySelector(".header__row--top")
+          )?.offsetHeight ?? 0)
         : this.headerComponent.offsetHeight;
 
     const nothingToOpen = submenuHeight === 0;
-    const fullOpenHeaderHeight = nothingToOpen ? 0 : submenuHeight + (headerVisibleHeight ?? 0);
+    const fullOpenHeaderHeight = nothingToOpen
+      ? 0
+      : submenuHeight + (headerVisibleHeight ?? 0);
 
-    this.headerComponent?.style.setProperty('--full-open-header-height', `${fullOpenHeaderHeight}px`);
+    this.headerComponent?.style.setProperty(
+      "--full-open-header-height",
+      `${fullOpenHeaderHeight}px`,
+    );
   }
 
   /**
@@ -353,7 +406,7 @@ class HeaderMenu extends Component {
    */
   #preloadImages = () => {
     const images = this.querySelectorAll('img[loading="lazy"]');
-    images?.forEach((image) => image.removeAttribute('loading'));
+    images?.forEach((image) => image.removeAttribute("loading"));
   };
 
   #cleanupMutationObserver() {
@@ -362,8 +415,8 @@ class HeaderMenu extends Component {
   }
 }
 
-if (!customElements.get('header-menu')) {
-  customElements.define('header-menu', HeaderMenu);
+if (!customElements.get("header-menu")) {
+  customElements.define("header-menu", HeaderMenu);
 }
 
 /**
@@ -376,7 +429,9 @@ function findMenuItem(element) {
 
   if (element?.matches('[slot="more"')) {
     // Select the first overflowing menu item when hovering over the "More" item
-    return findMenuItem(element.parentElement?.querySelector('[slot="overflow"]'));
+    return findMenuItem(
+      element.parentElement?.querySelector('[slot="overflow"]'),
+    );
   }
 
   return element?.querySelector('[ref="menuitem"]');

@@ -1,6 +1,9 @@
-import { Component } from '@theme/component';
-import { trapFocus, removeTrapFocus } from '@theme/focus';
-import { onAnimationEnd, removeWillChangeOnAnimationEnd } from '@theme/utilities';
+import { Component } from "@theme/component";
+import { trapFocus, removeTrapFocus } from "@theme/focus";
+import {
+  onAnimationEnd,
+  removeWillChangeOnAnimationEnd,
+} from "@theme/utilities";
 
 /**
  * A custom element that manages the main menu drawer.
@@ -12,18 +15,18 @@ import { onAnimationEnd, removeWillChangeOnAnimationEnd } from '@theme/utilities
  * @extends {Component<Refs>}
  */
 class HeaderDrawer extends Component {
-  requiredRefs = ['details', 'menuDrawer'];
+  requiredRefs = ["details", "menuDrawer"];
 
   connectedCallback() {
     super.connectedCallback();
 
-    this.addEventListener('keyup', this.#onKeyUp);
+    this.addEventListener("keyup", this.#onKeyUp);
     this.#setupAnimatedElementListeners();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.removeEventListener('keyup', this.#onKeyUp);
+    this.removeEventListener("keyup", this.#onKeyUp);
   }
 
   /**
@@ -31,7 +34,7 @@ class HeaderDrawer extends Component {
    * @param {KeyboardEvent} event
    */
   #onKeyUp = (event) => {
-    if (event.key !== 'Escape') return;
+    if (event.key !== "Escape") return;
 
     this.#close(this.#getDetailsElement(event));
   };
@@ -40,7 +43,7 @@ class HeaderDrawer extends Component {
    * @returns {boolean} Whether the main menu drawer is open
    */
   get isOpen() {
-    return this.refs.details.hasAttribute('open');
+    return this.refs.details.hasAttribute("open");
   }
 
   /**
@@ -51,7 +54,7 @@ class HeaderDrawer extends Component {
   #getDetailsElement(event) {
     if (!(event?.target instanceof Element)) return this.refs.details;
 
-    return event.target.closest('details') ?? this.refs.details;
+    return event.target.closest("details") ?? this.refs.details;
   }
 
   /**
@@ -68,23 +71,27 @@ class HeaderDrawer extends Component {
    */
   open(target, event) {
     const details = this.#getDetailsElement(event);
-    const summary = details.querySelector('summary');
+    const summary = details.querySelector("summary");
 
     if (!summary) return;
 
-    summary.setAttribute('aria-expanded', 'true');
+    summary.setAttribute("aria-expanded", "true");
 
     this.preventInitialAccordionAnimations(details);
     requestAnimationFrame(() => {
-      details.classList.add('menu-open');
+      details.classList.add("menu-open");
 
       if (target) {
-        this.refs.menuDrawer.classList.add('menu-drawer--has-submenu-opened');
+        this.refs.menuDrawer.classList.add("menu-drawer--has-submenu-opened");
       }
 
       // Wait for the drawer animation to complete before trapping focus
-      const drawer = details.querySelector('.menu-drawer, .menu-drawer__submenu');
-      onAnimationEnd(drawer || details, () => trapFocus(details), { subtree: false });
+      const drawer = details.querySelector(
+        ".menu-drawer, .menu-drawer__submenu",
+      );
+      onAnimationEnd(drawer || details, () => trapFocus(details), {
+        subtree: false,
+      });
     });
   }
 
@@ -109,17 +116,17 @@ class HeaderDrawer extends Component {
    * @param {HTMLDetailsElement} details
    */
   #close(details) {
-    const summary = details.querySelector('summary');
+    const summary = details.querySelector("summary");
 
     if (!summary) return;
 
-    summary.setAttribute('aria-expanded', 'false');
-    details.classList.remove('menu-open');
-    this.refs.menuDrawer.classList.remove('menu-drawer--has-submenu-opened');
+    summary.setAttribute("aria-expanded", "false");
+    details.classList.remove("menu-open");
+    this.refs.menuDrawer.classList.remove("menu-drawer--has-submenu-opened");
 
     // Wait for the .menu-drawer element's transition, not the entire details subtree
     // This avoids waiting for child accordion/resource-card animations which can cause issues on Firefox
-    const drawer = details.querySelector('.menu-drawer, .menu-drawer__submenu');
+    const drawer = details.querySelector(".menu-drawer, .menu-drawer__submenu");
 
     onAnimationEnd(
       drawer || details,
@@ -127,13 +134,15 @@ class HeaderDrawer extends Component {
         reset(details);
         if (details === this.refs.details) {
           removeTrapFocus();
-          const openDetails = this.querySelectorAll('details[open]:not(accordion-custom > details)');
+          const openDetails = this.querySelectorAll(
+            "details[open]:not(accordion-custom > details)",
+          );
           openDetails.forEach(reset);
         } else {
           trapFocus(this.refs.details);
         }
       },
-      { subtree: false }
+      { subtree: false },
     );
   }
 
@@ -142,9 +151,9 @@ class HeaderDrawer extends Component {
    * to remove the stacking context and allow submenus to be positioned correctly
    */
   #setupAnimatedElementListeners() {
-    const allAnimated = this.querySelectorAll('.menu-drawer__animated-element');
+    const allAnimated = this.querySelectorAll(".menu-drawer__animated-element");
     allAnimated.forEach((element) => {
-      element.addEventListener('animationend', removeWillChangeOnAnimationEnd);
+      element.addEventListener("animationend", removeWillChangeOnAnimationEnd);
     });
   }
 
@@ -155,25 +164,27 @@ class HeaderDrawer extends Component {
    * @param {HTMLDetailsElement} details - The details element containing the accordions
    */
   preventInitialAccordionAnimations(details) {
-    const content = details.querySelectorAll('accordion-custom .details-content');
+    const content = details.querySelectorAll(
+      "accordion-custom .details-content",
+    );
 
     content.forEach((element) => {
       if (element instanceof HTMLElement) {
-        element.classList.add('details-content--no-animation');
+        element.classList.add("details-content--no-animation");
       }
     });
     setTimeout(() => {
       content.forEach((element) => {
         if (element instanceof HTMLElement) {
-          element.classList.remove('details-content--no-animation');
+          element.classList.remove("details-content--no-animation");
         }
       });
     }, 100);
   }
 }
 
-if (!customElements.get('header-drawer')) {
-  customElements.define('header-drawer', HeaderDrawer);
+if (!customElements.get("header-drawer")) {
+  customElements.define("header-drawer", HeaderDrawer);
 }
 
 /**
@@ -182,7 +193,7 @@ if (!customElements.get('header-drawer')) {
  * @param {HTMLDetailsElement} element
  */
 function reset(element) {
-  element.classList.remove('menu-open');
-  element.removeAttribute('open');
-  element.querySelector('summary')?.setAttribute('aria-expanded', 'false');
+  element.classList.remove("menu-open");
+  element.removeAttribute("open");
+  element.querySelector("summary")?.setAttribute("aria-expanded", "false");
 }

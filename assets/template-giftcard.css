@@ -135,7 +135,8 @@
   top: calc((var(--padding-lg) + var(--font-paragraph--size)) * -1);
   left: 0;
   right: 0;
-  transition: opacity var(--animation-speed) var(--animation-easing),
+  transition:
+    opacity var(--animation-speed) var(--animation-easing),
     transform var(--animation-speed) var(--animation-easing);
   opacity: 0;
   transform: translateY(var(--padding-md));

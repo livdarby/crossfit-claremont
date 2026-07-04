@@ -1,4 +1,4 @@
-import { Component } from '@theme/component';
+import { Component } from "@theme/component";
 
 /**
  * Announcement banner custom element that allows fading between content.
@@ -24,9 +24,9 @@ export class AnnouncementBar extends Component {
   connectedCallback() {
     super.connectedCallback();
 
-    this.addEventListener('mouseenter', this.suspend);
-    this.addEventListener('mouseleave', this.resume);
-    document.addEventListener('visibilitychange', this.#handleVisibilityChange);
+    this.addEventListener("mouseenter", this.suspend);
+    this.addEventListener("mouseleave", this.resume);
+    document.addEventListener("visibilitychange", this.#handleVisibilityChange);
 
     this.play();
   }
@@ -49,7 +49,7 @@ export class AnnouncementBar extends Component {
     this.paused = false;
 
     this.#interval = setInterval(() => {
-      if (this.matches(':hover') || document.hidden) return;
+      if (this.matches(":hover") || document.hidden) return;
 
       this.next();
     }, interval);
@@ -64,11 +64,11 @@ export class AnnouncementBar extends Component {
   }
 
   get paused() {
-    return this.hasAttribute('paused');
+    return this.hasAttribute("paused");
   }
 
   set paused(paused) {
-    this.toggleAttribute('paused', paused);
+    this.toggleAttribute("paused", paused);
   }
 
   /**
@@ -94,7 +94,7 @@ export class AnnouncementBar extends Component {
   }
 
   get autoplayInterval() {
-    const interval = this.getAttribute('autoplay');
+    const interval = this.getAttribute("autoplay");
     const value = parseInt(`${interval}`, 10);
 
     if (Number.isNaN(value)) return undefined;
@@ -115,16 +115,17 @@ export class AnnouncementBar extends Component {
     }
 
     this.refs.slides?.forEach((slide, index) => {
-      slide.setAttribute('aria-hidden', `${index !== relativeIndex}`);
+      slide.setAttribute("aria-hidden", `${index !== relativeIndex}`);
     });
   }
 
   /**
    * Pause the slideshow when the page is hidden.
    */
-  #handleVisibilityChange = () => (document.hidden ? this.pause() : this.resume());
+  #handleVisibilityChange = () =>
+    document.hidden ? this.pause() : this.resume();
 }
 
-if (!customElements.get('announcement-bar-component')) {
-  customElements.define('announcement-bar-component', AnnouncementBar);
+if (!customElements.get("announcement-bar-component")) {
+  customElements.define("announcement-bar-component", AnnouncementBar);
 }

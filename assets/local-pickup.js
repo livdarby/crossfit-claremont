@@ -1,6 +1,6 @@
-import { Component } from '@theme/component';
-import { morph } from '@theme/morph';
-import { ThemeEvents, VariantUpdateEvent } from '@theme/events';
+import { Component } from "@theme/component";
+import { morph } from "@theme/morph";
+import { ThemeEvents, VariantUpdateEvent } from "@theme/events";
 
 class LocalPickup extends Component {
   /** @type {AbortController | undefined} */
@@ -18,14 +18,16 @@ class LocalPickup extends Component {
       }
 
       const variantId = event.detail.resource ? event.detail.resource.id : null;
-      const variantAvailable = event.detail.resource ? event.detail.resource.available : null;
+      const variantAvailable = event.detail.resource
+        ? event.detail.resource.available
+        : null;
       if (variantId !== this.dataset.variantId) {
         if (variantId && variantAvailable) {
-          this.removeAttribute('hidden');
+          this.removeAttribute("hidden");
           this.dataset.variantId = variantId;
           this.#fetchAvailability(variantId);
         } else {
-          this.setAttribute('hidden', '');
+          this.setAttribute("hidden", "");
         }
       }
     };
@@ -33,7 +35,10 @@ class LocalPickup extends Component {
     closestSection?.addEventListener(ThemeEvents.variantUpdate, variantUpdated);
 
     this.disconnectedCallback = () => {
-      closestSection?.removeEventListener(ThemeEvents.variantUpdate, variantUpdated);
+      closestSection?.removeEventListener(
+        ThemeEvents.variantUpdate,
+        variantUpdated,
+      );
     };
   }
 
@@ -60,20 +65,22 @@ class LocalPickup extends Component {
       .then((text) => {
         if (abortController.signal.aborted) return;
 
-        const html = new DOMParser().parseFromString(text, 'text/html');
-        const wrapper = html.querySelector(`local-pickup[data-variant-id="${variantId}"]`);
+        const html = new DOMParser().parseFromString(text, "text/html");
+        const wrapper = html.querySelector(
+          `local-pickup[data-variant-id="${variantId}"]`,
+        );
         if (wrapper) {
-          this.removeAttribute('hidden');
+          this.removeAttribute("hidden");
           morph(this, wrapper);
-        } else this.setAttribute('hidden', '');
+        } else this.setAttribute("hidden", "");
       })
       .catch((_e) => {
         if (abortController.signal.aborted) return;
-        this.setAttribute('hidden', '');
+        this.setAttribute("hidden", "");
       });
   };
 }
 
-if (!customElements.get('local-pickup')) {
-  customElements.define('local-pickup', LocalPickup);
+if (!customElements.get("local-pickup")) {
+  customElements.define("local-pickup", LocalPickup);
 }

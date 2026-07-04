@@ -17,6 +17,22 @@
   {{ block.shopify_attributes }}
 >
   {% assign form_id = block.id | default: section.id | prepend: 'ContactForm-' %}
+  {% assign name_placeholder = block.settings.placeholder_name %}
+  {% if name_placeholder == blank %}
+    {% assign name_placeholder = 'blocks.contact_form.name' | t %}
+  {% endif %}
+  {% assign email_placeholder = block.settings.placeholder_email %}
+  {% if email_placeholder == blank %}
+    {% assign email_placeholder = 'blocks.contact_form.email' | t %}
+  {% endif %}
+  {% assign phone_placeholder = block.settings.placeholder_phone %}
+  {% if phone_placeholder == blank %}
+    {% assign phone_placeholder = 'blocks.contact_form.phone' | t %}
+  {% endif %}
+  {% assign comment_placeholder = block.settings.placeholder_comment %}
+  {% if comment_placeholder == blank %}
+    {% assign comment_placeholder = 'blocks.contact_form.comment' | t %}
+  {% endif %}
   {%- form 'contact', id: form_id, class: 'contact-form__form' -%}
     <input
       name="contact[id]"
@@ -61,8 +77,10 @@
         class="contact-form__input"
         autocomplete="name"
         name="contact[name]"
+        aria-required="true"
+        required
         value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-        placeholder="{{ 'blocks.contact_form.name' | t }}"
+        placeholder="{{ name_placeholder }}"
       >
 
       <label
@@ -82,11 +100,12 @@
         autocapitalize="off"
         value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
         aria-required="true"
+        required
         {% if form.errors contains 'email' and form.id == form_id %}
           aria-invalid="true"
           aria-describedby="ContactForm-email-error"
         {% endif %}
-        placeholder="{{ 'blocks.contact_form.email' | t }}"
+        placeholder="{{ email_placeholder }}"
       >
     </div>
 
@@ -103,8 +122,10 @@
       autocomplete="tel"
       name="contact[phone]"
       pattern="[0-9\-]*"
+      aria-required="true"
+      required
       value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-      placeholder="{{ 'blocks.contact_form.phone' | t }}"
+      placeholder="{{ phone_placeholder }}"
     >
 
     <label
@@ -118,7 +139,9 @@
       id="ContactForm-body"
       class="contact-form__input contact-form__input--textarea"
       name="contact[body]"
-      placeholder="{{ 'blocks.contact_form.comment' | t }}"
+      aria-required="true"
+      required
+      placeholder="{{ comment_placeholder }}"
     >
       {{- form.body -}}
     </textarea>
@@ -151,10 +174,15 @@
     text-overflow: ellipsis;
     color: var(--color-input-text);
     background-color: var(--color-input-background);
+    transition: background-color var(--animation-speed) ease;
     padding: var(--padding-lg) var(--padding-xl);
     border-radius: var(--style-border-radius-inputs);
     border: var(--style-border-width-inputs) solid var(--color-input-border);
     -webkit-font-smoothing: antialiased;
+  }
+
+  .contact-form__input:is(:hover, :focus, :focus-visible) {
+    background-color: var(--color-input-hover-background);
   }
 
   .contact-form__input--textarea {
@@ -241,6 +269,30 @@
       "label": "t:settings.color_scheme",
       "default": "scheme-1",
       "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
+    },
+    {
+      "type": "header",
+      "content": "Placeholders"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_name",
+      "label": "Name placeholder"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_email",
+      "label": "Email placeholder"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_phone",
+      "label": "Phone placeholder"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_comment",
+      "label": "Message placeholder"
     },
     {
       "type": "header",

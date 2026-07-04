@@ -1,5 +1,5 @@
-import { Component } from '@theme/component';
-import { debounce, isClickedOutside, onAnimationEnd } from '@theme/utilities';
+import { Component } from "@theme/component";
+import { debounce, isClickedOutside, onAnimationEnd } from "@theme/utilities";
 
 /**
  * A custom element that manages a dialog.
@@ -10,20 +10,20 @@ import { debounce, isClickedOutside, onAnimationEnd } from '@theme/utilities';
  * @extends Component<Refs>
  */
 export class DialogComponent extends Component {
-  requiredRefs = ['dialog'];
+  requiredRefs = ["dialog"];
 
   connectedCallback() {
     super.connectedCallback();
 
     if (this.minWidth || this.maxWidth) {
-      window.addEventListener('resize', this.#handleResize);
+      window.addEventListener("resize", this.#handleResize);
     }
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.minWidth || this.maxWidth) {
-      window.removeEventListener('resize', this.#handleResize);
+      window.removeEventListener("resize", this.#handleResize);
     }
   }
 
@@ -53,15 +53,15 @@ export class DialogComponent extends Component {
 
     // Prevent layout thrashing by separating DOM reads from DOM writes
     requestAnimationFrame(() => {
-      document.body.style.width = '100%';
-      document.body.style.position = 'fixed';
+      document.body.style.width = "100%";
+      document.body.style.position = "fixed";
       document.body.style.top = `-${scrollY}px`;
 
       dialog.showModal();
       this.dispatchEvent(new DialogOpenEvent());
 
-      this.addEventListener('click', this.#handleClick);
-      this.addEventListener('keydown', this.#handleKeyDown);
+      this.addEventListener("click", this.#handleClick);
+      this.addEventListener("keydown", this.#handleKeyDown);
     });
   }
 
@@ -73,31 +73,31 @@ export class DialogComponent extends Component {
 
     if (!dialog.open) return;
 
-    this.removeEventListener('click', this.#handleClick);
-    this.removeEventListener('keydown', this.#handleKeyDown);
+    this.removeEventListener("click", this.#handleClick);
+    this.removeEventListener("keydown", this.#handleKeyDown);
 
     // Force browser to restart animation by resetting it
     // Temporarily remove any existing animation state
-    dialog.style.animation = 'none';
+    dialog.style.animation = "none";
 
     // Force a reflow
     void dialog.offsetWidth;
 
     // Now add the closing class and restore animation
-    dialog.classList.add('dialog-closing');
-    dialog.style.animation = '';
+    dialog.classList.add("dialog-closing");
+    dialog.style.animation = "";
 
     await onAnimationEnd(dialog, undefined, {
       subtree: false,
     });
 
-    document.body.style.width = '';
-    document.body.style.position = '';
-    document.body.style.top = '';
-    window.scrollTo({ top: this.#previousScrollY, behavior: 'instant' });
+    document.body.style.width = "";
+    document.body.style.position = "";
+    document.body.style.top = "";
+    window.scrollTo({ top: this.#previousScrollY, behavior: "instant" });
 
     dialog.close();
-    dialog.classList.remove('dialog-closing');
+    dialog.classList.remove("dialog-closing");
 
     this.dispatchEvent(new DialogCloseEvent());
   };
@@ -132,7 +132,7 @@ export class DialogComponent extends Component {
    * @param {KeyboardEvent} event - The keyboard event.
    */
   #handleKeyDown(event) {
-    if (event.key !== 'Escape') return;
+    if (event.key !== "Escape") return;
 
     event.preventDefault();
     this.closeDialog();
@@ -144,7 +144,7 @@ export class DialogComponent extends Component {
    * @returns {number} The minimum width of the dialog.
    */
   get minWidth() {
-    return Number(this.getAttribute('dialog-active-min-width'));
+    return Number(this.getAttribute("dialog-active-min-width"));
   }
 
   /**
@@ -153,18 +153,19 @@ export class DialogComponent extends Component {
    * @returns {number} The maximum width of the dialog.
    */
   get maxWidth() {
-    return Number(this.getAttribute('dialog-active-max-width'));
+    return Number(this.getAttribute("dialog-active-max-width"));
   }
 }
 
-if (!customElements.get('dialog-component')) customElements.define('dialog-component', DialogComponent);
+if (!customElements.get("dialog-component"))
+  customElements.define("dialog-component", DialogComponent);
 
 export class DialogOpenEvent extends CustomEvent {
   constructor() {
     super(DialogOpenEvent.eventName);
   }
 
-  static eventName = 'dialog:open';
+  static eventName = "dialog:open";
 }
 
 export class DialogCloseEvent extends CustomEvent {
@@ -172,22 +173,22 @@ export class DialogCloseEvent extends CustomEvent {
     super(DialogCloseEvent.eventName);
   }
 
-  static eventName = 'dialog:close';
+  static eventName = "dialog:close";
 }
 
 document.addEventListener(
-  'toggle',
+  "toggle",
   (event) => {
     if (event.target instanceof HTMLDetailsElement) {
-      if (event.target.hasAttribute('scroll-lock')) {
+      if (event.target.hasAttribute("scroll-lock")) {
         const { open } = event.target;
         if (open) {
-          document.documentElement.setAttribute('scroll-lock', '');
+          document.documentElement.setAttribute("scroll-lock", "");
         } else {
-          document.documentElement.removeAttribute('scroll-lock');
+          document.documentElement.removeAttribute("scroll-lock");
         }
       }
     }
   },
-  { capture: true }
+  { capture: true },
 );

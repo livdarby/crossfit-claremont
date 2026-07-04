@@ -7,6 +7,7 @@
   endcomment
 
   assign horizontal_alignment = settings.horizontal_alignment
+  assign flex_direction = settings.content_direction | default: 'column'
 
   assign vertical_alignment = settings.vertical_alignment
   if settings.align_baseline and vertical_alignment == 'flex-end'
@@ -23,9 +24,13 @@
   if settings.vertical_on_mobile and vertical_alignment == 'last baseline'
     assign vertical_alignment_mobile = 'flex-end'
   endif
+
+  if settings.content_direction == 'row' and settings.vertical_on_mobile and settings.desktop_horizontal_direction == 'row-reverse'
+    assign flex_direction = 'row-reverse'
+  endif
 -%}
 
---flex-direction: {{ settings.content_direction | default: 'column' }}; --flex-wrap: nowrap; --flex-wrap-mobile: wrap;
+--flex-direction: {{ flex_direction }}; --flex-wrap: nowrap; --flex-wrap-mobile: wrap;
 
 {% render 'gap-style', value: settings.gap %}
 

@@ -1,4 +1,4 @@
-import { Component } from '@theme/component';
+import { Component } from "@theme/component";
 
 /**
  * Handles copying text to clipboard, from an event like a click.
@@ -7,7 +7,7 @@ import { Component } from '@theme/component';
  */
 class CopyToClipboardComponent extends Component {
   copyToClipboard() {
-    const copyContent = this.getAttribute('text-to-copy');
+    const copyContent = this.getAttribute("text-to-copy");
 
     if (!copyContent) return;
 
@@ -16,11 +16,14 @@ class CopyToClipboardComponent extends Component {
     const copySuccessMessage = this.refs.copySuccessMessage;
 
     if (copySuccessMessage instanceof Element) {
-      copySuccessMessage.classList.remove('visually-hidden');
+      copySuccessMessage.classList.remove("visually-hidden");
     }
   }
 }
 
-if (!customElements.get('copy-to-clipboard-component')) {
-  customElements.define('copy-to-clipboard-component', CopyToClipboardComponent);
+if (!customElements.get("copy-to-clipboard-component")) {
+  customElements.define(
+    "copy-to-clipboard-component",
+    CopyToClipboardComponent,
+  );
 }

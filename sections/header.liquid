@@ -1,5 +1,3 @@
-
-
 {% liquid
   assign order = 'logo,menu,localization,search,drawer_search,actions'
 
@@ -70,6 +68,44 @@
     render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section
   endcapture
 
+  assign contact_section_id = 'contact-map'
+  assign contact_link_href = section.settings.contact_link
+  assign contact_quick_link_style = section.settings.contact_style_class | default: 'link'
+  assign free_trial_quick_link_style = section.settings.free_trial_style_class | default: 'button'
+  if contact_link_href != blank
+    assign contact_link_href = contact_link_href | append: '#' | append: contact_section_id
+  endif
+
+  capture quick_links
+    if contact_link_href != blank or section.settings.free_trial_link != blank
+      echo '<div class="header-quick-links mobile:hidden">'
+
+      if contact_link_href != blank
+        echo '<a class="header-quick-links__link '
+        echo contact_quick_link_style
+        echo '" href="'
+        echo contact_link_href
+        echo '">'
+        echo section.settings.contact_label | default: 'Contact' | escape
+        echo '</a>'
+      endif
+
+      if section.settings.free_trial_link != blank
+        echo '<a class="header-quick-links__link '
+        echo free_trial_quick_link_style
+        echo '" href="'
+        echo section.settings.free_trial_link
+        echo '">'
+        echo section.settings.free_trial_label | default: 'Free Trial' | escape
+        echo '</a>'
+      endif
+
+      echo '</div>'
+    endif
+  endcapture
+
+  assign actions = quick_links | append: actions
+
   if shop.customer_accounts_enabled
     assign search_class = 'search-action--hidden-on-drawer'
   endif
@@ -133,7 +169,7 @@
     assign bottom_row_blocks = bottom_row_blocks | append: 'menu,'
   endif
 
-  if section.settings.search_style != 'none'
+  if search_style != 'none'
     if section.settings.search_row == 'bottom'
       assign bottom_row_blocks = bottom_row_blocks | append: 'search,'
     endif
@@ -298,7 +334,7 @@
 
 <header-component
   id="header-component"
-  class="{{ class }}"
+  class="{{ class }} template-{{ template.suffix }}"
   data-theme-color="rgb({{ section.settings.color_scheme_top.settings.background.rgb }})"
   {% if transparent %}
     transparent="{{ transparent }}"
@@ -332,6 +368,7 @@
   {%- if request.page_type == 'index' -%}
     <h1 class="visually-hidden">{{ shop.name }}</h1>
   {%- endif -%}
+
   {% for row in rows %}
     {% liquid
       assign scheme = 'color_scheme_' | append: row
@@ -429,7 +466,53 @@
     .button-secondary,
     .header-actions__action {
       /* reset style from base.css */
-      transition: color var(--header-content-transition-timing), border-color var(--header-content-transition-timing);
+      transition:
+        color var(--header-content-transition-timing),
+        border-color var(--header-content-transition-timing);
+    }
+  }
+
+  .header-quick-links {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .header-quick-links {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-inline-end: 0.5rem;
+    }
+
+    .header-quick-links__link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .header-quick-links__link.link {
+      min-height: 2.5rem;
+      padding: 0.45rem 0.8rem;
+      font-family: var(--header-actions-font-family, var(--font-body--family));
+      font-size: var(--header-actions-font-size, 0.875rem);
+      font-weight: var(--header-actions-font-weight, var(--font-body--weight));
+      text-transform: var(--header-actions-text-case, none);
+      color: var(--color-foreground);
+      border-radius: 999px;
+      transition:
+        background-color var(--animation-speed-fast) var(--animation-easing),
+        color var(--animation-speed-fast) var(--animation-easing);
+    }
+
+    .header-quick-links__link.link:hover {
+      background: rgb(var(--color-foreground-rgb) / 0.06);
+    }
+
+    .header-quick-links__link.button,
+    .header-quick-links__link.button-secondary {
+      min-height: 2.5rem;
     }
   }
 
@@ -733,6 +816,7 @@
   }
 
   .header__columns {
+    order: -1;
     /* Three column layout */
     --header-left: 1fr;
     --header-center: auto;
@@ -1113,6 +1197,40 @@
     font-family: var(--menu-localization-font);
     font-size: var(--menu-localization-font-size);
   }
+
+  @media screen and (max-width: 749px) {
+    .header__row.header__row--top {
+      display: flex;
+    }
+
+    .header__columns {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      width: 100%;
+      padding-top: 20px;
+      padding-block-start: 20px !important;
+    }
+
+    .header-logo {
+      margin-left: 0;
+      margin-right: auto;
+      padding-left: 32px !important;
+    }
+
+    .header__column--left {
+      width: 100vw;
+      height: 100px;
+    }
+
+    .header__column--right {
+      width: 0;
+    }
+
+    button.menu-drawer__close-button {
+      border: none;
+    }
+  }
 {% endstylesheet %}
 
 {% unless request.design_mode %}
@@ -1193,6 +1311,12 @@
         }
       ],
       "default": "top"
+    },
+    {
+      "type": "link_list",
+      "id": "about_subheading_menu",
+      "label": "About submenu menu",
+      "info": "Used for the About header link when the main menu item has no child links."
     },
     {
       "type": "header",
@@ -1459,6 +1583,72 @@
     {
       "type": "header",
       "content": "t:content.utilities"
+    },
+    {
+      "type": "header",
+      "content": "Quick links"
+    },
+    {
+      "type": "text",
+      "id": "contact_label",
+      "label": "Contact label",
+      "default": "Contact"
+    },
+    {
+      "type": "url",
+      "id": "contact_link",
+      "label": "Contact link"
+    },
+    {
+      "type": "select",
+      "id": "contact_style_class",
+      "label": "Contact style",
+      "options": [
+        {
+          "value": "button",
+          "label": "Primary"
+        },
+        {
+          "value": "button-secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "link",
+          "label": "Link"
+        }
+      ],
+      "default": "link"
+    },
+    {
+      "type": "text",
+      "id": "free_trial_label",
+      "label": "Free trial label",
+      "default": "Free Trial"
+    },
+    {
+      "type": "url",
+      "id": "free_trial_link",
+      "label": "Free trial link"
+    },
+    {
+      "type": "select",
+      "id": "free_trial_style_class",
+      "label": "Free trial style",
+      "options": [
+        {
+          "value": "button",
+          "label": "Primary"
+        },
+        {
+          "value": "button-secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "link",
+          "label": "Link"
+        }
+      ],
+      "default": "button"
     },
     {
       "type": "select",

@@ -53,11 +53,45 @@
       "default": "normal"
     },
     {
+      "type": "range",
+      "id": "desktop_max_width",
+      "label": "Max width - Desktop",
+      "min": 0,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 0
+    },
+    {
       "type": "text_alignment",
       "id": "alignment",
       "label": "t:settings.alignment",
       "default": "left",
       "visible_if": "{{ block.settings.width == '100%' }}"
+    },
+    {
+      "type": "select",
+      "id": "desktop_position",
+      "label": "t:settings.desktop_position",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "left",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "right",
+          "label": "t:options.right"
+        }
+      ],
+      "default": ""
     },
     {
       "type": "header",

@@ -1,5 +1,9 @@
-import { ResizeNotifier, prefersReducedMotion, yieldToMainThread } from '@theme/utilities';
-import { Component } from '@theme/component';
+import {
+  ResizeNotifier,
+  prefersReducedMotion,
+  yieldToMainThread,
+} from "@theme/utilities";
+import { Component } from "@theme/component";
 
 /**
  * A custom element that automatically sizes text to fit its container width.
@@ -10,7 +14,7 @@ class JumboText extends Component {
     this.#setIntersectionObserver();
 
     // We need window listener to account for flex containers not shrinking until we reset the font size.
-    window.addEventListener('resize', this.#windowResizeListener);
+    window.addEventListener("resize", this.#windowResizeListener);
   }
 
   disconnectedCallback() {
@@ -18,7 +22,7 @@ class JumboText extends Component {
     this.#resizeObserver.disconnect();
     this.#intersectionObserver?.disconnect();
 
-    window.removeEventListener('resize', this.#windowResizeListener);
+    window.removeEventListener("resize", this.#windowResizeListener);
   }
 
   #firstResize = true;
@@ -42,22 +46,26 @@ class JumboText extends Component {
           this.#handleResize(entry.boundingClientRect.width);
         }
 
-        if (this.dataset.textEffect && this.dataset.textEffect !== 'none' && !prefersReducedMotion()) {
+        if (
+          this.dataset.textEffect &&
+          this.dataset.textEffect !== "none" &&
+          !prefersReducedMotion()
+        ) {
           if (entry.intersectionRatio >= 0.3) {
-            this.classList.add('ready');
-            if (this.dataset.animationRepeat === 'false') {
+            this.classList.add("ready");
+            if (this.dataset.animationRepeat === "false") {
               this.#intersectionObserver?.unobserve(entry.target);
             }
             // We need to wait for resize recalculations to apply before triggering transitions.
             yieldToMainThread().then(() => {
-              this.classList.add('jumbo-text-visible');
+              this.classList.add("jumbo-text-visible");
             });
           } else {
-            this.classList.remove('ready', 'jumbo-text-visible');
+            this.classList.remove("ready", "jumbo-text-visible");
           }
         }
       },
-      { threshold: [0, 0.3] }
+      { threshold: [0, 0.3] },
     );
 
     this.#intersectionObserver?.observe(this);
@@ -68,13 +76,21 @@ class JumboText extends Component {
    * @param {number} containerWidth - The width of the jumbo-text element.
    */
   #calculateOptimalFontSize = (containerWidth) => {
-    const { widestChild: firstPassWidestChild, widestChildWidth: firstPassWidestChildWidth } = this.#findWidestChild();
+    const {
+      widestChild: firstPassWidestChild,
+      widestChildWidth: firstPassWidestChildWidth,
+    } = this.#findWidestChild();
     if (!firstPassWidestChild || !firstPassWidestChildWidth) {
       return;
     }
 
-    const currentFontSize = parseFloat(window.getComputedStyle(firstPassWidestChild).fontSize);
-    const firstPassFontSize = Math.round(((currentFontSize * containerWidth) / firstPassWidestChildWidth) * 100) / 100;
+    const currentFontSize = parseFloat(
+      window.getComputedStyle(firstPassWidestChild).fontSize,
+    );
+    const firstPassFontSize =
+      Math.round(
+        ((currentFontSize * containerWidth) / firstPassWidestChildWidth) * 100,
+      ) / 100;
 
     // Disconnect the resize observer
     this.#resizeObserver.disconnect();
@@ -83,8 +99,10 @@ class JumboText extends Component {
 
     // The way the text grows is mostly proportional, but not fully linear.
     // Doing a single pass was good enough in 95% of cases, but we need a second one to dial in the final value.
-    const { widestChild: secondPassWidestChild, widestChildWidth: secondPassWidestChildWidth } =
-      this.#findWidestChild();
+    const {
+      widestChild: secondPassWidestChild,
+      widestChildWidth: secondPassWidestChildWidth,
+    } = this.#findWidestChild();
     if (!secondPassWidestChild || !secondPassWidestChildWidth) {
       return;
     }
@@ -95,15 +113,20 @@ class JumboText extends Component {
     // perfectly proportional (scaling by 2x doesn't always produce exactly 2x wider text due
     // to pixel rounding), so the second pass can overshoot.
     const secondPassFontSize = Math.min(
-      Math.floor(((firstPassFontSize * containerWidth) / secondPassWidestChildWidth) * 100) / 100 - 0.15,
-      firstPassFontSize
+      Math.floor(
+        ((firstPassFontSize * containerWidth) / secondPassWidestChildWidth) *
+          100,
+      ) /
+        100 -
+        0.15,
+      firstPassFontSize,
     );
 
     if (secondPassFontSize !== firstPassFontSize) {
       this.style.fontSize = this.#clampFontSize(secondPassFontSize);
     }
 
-    this.classList.add('ready');
+    this.classList.add("ready");
 
     this.#resizeObserver.observe(this);
   };
@@ -156,20 +179,22 @@ class JumboText extends Component {
 
     // Reset font size to make sure we allow the container to shrink if it needs to.
     if (!this.#firstResize) {
-      this.classList.remove('ready');
-      this.style.fontSize = '';
+      this.classList.remove("ready");
+      this.style.fontSize = "";
     }
 
     this.#calculateOptimalFontSize(containerWidth);
 
     this.#firstResize = false;
 
-    if (this.dataset.capText === 'true') {
+    if (this.dataset.capText === "true") {
       return;
     }
 
     // We assume that the component won't be at the bottom of the page unless it's inside the last section.
-    const allSections = Array.from(document.querySelectorAll('.shopify-section'));
+    const allSections = Array.from(
+      document.querySelectorAll(".shopify-section"),
+    );
     const lastSection = allSections[allSections.length - 1];
 
     if (lastSection && !lastSection.contains(this)) {
@@ -186,7 +211,9 @@ class JumboText extends Component {
 
   #windowResizeListener = () => this.#handleResize();
 
-  #resizeObserver = new ResizeNotifier((entries) => this.#handleResize(entries[0]?.borderBoxSize?.[0]?.inlineSize));
+  #resizeObserver = new ResizeNotifier((entries) =>
+    this.#handleResize(entries[0]?.borderBoxSize?.[0]?.inlineSize),
+  );
   /**
    * @type {IntersectionObserver | null}
    */
@@ -194,6 +221,6 @@ class JumboText extends Component {
 }
 
 // Register once
-if (!customElements.get('jumbo-text')) {
-  customElements.define('jumbo-text', JumboText);
+if (!customElements.get("jumbo-text")) {
+  customElements.define("jumbo-text", JumboText);
 }

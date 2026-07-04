@@ -1,0 +1,58 @@
+{%- doc -%}
+  Builds typography CSS variables for section settings that use a shared prefix.
+
+  @param {object} settings
+  @param {string} prefix
+  @param {string} type
+  @param {string} [css_var_prefix]
+{%- enddoc -%}
+
+{% liquid
+  assign font_key = prefix | append: 'font'
+  assign font_size_key = prefix | append: 'font_size'
+  assign line_height_key = prefix | append: 'line_height'
+  assign letter_spacing_key = prefix | append: 'letter_spacing'
+  assign text_case_key = prefix | append: 'case'
+  assign wrap_key = prefix | append: 'wrap'
+  assign color_key = prefix | append: 'color'
+
+  assign font = settings[font_key]
+  assign font_size = settings[font_size_key]
+  assign line_height = settings[line_height_key]
+  assign letter_spacing = settings[letter_spacing_key]
+  assign text_case = settings[text_case_key]
+  assign wrap = settings[wrap_key]
+  assign color = settings[color_key]
+
+  assign var_prefix = css_var_prefix
+  if var_prefix != blank
+    assign var_prefix = '--' | append: var_prefix | append: '-'
+  else
+    assign var_prefix = '--'
+  endif
+%}
+
+{%- capture variables -%}
+  {%- if color != blank -%}
+    {{ var_prefix }}color: {{ color }};
+  {%- endif -%}
+  {%- if font != blank -%}
+    {{ var_prefix }}font-family: {{ font }};
+  {%- endif -%}
+  {%- if font_size != blank -%}
+    {{ var_prefix }}font-size: {{ font_size }};
+  {%- endif -%}
+  {%- if line_height != blank -%}
+    {{ var_prefix }}line-height: var(--line-height--{{ type }}-{{ line_height }});
+  {%- endif -%}
+  {%- if letter_spacing != blank -%}
+    {{ var_prefix }}letter-spacing: var(--letter-spacing--{{ type }}-{{ letter_spacing }});
+  {%- endif -%}
+  {%- if text_case != blank -%}
+    {{ var_prefix }}text-transform: {{ text_case }};
+  {%- endif -%}
+  {%- if wrap != blank -%}
+    {{ var_prefix }}text-wrap: {{ wrap }};
+  {%- endif -%}
+{%- endcapture -%}
+{{- variables | strip | strip_newlines -}}

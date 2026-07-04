@@ -1,4 +1,4 @@
-import { Component } from '@theme/component';
+import { Component } from "@theme/component";
 
 /** @typedef {typeof globalThis} Window */
 
@@ -24,7 +24,7 @@ class ProductTitle extends Component {
    * Initialize the title truncation
    */
   #initializeTruncation() {
-    if ('ResizeObserver' in window) {
+    if ("ResizeObserver" in window) {
       this.resizeObserver = new ResizeObserver(() => {
         this.#calculateTruncation();
       });
@@ -33,7 +33,7 @@ class ProductTitle extends Component {
       this.#calculateTruncation();
     } else {
       /** @type {Window} */
-      (window).addEventListener('resize', this.#handleResize.bind(this));
+      (window).addEventListener("resize", this.#handleResize.bind(this));
       this.#calculateTruncation();
     }
   }
@@ -43,7 +43,8 @@ class ProductTitle extends Component {
    */
   #calculateTruncation() {
     /** @type {HTMLElement} */
-    const textElement = this.refs.text || this.querySelector('.title-text') || this;
+    const textElement =
+      this.refs.text || this.querySelector(".title-text") || this;
     if (!textElement.textContent) return;
 
     const containerHeight = this.clientHeight;
@@ -56,10 +57,10 @@ class ProductTitle extends Component {
     const availableHeight = containerHeight - paddingTop - paddingBottom;
     const maxLines = Math.max(1, Math.floor(availableHeight / lineHeight));
 
-    textElement.style.display = '-webkit-box';
-    textElement.style.webkitBoxOrient = 'vertical';
-    textElement.style.overflow = 'hidden';
-    textElement.style.textOverflow = 'ellipsis';
+    textElement.style.display = "-webkit-box";
+    textElement.style.webkitBoxOrient = "vertical";
+    textElement.style.overflow = "hidden";
+    textElement.style.textOverflow = "ellipsis";
     textElement.style.webkitLineClamp = String(maxLines);
   }
 
@@ -75,12 +76,12 @@ class ProductTitle extends Component {
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
-    window.removeEventListener('resize', this.#handleResize);
+    window.removeEventListener("resize", this.#handleResize);
   }
 }
 
-if (!customElements.get('product-title')) {
-  customElements.define('product-title', ProductTitle);
+if (!customElements.get("product-title")) {
+  customElements.define("product-title", ProductTitle);
 }
 
 export default ProductTitle;

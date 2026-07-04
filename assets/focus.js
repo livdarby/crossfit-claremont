@@ -10,8 +10,8 @@ const trapFocusHandlers = {};
 function getFocusableElements(container) {
   return Array.from(
     container.querySelectorAll(
-      "summary, a[href], button:enabled, [tabindex]:not([tabindex^='-']), [draggable], area, input:not([type=hidden]):enabled, select:enabled, textarea:enabled, object, iframe"
-    )
+      "summary, a[href], button:enabled, [tabindex]:not([tabindex^='-']), [draggable], area, input:not([type=hidden]):enabled, select:enabled, textarea:enabled, object, iframe",
+    ),
   );
 }
 
@@ -36,7 +36,7 @@ export function trapFocus(container) {
   // Keydown handler for cycling focus with Tab and Shift+Tab
   /** @type {(event: KeyboardEvent) => void} */
   trapFocusHandlers.keydown = (event) => {
-    if (event.key !== 'Tab') return;
+    if (event.key !== "Tab") return;
 
     const activeEl = document.activeElement;
 
@@ -64,9 +64,9 @@ export function trapFocus(container) {
   };
 
   // Attach the handlers
-  document.addEventListener('keydown', trapFocusHandlers.keydown, true);
+  document.addEventListener("keydown", trapFocusHandlers.keydown, true);
   // Use capture phase for focusin so we can catch it before it lands outside
-  document.addEventListener('focusin', trapFocusHandlers.focusin, true);
+  document.addEventListener("focusin", trapFocusHandlers.focusin, true);
 
   // Finally, put focus where you want it.
   container.focus();
@@ -76,8 +76,10 @@ export function trapFocus(container) {
  * Remove focus trap and optionally refocus another element.
  */
 export function removeTrapFocus() {
-  trapFocusHandlers.keydown && document.removeEventListener('keydown', trapFocusHandlers.keydown, true);
-  trapFocusHandlers.focusin && document.removeEventListener('focusin', trapFocusHandlers.focusin, true);
+  trapFocusHandlers.keydown &&
+    document.removeEventListener("keydown", trapFocusHandlers.keydown, true);
+  trapFocusHandlers.focusin &&
+    document.removeEventListener("focusin", trapFocusHandlers.focusin, true);
 }
 
 /**
@@ -87,7 +89,7 @@ export function removeTrapFocus() {
  * @param {number} increment
  */
 export function cycleFocus(items, increment) {
-  const currentIndex = items.findIndex((item) => item.matches(':focus'));
+  const currentIndex = items.findIndex((item) => item.matches(":focus"));
   let targetIndex = currentIndex + increment;
 
   if (targetIndex >= items.length) {

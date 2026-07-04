@@ -1,5 +1,9 @@
-import { buildSectionSelector, normalizeSectionId, sectionRenderer } from '@theme/section-renderer';
-import { requestIdleCallback, onDocumentReady } from '@theme/utilities';
+import {
+  buildSectionSelector,
+  normalizeSectionId,
+  sectionRenderer,
+} from "@theme/section-renderer";
+import { requestIdleCallback, onDocumentReady } from "@theme/utilities";
 
 /**
  * Hydrates a section using the Section Rendering API preserving states.
@@ -12,13 +16,17 @@ async function hydrateSection(sectionId, url) {
   const normalizedId = normalizeSectionId(sectionId);
   const section = document.getElementById(buildSectionSelector(normalizedId));
 
-  if (!section || section.dataset.hydrated === 'true') {
+  if (!section || section.dataset.hydrated === "true") {
     return;
   }
 
-  await sectionRenderer.renderSection(normalizedId, { cache: false, url, mode: 'hydration' });
+  await sectionRenderer.renderSection(normalizedId, {
+    cache: false,
+    url,
+    mode: "hydration",
+  });
 
-  section.dataset.hydrated = 'true';
+  section.dataset.hydrated = "true";
 }
 
 /**

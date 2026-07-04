@@ -1,5 +1,5 @@
-import { ResizeNotifier } from '@theme/utilities';
-import { DeclarativeShadowElement } from '@theme/component';
+import { ResizeNotifier } from "@theme/utilities";
+import { DeclarativeShadowElement } from "@theme/component";
 
 /**
  * Event class for overflow minimum items updates
@@ -11,7 +11,7 @@ export class OverflowMinimumEvent extends Event {
    * @param {boolean} minimumReached - Whether the minimum number of visible items has been reached
    */
   constructor(minimumReached) {
-    super('overflowMinimum', { bubbles: true });
+    super("overflowMinimum", { bubbles: true });
     this.detail = {
       minimumReached,
     };
@@ -29,7 +29,7 @@ export class OverflowMinimumEvent extends Event {
  */
 export class OverflowList extends DeclarativeShadowElement {
   static get observedAttributes() {
-    return ['disabled', 'minimum-items'];
+    return ["disabled", "minimum-items"];
   }
 
   /**
@@ -38,8 +38,8 @@ export class OverflowList extends DeclarativeShadowElement {
    * @param {string} newValue
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'disabled') {
-      if (newValue === 'true') {
+    if (name === "disabled") {
+      if (newValue === "true") {
         this.#reset();
       } else {
         this.#reflowItems();
@@ -67,7 +67,7 @@ export class OverflowList extends DeclarativeShadowElement {
     }
 
     return new Promise((resolve) => {
-      styles.addEventListener('load', resolve);
+      styles.addEventListener("load", resolve);
     });
   }
 
@@ -77,9 +77,9 @@ export class OverflowList extends DeclarativeShadowElement {
   #initialize() {
     const { shadowRoot } = this;
 
-    if (!shadowRoot) throw new Error('Missing shadow root');
+    if (!shadowRoot) throw new Error("Missing shadow root");
 
-    const defaultSlot = shadowRoot.querySelector('slot:not([name])');
+    const defaultSlot = shadowRoot.querySelector("slot:not([name])");
     const overflowSlot = shadowRoot.querySelector('slot[name="overflow"]');
     const moreSlot = shadowRoot.querySelector('slot[name="more"]');
     const overflow = shadowRoot.querySelector('[part="overflow"]');
@@ -94,7 +94,7 @@ export class OverflowList extends DeclarativeShadowElement {
       !(list instanceof HTMLUListElement) ||
       !(placeholder instanceof HTMLLIElement)
     ) {
-      throw new Error('Invalid element types in <OverflowList />');
+      throw new Error("Invalid element types in <OverflowList />");
     }
 
     this.#refs = {
@@ -108,16 +108,20 @@ export class OverflowList extends DeclarativeShadowElement {
 
     // Add event listener for reflow requests
     this.addEventListener(
-      'reflow',
-      /** @param {CustomEvent<{lastVisibleElement?: HTMLElement}>} event */ (event) => {
+      "reflow",
+      /** @param {CustomEvent<{lastVisibleElement?: HTMLElement}>} event */ (
+        event,
+      ) => {
         this.#reflowItems(0, event.detail.lastVisibleElement);
-      }
+      },
     );
 
     // When <overflow-list> is dynamically injected, the browser doesn't remove its <template> automatically.
     // In theory, we could get rid of it now, or in DeclarativeShadowElement, but that would invalidate the layout.
     // Instead, we ignore it for now and remove it later on the first reflow.
-    const elements = defaultSlot.assignedElements().filter((element) => !(element instanceof HTMLTemplateElement));
+    const elements = defaultSlot
+      .assignedElements()
+      .filter((element) => !(element instanceof HTMLTemplateElement));
     const firstElement = elements[0];
     const lastElement = elements[elements.length - 1];
 
@@ -138,7 +142,7 @@ export class OverflowList extends DeclarativeShadowElement {
   }
 
   get schedule() {
-    return typeof Theme?.utilities?.scheduler?.schedule === 'function'
+    return typeof Theme?.utilities?.scheduler?.schedule === "function"
       ? Theme.utilities.scheduler.schedule
       : /** @param {FrameRequestCallback} callback */ (callback) =>
           requestAnimationFrame(() => setTimeout(callback, 0));
@@ -151,7 +155,7 @@ export class OverflowList extends DeclarativeShadowElement {
    * @returns {number | null}
    */
   get minimumItems() {
-    const value = this.getAttribute('minimum-items');
+    const value = this.getAttribute("minimum-items");
     return value ? parseInt(value, 10) : null;
   }
 
@@ -174,7 +178,9 @@ export class OverflowList extends DeclarativeShadowElement {
       this.#intersectionObserver.disconnect();
       setTimeout(() => {
         // Remove the leftover <template> for dynamically injected <overflow-list> elements.
-        this.querySelector(':scope > template[shadowrootmode="open"]')?.remove();
+        this.querySelector(
+          ':scope > template[shadowrootmode="open"]',
+        )?.remove();
         this.#reflowItems(entry.boundingClientRect.height);
       }, 0);
     }
@@ -192,7 +198,7 @@ export class OverflowList extends DeclarativeShadowElement {
       setTimeout(() => {
         this.#reflowItems();
         this.#scheduled = false;
-      }, 0)
+      }, 0),
     );
   };
 
@@ -218,8 +224,8 @@ export class OverflowList extends DeclarativeShadowElement {
     this.#unobserveChanges();
     this.#moveItemsToDefaultSlot();
 
-    list.style.removeProperty('height');
-    this.style.setProperty('--overflow-count', '0');
+    list.style.removeProperty("height");
+    this.style.setProperty("--overflow-count", "0");
   }
 
   /**
@@ -231,9 +237,9 @@ export class OverflowList extends DeclarativeShadowElement {
       const minimumReached = visibleElements.length < this.minimumItems;
 
       if (minimumReached) {
-        this.setAttribute('minimum-reached', '');
+        this.setAttribute("minimum-reached", "");
       } else {
-        this.removeAttribute('minimum-reached');
+        this.removeAttribute("minimum-reached");
       }
 
       this.dispatchEvent(new OverflowMinimumEvent(minimumReached));
@@ -246,9 +252,9 @@ export class OverflowList extends DeclarativeShadowElement {
   showAll() {
     const { placeholder } = this.#refs;
 
-    placeholder.style.setProperty('width', '0');
-    placeholder.style.setProperty('display', 'none');
-    this.setAttribute('disabled', 'true');
+    placeholder.style.setProperty("width", "0");
+    placeholder.style.setProperty("display", "none");
+    this.setAttribute("disabled", "true");
   }
 
   /**
@@ -257,7 +263,8 @@ export class OverflowList extends DeclarativeShadowElement {
    * @param {HTMLElement | null} [lastVisibleElement] Optional element to place in last visible position
    */
   #reflowItems = (listHeight = 0, lastVisibleElement = null) => {
-    const { defaultSlot, overflowSlot, moreSlot, list, placeholder } = this.#refs;
+    const { defaultSlot, overflowSlot, moreSlot, list, placeholder } =
+      this.#refs;
 
     this.#unobserveChanges();
 
@@ -280,18 +287,18 @@ export class OverflowList extends DeclarativeShadowElement {
     let hasOverflow = false;
 
     if (listHeight > 0) {
-      list.style.setProperty('height', `${listHeight}px`);
+      list.style.setProperty("height", `${listHeight}px`);
     }
 
     // Enable flex-wrap so overflowing items break to the next line. This makes calculations easier.
-    list.style.setProperty('flex-wrap', 'wrap');
+    list.style.setProperty("flex-wrap", "wrap");
     placeholder.hidden = true;
 
     // Putting the "More" item (and lastVisibleElement, if provided) at the start of the list lets us see which items will fit on the same row.
-    moreSlot.style.setProperty('order', '-1');
+    moreSlot.style.setProperty("order", "-1");
     moreSlot.hidden = false;
 
-    lastVisibleElement?.style.setProperty('order', '-1');
+    lastVisibleElement?.style.setProperty("order", "-1");
 
     const moreSlotRect = moreSlot.getBoundingClientRect();
 
@@ -311,20 +318,25 @@ export class OverflowList extends DeclarativeShadowElement {
     });
 
     if (hasOverflow) {
-      moreSlot.style.removeProperty('order');
+      moreSlot.style.removeProperty("order");
     }
-    lastVisibleElement?.style.removeProperty('order');
+    lastVisibleElement?.style.removeProperty("order");
 
     // Move the elements to the correct slot.
     for (const element of elements) {
-      const targetSlot = overflowingElements.includes(element) ? overflowSlot.name : defaultSlot.name;
+      const targetSlot = overflowingElements.includes(element)
+        ? overflowSlot.name
+        : defaultSlot.name;
       if (element.slot !== targetSlot) {
         element.slot = targetSlot;
       }
     }
 
-    list.style.setProperty('counter-reset', `overflow-count ${overflowingElements.length}`);
-    this.style.setProperty('--overflow-count', `${overflowingElements.length}`);
+    list.style.setProperty(
+      "counter-reset",
+      `overflow-count ${overflowingElements.length}`,
+    );
+    this.style.setProperty("--overflow-count", `${overflowingElements.length}`);
 
     // Adjust the "More" button visibility.
     moreSlot.hidden = !hasOverflow;
@@ -336,7 +348,7 @@ export class OverflowList extends DeclarativeShadowElement {
     }
 
     // Reset the overflow property since children elements may need to display outside the list (e.g. dropdowns, popovers).
-    list.style.setProperty('overflow', 'unset');
+    list.style.setProperty("overflow", "unset");
 
     hasOverflow && this.#updateMinimumReached(visibleElements);
 
@@ -377,10 +389,10 @@ export class OverflowList extends DeclarativeShadowElement {
 
   #intersectionObserver = new IntersectionObserver(this.#handleIntersection, {
     // Extend the root margin to around one more viewport of a typical mobile screen.
-    rootMargin: '640px 360px 640px 360px',
+    rootMargin: "640px 360px 640px 360px",
   });
 }
 
-if (!customElements.get('overflow-list')) {
-  customElements.define('overflow-list', OverflowList);
+if (!customElements.get("overflow-list")) {
+  customElements.define("overflow-list", OverflowList);
 }

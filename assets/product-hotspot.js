@@ -1,6 +1,11 @@
-import { Component } from '@theme/component';
-import { QuickAddComponent } from '@theme/quick-add';
-import { isClickedOutside, isMobileBreakpoint, isTouchDevice, mediaQueryLarge } from '@theme/utilities';
+import { Component } from "@theme/component";
+import { QuickAddComponent } from "@theme/quick-add";
+import {
+  isClickedOutside,
+  isMobileBreakpoint,
+  isTouchDevice,
+  mediaQueryLarge,
+} from "@theme/utilities";
 
 /**
  * A custom element that manages a dialog.
@@ -14,7 +19,7 @@ import { isClickedOutside, isMobileBreakpoint, isTouchDevice, mediaQueryLarge } 
  */
 
 export class ProductHotspotComponent extends Component {
-  requiredRefs = ['trigger', 'dialog'];
+  requiredRefs = ["trigger", "dialog"];
   /** @type {(() => void) | null} */
   #pointerenterHandler = null;
   timer = /** @type {number | null} */ (null);
@@ -26,7 +31,7 @@ export class ProductHotspotComponent extends Component {
     this.#handleBreakpointChange();
 
     // Listen for breakpoint changes
-    mediaQueryLarge.addEventListener('change', this.#handleBreakpointChange);
+    mediaQueryLarge.addEventListener("change", this.#handleBreakpointChange);
   }
 
   disconnectedCallback() {
@@ -34,7 +39,7 @@ export class ProductHotspotComponent extends Component {
 
     // Clean up listeners
     this.#removeDesktopListeners();
-    mediaQueryLarge.removeEventListener('change', this.#handleBreakpointChange);
+    mediaQueryLarge.removeEventListener("change", this.#handleBreakpointChange);
   }
 
   /**
@@ -42,10 +47,14 @@ export class ProductHotspotComponent extends Component {
    * @returns {void}
    */
   #openQuickAddModal() {
-    const quickAddComponent = /** @type {QuickAddComponent | null} */ (this.querySelector('quick-add-component'));
+    const quickAddComponent = /** @type {QuickAddComponent | null} */ (
+      this.querySelector("quick-add-component")
+    );
 
     if (!quickAddComponent) return;
-    quickAddComponent.handleClick(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    quickAddComponent.handleClick(
+      new MouseEvent("click", { bubbles: true, cancelable: true }),
+    );
   }
 
   /**
@@ -63,11 +72,11 @@ export class ProductHotspotComponent extends Component {
         this.showDialog();
       }, 120);
       // Add pointerleave listener when entering trigger
-      trigger.addEventListener('pointerleave', this.#handlePointerLeave);
+      trigger.addEventListener("pointerleave", this.#handlePointerLeave);
     };
 
     this.#pointerenterHandler = pointerenterHandler;
-    trigger.addEventListener('pointerenter', pointerenterHandler);
+    trigger.addEventListener("pointerenter", pointerenterHandler);
   }
 
   /**
@@ -78,8 +87,8 @@ export class ProductHotspotComponent extends Component {
     const { trigger } = this.refs;
 
     if (this.#pointerenterHandler) {
-      trigger.removeEventListener('pointerenter', this.#pointerenterHandler);
-      trigger.removeEventListener('pointerleave', this.#handlePointerLeave);
+      trigger.removeEventListener("pointerenter", this.#pointerenterHandler);
+      trigger.removeEventListener("pointerleave", this.#handlePointerLeave);
       this.#pointerenterHandler = null;
     }
 
@@ -130,17 +139,18 @@ export class ProductHotspotComponent extends Component {
 
     // To get dialog dimensions, we need to temporarily show it invisibly
     // Show dialog invisibly to measure it
-    dialog.style.visibility = 'hidden';
-    dialog.style.display = 'block';
-    dialog.style.transform = 'none';
-    dialog.removeAttribute('data-placement');
+    dialog.style.visibility = "hidden";
+    dialog.style.display = "block";
+    dialog.style.transform = "none";
+    dialog.removeAttribute("data-placement");
 
-    const { width: dialogWidth, height: dialogHeight } = dialog.getBoundingClientRect();
+    const { width: dialogWidth, height: dialogHeight } =
+      dialog.getBoundingClientRect();
 
     // Reset dialog state
-    dialog.style.removeProperty('display');
-    dialog.style.removeProperty('visibility');
-    dialog.style.removeProperty('transform');
+    dialog.style.removeProperty("display");
+    dialog.style.removeProperty("visibility");
+    dialog.style.removeProperty("transform");
     // Calculate button position relative to container
     const buttonLeft = triggerRect.left - containerRect.left;
     const buttonRight = triggerRect.right - containerRect.left;
@@ -152,21 +162,21 @@ export class ProductHotspotComponent extends Component {
     const spaceLeft = buttonLeft - CONTAINER_GAP;
 
     // Determine horizontal placement
-    let x = 'right';
+    let x = "right";
 
     if (spaceRight >= dialogWidth + BUTTON_GAP) {
-      x = 'right';
+      x = "right";
     } else if (spaceLeft >= dialogWidth + BUTTON_GAP) {
-      x = 'left';
+      x = "left";
     } else {
-      x = 'center';
+      x = "center";
     }
 
     // Determine vertical placement
-    let y = 'bottom';
+    let y = "bottom";
     let verticalOffset = 0;
 
-    if (x !== 'center') {
+    if (x !== "center") {
       let dialogStartY = buttonTop; // Default to top-aligned
       let dialogEndY = buttonTop + dialogHeight;
 
@@ -174,14 +184,17 @@ export class ProductHotspotComponent extends Component {
         // If top-aligned overflows bottom
         dialogStartY = buttonBottom - dialogHeight;
         dialogEndY = buttonBottom;
-        y = 'top';
+        y = "top";
 
         if (dialogStartY < CONTAINER_GAP) {
           // If bottom-aligned overflows top
           verticalOffset = CONTAINER_GAP - dialogStartY;
         } else if (dialogEndY > containerRect.height - CONTAINER_GAP) {
           // If bottom-aligned overflows bottom
-          verticalOffset = -(dialogEndY - (containerRect.height - CONTAINER_GAP));
+          verticalOffset = -(
+            dialogEndY -
+            (containerRect.height - CONTAINER_GAP)
+          );
         }
       } else {
         if (dialogStartY < CONTAINER_GAP) {
@@ -189,18 +202,18 @@ export class ProductHotspotComponent extends Component {
           if (dialogStartY < CONTAINER_GAP) {
             verticalOffset = CONTAINER_GAP - dialogStartY;
           }
-          y = 'bottom';
+          y = "bottom";
         }
       }
     } else {
       // For center horizontal: position below or above button
       if (containerRect.height - buttonBottom >= dialogHeight + TOTAL_GAP) {
-        y = 'bottom';
+        y = "bottom";
       } else if (buttonTop >= dialogHeight + TOTAL_GAP) {
-        y = 'top';
+        y = "top";
       } else {
         // If neither fits well, choose based on button position
-        y = buttonTop < containerRect.height / 2 ? 'bottom' : 'top';
+        y = buttonTop < containerRect.height / 2 ? "bottom" : "top";
       }
     }
 
@@ -209,9 +222,12 @@ export class ProductHotspotComponent extends Component {
 
     // Apply vertical offset if needed to keep dialog in bounds
     if (verticalOffset !== 0) {
-      dialog.style.setProperty('--dialog-vertical-offset', `${verticalOffset}px`);
+      dialog.style.setProperty(
+        "--dialog-vertical-offset",
+        `${verticalOffset}px`,
+      );
     } else {
-      dialog.style.removeProperty('--dialog-vertical-offset');
+      dialog.style.removeProperty("--dialog-vertical-offset");
     }
 
     // Return a promise that resolves after a few ticks to ensure styles are applied
@@ -238,10 +254,14 @@ export class ProductHotspotComponent extends Component {
     const isLeavingDialog = e.target === dialog;
     const isGoingToDialog =
       e.relatedTarget === dialog ||
-      (e.relatedTarget instanceof Element && e.relatedTarget.closest('dialog') === dialog);
+      (e.relatedTarget instanceof Element &&
+        e.relatedTarget.closest("dialog") === dialog);
     const isGoingToTrigger = e.relatedTarget === trigger;
 
-    if ((isLeavingTrigger && !isGoingToDialog) || (isLeavingDialog && !isGoingToTrigger)) {
+    if (
+      (isLeavingTrigger && !isGoingToDialog) ||
+      (isLeavingDialog && !isGoingToTrigger)
+    ) {
       this.closeDialog();
     }
   };
@@ -273,13 +293,13 @@ export class ProductHotspotComponent extends Component {
   showDialog = async () => {
     const { dialog } = this.refs;
     await this.#calculateDialogPlacement();
-    dialog.dataset.showing = 'true';
+    dialog.dataset.showing = "true";
     dialog.show();
-    document.body.addEventListener('click', this.lightDismissMouse);
-    document.body.addEventListener('keydown', this.lightDismissKeyboard);
-    document.body.addEventListener('keyup', this.lightDismissKeyboard);
+    document.body.addEventListener("click", this.lightDismissMouse);
+    document.body.addEventListener("keydown", this.lightDismissKeyboard);
+    document.body.addEventListener("keyup", this.lightDismissKeyboard);
     // Add pointerleave listener to dialog when it opens
-    dialog.addEventListener('pointerleave', this.#handlePointerLeave);
+    dialog.addEventListener("pointerleave", this.#handlePointerLeave);
   };
 
   /**
@@ -288,14 +308,14 @@ export class ProductHotspotComponent extends Component {
    */
   closeDialog = async () => {
     const { dialog, trigger } = this.refs;
-    dialog.dataset.closing = 'true';
+    dialog.dataset.closing = "true";
     dialog.close();
-    document.body.removeEventListener('click', this.lightDismissMouse);
-    document.body.removeEventListener('keydown', this.lightDismissKeyboard);
-    document.body.removeEventListener('keyup', this.lightDismissKeyboard);
+    document.body.removeEventListener("click", this.lightDismissMouse);
+    document.body.removeEventListener("keydown", this.lightDismissKeyboard);
+    document.body.removeEventListener("keyup", this.lightDismissKeyboard);
     // Remove pointerleave listeners when closing
-    dialog.removeEventListener('pointerleave', this.#handlePointerLeave);
-    trigger.removeEventListener('pointerleave', this.#handlePointerLeave);
+    dialog.removeEventListener("pointerleave", this.#handlePointerLeave);
+    trigger.removeEventListener("pointerleave", this.#handlePointerLeave);
     // we need to use a data-attribute to keep transition-behavior working only when open
     const animations = dialog.getAnimations({ subtree: true });
     await Promise.allSettled(animations.map((a) => a.finished));
@@ -326,8 +346,9 @@ export class ProductHotspotComponent extends Component {
   lightDismissKeyboard = (event) => {
     const { dialog } = this.refs;
     if (
-      (event.type === 'keydown' && event.key === 'Escape') ||
-      (event.type === 'keyup' && !dialog.matches(':is(:focus, :focus-visible, :focus-within)'))
+      (event.type === "keydown" && event.key === "Escape") ||
+      (event.type === "keyup" &&
+        !dialog.matches(":is(:focus, :focus-visible, :focus-within)"))
     ) {
       this.closeDialog();
     }
@@ -335,4 +356,4 @@ export class ProductHotspotComponent extends Component {
 }
 
 // Register custom element
-customElements.define('product-hotspot-component', ProductHotspotComponent);
+customElements.define("product-hotspot-component", ProductHotspotComponent);

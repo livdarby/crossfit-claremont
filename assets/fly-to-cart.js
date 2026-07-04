@@ -1,5 +1,5 @@
-import { yieldToMainThread } from '@theme/utilities';
-import { Component } from '@theme/component';
+import { yieldToMainThread } from "@theme/utilities";
+import { Component } from "@theme/component";
 
 /**
  * FlyToCart custom element for animating product images to cart
@@ -60,13 +60,13 @@ class FlyToCart extends Component {
 
     // Position the flying thingy back to the start point
     if (this.useSourceSize) {
-      this.style.setProperty('--width', `${sourceRect.width}px`);
-      this.style.setProperty('--height', `${sourceRect.height}px`);
+      this.style.setProperty("--width", `${sourceRect.width}px`);
+      this.style.setProperty("--height", `${sourceRect.height}px`);
     }
-    this.style.setProperty('--start-x', `${startPoint.x}px`);
-    this.style.setProperty('--start-y', `${startPoint.y}px`);
-    this.style.setProperty('--travel-x', `${endPoint.x - startPoint.x}px`);
-    this.style.setProperty('--travel-y', `${endPoint.y - startPoint.y}px`);
+    this.style.setProperty("--start-x", `${startPoint.x}px`);
+    this.style.setProperty("--start-y", `${startPoint.y}px`);
+    this.style.setProperty("--travel-x", `${endPoint.x - startPoint.x}px`);
+    this.style.setProperty("--travel-y", `${endPoint.y - startPoint.y}px`);
 
     await yieldToMainThread();
 
@@ -75,6 +75,6 @@ class FlyToCart extends Component {
   };
 }
 
-if (!customElements.get('fly-to-cart')) {
-  customElements.define('fly-to-cart', FlyToCart);
+if (!customElements.get("fly-to-cart")) {
+  customElements.define("fly-to-cart", FlyToCart);
 }

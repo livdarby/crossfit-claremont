@@ -1,5 +1,5 @@
-import { Component } from '@theme/component';
-import { morphSection } from '@theme/section-renderer';
+import { Component } from "@theme/component";
+import { morphSection } from "@theme/section-renderer";
 
 class ProductRecommendations extends Component {
   /**
@@ -13,7 +13,7 @@ class ProductRecommendations extends Component {
       observer.disconnect();
       this.#loadRecommendations();
     },
-    { rootMargin: '0px 0px 400px 0px' }
+    { rootMargin: "0px 0px 400px 0px" },
   );
 
   /**
@@ -23,18 +23,22 @@ class ProductRecommendations extends Component {
   #mutationObserver = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       // Only attribute changes are interesting
-      if (mutation.target !== this || mutation.type !== 'attributes') continue;
+      if (mutation.target !== this || mutation.type !== "attributes") continue;
 
       // Ignore error attribute changes
-      if (mutation.attributeName === 'data-error') continue;
+      if (mutation.attributeName === "data-error") continue;
 
       // Ignore addition of hidden class because it means there's an error with the display
-      if (mutation.attributeName === 'class' && this.classList.contains('hidden')) continue;
+      if (
+        mutation.attributeName === "class" &&
+        this.classList.contains("hidden")
+      )
+        continue;
 
       // Ignore when the data-recommendations-performed attribute has been set to 'true'
       if (
-        mutation.attributeName === 'data-recommendations-performed' &&
-        this.dataset.recommendationsPerformed === 'true'
+        mutation.attributeName === "data-recommendations-performed" &&
+        this.dataset.recommendationsPerformed === "true"
       )
         continue;
 
@@ -72,15 +76,16 @@ class ProductRecommendations extends Component {
    * Load the product recommendations
    */
   #loadRecommendations() {
-    const { productId, recommendationsPerformed, sectionId, intent } = this.dataset;
+    const { productId, recommendationsPerformed, sectionId, intent } =
+      this.dataset;
 
     if (!productId || !sectionId) {
-      throw new Error('Product ID and a section ID are required');
+      throw new Error("Product ID and a section ID are required");
     }
 
     // If the recommendations have already been loaded, accounts for the case where the Theme Editor
     // is loaded the section from the editor's visual preview context.
-    if (recommendationsPerformed === 'true') {
+    if (recommendationsPerformed === "true") {
       return;
     }
 
@@ -96,10 +101,13 @@ class ProductRecommendations extends Component {
         }
 
         if (result.data?.trim().length) {
-          this.dataset.recommendationsPerformed = 'true';
-          morphSection(sectionId, result.data, { mode: 'hydration', injectStylesheet: true });
+          this.dataset.recommendationsPerformed = "true";
+          morphSection(sectionId, result.data, {
+            mode: "hydration",
+            injectStylesheet: true,
+          });
         } else {
-          this.#handleError(new Error('No recommendations available'));
+          this.#handleError(new Error("No recommendations available"));
         }
       })
       .catch((e) => {
@@ -144,12 +152,12 @@ class ProductRecommendations extends Component {
    * @param {Error} error
    */
   #handleError(error) {
-    console.error('Product recommendations error:', error.message);
-    this.classList.add('hidden');
-    this.dataset.error = 'Error loading product recommendations';
+    console.error("Product recommendations error:", error.message);
+    this.classList.add("hidden");
+    this.dataset.error = "Error loading product recommendations";
   }
 }
 
-if (!customElements.get('product-recommendations')) {
-  customElements.define('product-recommendations', ProductRecommendations);
+if (!customElements.get("product-recommendations")) {
+  customElements.define("product-recommendations", ProductRecommendations);
 }

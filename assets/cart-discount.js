@@ -1,8 +1,8 @@
-import { Component } from '@theme/component';
-import { morphSection } from '@theme/section-renderer';
-import { DiscountUpdateEvent } from '@theme/events';
-import { fetchConfig } from '@theme/utilities';
-import { cartPerformance } from '@theme/performance';
+import { Component } from "@theme/component";
+import { morphSection } from "@theme/section-renderer";
+import { DiscountUpdateEvent } from "@theme/events";
+import { fetchConfig } from "@theme/utilities";
+import { cartPerformance } from "@theme/performance";
 
 /**
  * A custom element that applies a discount to the cart.
@@ -17,7 +17,11 @@ import { cartPerformance } from '@theme/performance';
  * @extends {Component<CartDiscountComponentRefs>}
  */
 class CartDiscount extends Component {
-  requiredRefs = ['cartDiscountError', 'cartDiscountErrorDiscountCode', 'cartDiscountErrorShipping'];
+  requiredRefs = [
+    "cartDiscountError",
+    "cartDiscountErrorDiscountCode",
+    "cartDiscountErrorShipping",
+  ];
 
   /** @type {AbortController | null} */
   #activeFetch = null;
@@ -37,7 +41,11 @@ class CartDiscount extends Component {
    * @param {SubmitEvent} event - The submit event on our form.
    */
   applyDiscount = async (event) => {
-    const { cartDiscountError, cartDiscountErrorDiscountCode, cartDiscountErrorShipping } = this.refs;
+    const {
+      cartDiscountError,
+      cartDiscountErrorDiscountCode,
+      cartDiscountErrorShipping,
+    } = this.refs;
 
     event.preventDefault();
     event.stopPropagation();
@@ -46,7 +54,11 @@ class CartDiscount extends Component {
     if (!(form instanceof HTMLFormElement)) return;
 
     const discountCode = form.querySelector('input[name="discount"]');
-    if (!(discountCode instanceof HTMLInputElement) || typeof this.dataset.sectionId !== 'string') return;
+    if (
+      !(discountCode instanceof HTMLInputElement) ||
+      typeof this.dataset.sectionId !== "string"
+    )
+      return;
 
     const discountCodeValue = discountCode.value;
 
@@ -56,13 +68,13 @@ class CartDiscount extends Component {
       const existingDiscounts = this.#existingDiscounts();
       if (existingDiscounts.includes(discountCodeValue)) return;
 
-      cartDiscountError.classList.add('hidden');
-      cartDiscountErrorDiscountCode.classList.add('hidden');
-      cartDiscountErrorShipping.classList.add('hidden');
+      cartDiscountError.classList.add("hidden");
+      cartDiscountErrorDiscountCode.classList.add("hidden");
+      cartDiscountErrorShipping.classList.add("hidden");
 
-      const config = fetchConfig('json', {
+      const config = fetchConfig("json", {
         body: JSON.stringify({
-          discount: [...existingDiscounts, discountCodeValue].join(','),
+          discount: [...existingDiscounts, discountCodeValue].join(","),
           sections: [this.dataset.sectionId],
         }),
       });
@@ -75,35 +87,56 @@ class CartDiscount extends Component {
       const data = await response.json();
 
       if (
-        data.discount_codes.find((/** @type {{ code: string; applicable: boolean; }} */ discount) => {
-          return discount.code === discountCodeValue && discount.applicable === false;
-        })
+        data.discount_codes.find(
+          (/** @type {{ code: string; applicable: boolean; }} */ discount) => {
+            return (
+              discount.code === discountCodeValue &&
+              discount.applicable === false
+            );
+          },
+        )
       ) {
-        discountCode.value = '';
-        this.#handleDiscountError('discount_code');
+        discountCode.value = "";
+        this.#handleDiscountError("discount_code");
         return;
       }
 
       const newHtml = data.sections[this.dataset.sectionId];
-      const parsedHtml = new DOMParser().parseFromString(newHtml, 'text/html');
-      const section = parsedHtml.getElementById(`shopify-section-${this.dataset.sectionId}`);
-      const discountCodes = section?.querySelectorAll('.cart-discount__pill') || [];
+      const parsedHtml = new DOMParser().parseFromString(newHtml, "text/html");
+      const section = parsedHtml.getElementById(
+        `shopify-section-${this.dataset.sectionId}`,
+      );
+      const discountCodes =
+        section?.querySelectorAll(".cart-discount__pill") || [];
       if (section) {
         const codes = Array.from(discountCodes)
-          .map((element) => (element instanceof HTMLLIElement ? element.dataset.discountCode : null))
+          .map((element) =>
+            element instanceof HTMLLIElement
+              ? element.dataset.discountCode
+              : null,
+          )
           .filter(Boolean);
         // Before morphing, we need to check if the shipping discount is applicable in the UI
         // we check the liquid logic compared to the cart payload to assess whether we leveraged
         // a valid shipping discount code.
         if (
           codes.length === existingDiscounts.length &&
-          codes.every((/** @type {string} */ code) => existingDiscounts.includes(code)) &&
-          data.discount_codes.find((/** @type {{ code: string; applicable: boolean; }} */ discount) => {
-            return discount.code === discountCodeValue && discount.applicable === true;
-          })
+          codes.every((/** @type {string} */ code) =>
+            existingDiscounts.includes(code),
+          ) &&
+          data.discount_codes.find(
+            (
+              /** @type {{ code: string; applicable: boolean; }} */ discount,
+            ) => {
+              return (
+                discount.code === discountCodeValue &&
+                discount.applicable === true
+              );
+            },
+          )
         ) {
-          this.#handleDiscountError('shipping');
-          discountCode.value = '';
+          this.#handleDiscountError("shipping");
+          discountCode.value = "";
           return;
         }
       }
@@ -113,7 +146,7 @@ class CartDiscount extends Component {
     } catch (error) {
     } finally {
       this.#activeFetch = null;
-      cartPerformance.measureFromEvent('discount-update:user-action', event);
+      cartPerformance.measureFromEvent("discount-update:user-action", event);
     }
   };
 
@@ -126,15 +159,15 @@ class CartDiscount extends Component {
     event.stopPropagation();
 
     if (
-      (event instanceof KeyboardEvent && event.key !== 'Enter') ||
+      (event instanceof KeyboardEvent && event.key !== "Enter") ||
       !(event instanceof MouseEvent) ||
       !(event.target instanceof HTMLElement) ||
-      typeof this.dataset.sectionId !== 'string'
+      typeof this.dataset.sectionId !== "string"
     ) {
       return;
     }
 
-    const pill = event.target.closest('.cart-discount__pill');
+    const pill = event.target.closest(".cart-discount__pill");
     if (!(pill instanceof HTMLLIElement)) return;
 
     const discountCode = pill.dataset.discountCode;
@@ -149,8 +182,11 @@ class CartDiscount extends Component {
     const abortController = this.#createAbortController();
 
     try {
-      const config = fetchConfig('json', {
-        body: JSON.stringify({ discount: existingDiscounts.join(','), sections: [this.dataset.sectionId] }),
+      const config = fetchConfig("json", {
+        body: JSON.stringify({
+          discount: existingDiscounts.join(","),
+          sections: [this.dataset.sectionId],
+        }),
       });
 
       const response = await fetch(Theme.routes.cart_update_url, {
@@ -161,7 +197,10 @@ class CartDiscount extends Component {
       const data = await response.json();
 
       document.dispatchEvent(new DiscountUpdateEvent(data, this.id));
-      morphSection(this.dataset.sectionId, data.sections[this.dataset.sectionId]);
+      morphSection(
+        this.dataset.sectionId,
+        data.sections[this.dataset.sectionId],
+      );
     } catch (error) {
     } finally {
       this.#activeFetch = null;
@@ -174,10 +213,17 @@ class CartDiscount extends Component {
    * @param {'discount_code' | 'shipping'} type - The type of discount error.
    */
   #handleDiscountError(type) {
-    const { cartDiscountError, cartDiscountErrorDiscountCode, cartDiscountErrorShipping } = this.refs;
-    const target = type === 'discount_code' ? cartDiscountErrorDiscountCode : cartDiscountErrorShipping;
-    cartDiscountError.classList.remove('hidden');
-    target.classList.remove('hidden');
+    const {
+      cartDiscountError,
+      cartDiscountErrorDiscountCode,
+      cartDiscountErrorShipping,
+    } = this.refs;
+    const target =
+      type === "discount_code"
+        ? cartDiscountErrorDiscountCode
+        : cartDiscountErrorShipping;
+    cartDiscountError.classList.remove("hidden");
+    target.classList.remove("hidden");
   }
 
   /**
@@ -187,9 +233,12 @@ class CartDiscount extends Component {
   #existingDiscounts() {
     /** @type {string[]} */
     const discountCodes = [];
-    const discountPills = this.querySelectorAll('.cart-discount__pill');
+    const discountPills = this.querySelectorAll(".cart-discount__pill");
     for (const pill of discountPills) {
-      if (pill instanceof HTMLLIElement && typeof pill.dataset.discountCode === 'string') {
+      if (
+        pill instanceof HTMLLIElement &&
+        typeof pill.dataset.discountCode === "string"
+      ) {
         discountCodes.push(pill.dataset.discountCode);
       }
     }
@@ -198,6 +247,6 @@ class CartDiscount extends Component {
   }
 }
 
-if (!customElements.get('cart-discount-component')) {
-  customElements.define('cart-discount-component', CartDiscount);
+if (!customElements.get("cart-discount-component")) {
+  customElements.define("cart-discount-component", CartDiscount);
 }

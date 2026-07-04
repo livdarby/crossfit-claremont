@@ -1,5 +1,5 @@
-import { Component } from '@theme/component';
-import { debounce } from '@theme/utilities';
+import { Component } from "@theme/component";
+import { debounce } from "@theme/utilities";
 
 /**
  * A custom element that allows the user to clean a search input.
@@ -9,7 +9,7 @@ import { debounce } from '@theme/utilities';
  * @extends {Component<Refs>}
  */
 class SearchPageInputComponent extends Component {
-  requiredRefs = ['searchPageInput'];
+  requiredRefs = ["searchPageInput"];
 
   /**
    * Handles the keydown event on the search input and resets the search when
@@ -20,7 +20,7 @@ class SearchPageInputComponent extends Component {
   handleKeyDown = debounce((event) => {
     const value = this.refs.searchPageInput.value.trim();
 
-    if (event.key === 'Escape' && value === '') {
+    if (event.key === "Escape" && value === "") {
       this.#submitEmptySearch();
     }
   }, 100);
@@ -29,7 +29,7 @@ class SearchPageInputComponent extends Component {
     const searchInput = this.refs.searchPageInput;
 
     searchInput.focus();
-    searchInput.value = '';
+    searchInput.value = "";
 
     if (this.#isEmptyState()) return;
 
@@ -38,12 +38,15 @@ class SearchPageInputComponent extends Component {
 
   #isEmptyState = () => {
     const url = new URL(window.location.href);
-    const queryParam = url.searchParams.get('q') ?? '';
+    const queryParam = url.searchParams.get("q") ?? "";
 
-    return queryParam.trim() === '';
+    return queryParam.trim() === "";
   };
 }
 
-if (!customElements.get('search-page-input-component')) {
-  customElements.define('search-page-input-component', SearchPageInputComponent);
+if (!customElements.get("search-page-input-component")) {
+  customElements.define(
+    "search-page-input-component",
+    SearchPageInputComponent,
+  );
 }

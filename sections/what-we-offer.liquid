@@ -1,0 +1,102 @@
+{%- style %}
+  .our-offer__section {
+    padding: {{ section.settings.padding_vertical }}px {{ section.settings.padding_horizontal }}px;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.row_gap }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .our-offer__section {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      padding: {{ section.settings.padding_vertical | times: 2  }}px {{ section.settings.padding_horizontal | times: 6 }}px;
+      gap: {{ section.settings.row_gap | times: 2 }}px;
+    }
+
+    .our-offer__section rte-formatter:first-of-type {
+      grid-column: 1 / -1;
+    }
+
+    .our-offer__section > .group-block {
+      grid-column: span 2;
+    }
+
+    .our-offer__section > .group-block:nth-last-child(2):nth-child(3n + 2) {
+      grid-column: 2 / span 2;
+    }
+
+    .our-offer__section .link {
+      padding-bottom: 24px;
+    }
+  }
+{%- endstyle %}
+
+<div class="our-offer__section {{ section.settings.name }} color-{{ section.settings.color_scheme }}">
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "What We Offer",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "id": "color_scheme"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "t:settings.padding_vertical",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "t:settings.padding_horizontal",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "t:settings.horizontal_gap",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "button"
+    },
+    {
+      "type": "group"
+    },
+    {
+      "type": "_list-item"
+    }
+  ],
+  "presets": [
+    {
+      "name": "What We Offer"
+    }
+  ]
+}
+{% endschema %}

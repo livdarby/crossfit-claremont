@@ -1,0 +1,969 @@
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<section
+  class="why-crossfit-page color-{{ section.settings.color_scheme }}"
+  style="
+    {% render 'prefixed-typography-style', settings: section.settings, prefix: 'body_heading_', type: 'heading', css_var_prefix: 'why-body-heading' %}
+    {% render 'prefixed-typography-style', settings: section.settings, prefix: 'body_copy_', type: 'body', css_var_prefix: 'why-body-copy' %}
+  "
+>
+  <div
+    class="section section--page-width spacing-style"
+    style="{% render 'spacing-style', settings: section.settings %}"
+  >
+    <div class="why-crossfit-page__cards">
+      {% for block in section.blocks %}
+        {% liquid
+          assign card_image_alt = block.settings.heading
+          if block.settings.image != blank and block.settings.image.alt != blank
+            assign card_image_alt = block.settings.image.alt
+          endif
+        %}
+        <article
+          class="why-crossfit-page__card"
+          {{ block.shopify_attributes }}
+        >
+          <div class="why-crossfit-page__card-media">
+            {% if block.settings.image != blank %}
+              {{
+                block.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  class: 'why-crossfit-page__card-image',
+                  widths: '480, 720, 960, 1200',
+                  sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+                  loading: 'lazy',
+                  alt: card_image_alt
+              }}
+            {% else %}
+              <div class="why-crossfit-page__card-placeholder"></div>
+            {% endif %}
+          </div>
+
+          {% if block.settings.heading != blank %}
+            <h2
+              class="why-crossfit-page__card-title"
+              style="{% render 'prefixed-typography-style', settings: section.settings, prefix: 'card_heading_', type: 'heading' %}"
+            >
+              {{ block.settings.heading }}
+            </h2>
+          {% endif %}
+
+          {% if block.settings.copy != blank %}
+            <div
+              class="why-crossfit-page__card-copy rte"
+              style="{% render 'prefixed-typography-style', settings: section.settings, prefix: 'card_copy_', type: 'body' %}"
+            >
+              {{ block.settings.copy }}
+            </div>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+
+    {% if page.content != blank %}
+      <div class="why-crossfit-page__body rte">
+        {{ page.content }}
+      </div>
+    {% endif %}
+
+    <div class="why-crossfit-page__mission">
+      {% liquid
+        assign mission_image_alt = page_title
+        if section.settings.hero_image != blank and section.settings.hero_image.alt != blank
+          assign mission_image_alt = section.settings.hero_image.alt
+        endif
+      %}
+      <div class="why-crossfit-page__mission-media">
+        {% if section.settings.hero_image != blank %}
+          {{
+            section.settings.hero_image
+            | image_url: width: 2200
+            | image_tag:
+              class: 'why-crossfit-page__mission-image',
+              widths: '720, 1200, 1600, 2200',
+              sizes: '100vw',
+              loading: 'lazy',
+              alt: mission_image_alt
+          }}
+        {% endif %}
+        <div class="why-crossfit-page__mission-overlay"></div>
+      </div>
+
+      <div class="why-crossfit-page__mission-content">
+        {% if section.settings.mission_eyebrow != blank %}
+          <p
+            class="why-crossfit-page__mission-eyebrow"
+            style="{% render 'prefixed-typography-style', settings: section.settings, prefix: 'mission_eyebrow_', type: 'body' %}"
+          >
+            {{ section.settings.mission_eyebrow }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.mission_heading != blank %}
+          <h2
+            class="why-crossfit-page__mission-heading {{ section.settings.mission_heading_type_preset }}"
+            style="--color: {{ section.settings.mission_heading_color }};"
+          >
+            {{ section.settings.mission_heading }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.mission_copy != blank %}
+          <div
+            class="why-crossfit-page__mission-copy rte"
+            style="{% render 'prefixed-typography-style', settings: section.settings, prefix: 'mission_copy_', type: 'body' %}"
+          >
+            {{ section.settings.mission_copy }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .why-crossfit-page__intro {
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .why-crossfit-page__title,
+  .why-crossfit-page__card-title,
+  .why-crossfit-page__mission-heading {
+    margin: 0;
+    font-family: var(--font-family, var(--font-heading--family));
+    color: var(--color, var(--color-foreground-heading));
+    line-height: var(--line-height, normal);
+    letter-spacing: var(--letter-spacing, 0);
+    text-transform: var(--text-transform, none);
+    text-wrap: var(--text-wrap, pretty);
+  }
+
+  .why-crossfit-page__title {
+    font-size: var(--font-size, clamp(3rem, 7vw, 5.5rem));
+  }
+
+  .why-crossfit-page__cards {
+    display: grid;
+    gap: 1.5rem;
+    align-items: stretch;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .why-crossfit-page__card {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 0.85rem;
+    height: 100%;
+  }
+
+  .why-crossfit-page__card-media {
+    overflow: hidden;
+    border-radius: 14px;
+    aspect-ratio: 4 / 5;
+    background: rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .why-crossfit-page__card-image,
+  .why-crossfit-page__mission-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .why-crossfit-page__card-placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .why-crossfit-page__card-title {
+    font-size: var(--font-size, clamp(2rem, 4vw, 2.8rem));
+  }
+
+  .why-crossfit-page__card-copy,
+  .why-crossfit-page__mission-copy {
+    color: rgb(var(--color-foreground-rgb) / 0.82);
+  }
+
+  .why-crossfit-page__card-copy {
+    font-family: var(--font-family, var(--font-body--family));
+    font-size: var(--font-size, 1rem);
+    line-height: var(--line-height, 1.65);
+    letter-spacing: var(--letter-spacing, normal);
+    text-transform: var(--text-transform, none);
+    text-wrap: var(--text-wrap, pretty);
+    color: var(--color, rgb(var(--color-foreground-rgb) / 0.82));
+    height: 100%;
+  }
+
+  .why-crossfit-page__card-copy p,
+  .why-crossfit-page__mission-copy p {
+    line-height: var(--font-paragraph--line-height);
+  }
+
+  .why-crossfit-page__card-copy > *:first-child,
+  .why-crossfit-page__mission-copy > *:first-child {
+    margin-top: 0;
+  }
+
+  .why-crossfit-page__card-copy > *:last-child,
+  .why-crossfit-page__mission-copy > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .why-crossfit-page__mission {
+    position: relative;
+    overflow: hidden;
+    min-height: 38rem;
+    border-radius: 0;
+    background: #111;
+  }
+
+  .why-crossfit-page__body {
+    max-width: 54rem;
+    margin: 0 0 clamp(3rem, 6vw, 5rem);
+    color: var(--why-body-copy-color, rgb(var(--color-foreground-rgb) / 0.82));
+    font-family: var(--why-body-copy-font-family, var(--font-body--family));
+    font-size: var(--why-body-copy-font-size, 1rem);
+    line-height: 25.6px;
+    letter-spacing: var(--why-body-copy-letter-spacing, normal);
+    text-transform: var(--why-body-copy-text-transform, none);
+    text-wrap: var(--why-body-copy-text-wrap, pretty);
+  }
+
+  .why-crossfit-page__body :is(h2, h3, h4) {
+    font-family: var(--why-body-heading-font-family, var(--font-heading--family));
+    font-size: var(--why-body-heading-font-size, 2rem);
+    color: var(--why-body-heading-color, var(--color-foreground-heading));
+    line-height: var(--why-body-heading-line-height, 0.98);
+    letter-spacing: var(--why-body-heading-letter-spacing, 0);
+    text-transform: var(--why-body-heading-text-transform, none);
+    text-wrap: var(--why-body-heading-text-wrap, pretty);
+  }
+
+  .why-crossfit-page__mission-media,
+  .why-crossfit-page__mission-overlay {
+    position: absolute;
+    inset: 0;
+  }
+
+  .why-crossfit-page__mission-overlay {
+    background: linear-gradient(90deg, rgb(17 17 17 / 0.18), rgb(17 17 17 / 0.68));
+  }
+
+  .why-crossfit-page__mission-content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: start;
+    gap: 1rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    color: #fff;
+  }
+
+  .why-crossfit-page__mission-eyebrow {
+    margin: 0;
+    font-family: var(--font-family, var(--font-heading--family));
+    font-size: var(--font-size, clamp(1.2rem, 2vw, 1.6rem));
+    line-height: var(--line-height, normal);
+    letter-spacing: var(--letter-spacing, normal);
+    text-transform: var(--text-transform, none);
+    text-wrap: var(--text-wrap, pretty);
+    color: var(--color, #bb35ff);
+  }
+
+  .why-crossfit-page__mission-heading {
+    max-width: 14ch;
+    color: var(--color, #fff);
+  }
+
+  .why-crossfit-page__mission-copy {
+    max-width: 34rem;
+    font-family: var(--font-family, var(--font-body--family));
+    font-size: var(--font-size, 1.05rem);
+    line-height: var(--line-height, 1.7);
+    letter-spacing: var(--letter-spacing, normal);
+    text-transform: var(--text-transform, none);
+    text-wrap: var(--text-wrap, pretty);
+    color: var(--color, rgb(255 255 255 / 0.92));
+  }
+
+  @media screen and (min-width: 750px) {
+    .why-crossfit-page__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .why-crossfit-page__card-copy {
+      font-size: 1.1rem;
+    }
+
+    .why-crossfit-page__body {
+      font-size: 1.1rem;
+    }
+
+    .why-crossfit-page__mission-content {
+      min-height: 38rem;
+      align-content: center;
+      justify-items: end;
+      margin-left: auto;
+      max-width: min(58%, 56rem);
+      text-align: right;
+    }
+
+    .why-crossfit-page__mission-copy {
+      margin-left: auto;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .why-crossfit-page__cards {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Why CrossFit Page",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "blocks": [
+    {
+      "type": "reason",
+      "name": "Reason",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Expert Coaching"
+        },
+        {
+          "type": "richtext",
+          "id": "copy",
+          "label": "Copy",
+          "default": "<p>Our experienced coaches guide every session, ensuring training is safe, effective, and tailored to all fitness levels.</p>"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Feature card heading typography"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_font",
+      "label": "Card heading font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-heading--family)"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_font_size",
+      "label": "Card heading size",
+      "options": [
+        { "value": "1.5rem", "label": "24px" },
+        { "value": "2rem", "label": "32px" },
+        { "value": "2.5rem", "label": "40px" }
+      ],
+      "default": "2.5rem"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_line_height",
+      "label": "Card heading line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "tight"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_letter_spacing",
+      "label": "Card heading letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_case",
+      "label": "Card heading case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_wrap",
+      "label": "Card heading wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_color",
+      "label": "Card heading color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "Text" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" },
+        { "value": "var(--color-primary)", "label": "Link" }
+      ],
+      "default": "var(--color-foreground-heading)"
+    },
+    {
+      "type": "header",
+      "content": "Feature card copy typography"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_font",
+      "label": "Card copy font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-body--family)"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_font_size",
+      "label": "Card copy size",
+      "options": [
+        { "value": "0.875rem", "label": "14px" },
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.125rem", "label": "18px" },
+        { "value": "1.25rem", "label": "20px" }
+      ],
+      "default": "1rem"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_line_height",
+      "label": "Card copy line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_letter_spacing",
+      "label": "Card copy letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_case",
+      "label": "Card copy case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_wrap",
+      "label": "Card copy wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "card_copy_color",
+      "label": "Card copy color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "Text" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" },
+        { "value": "var(--color-primary)", "label": "Link" }
+      ],
+      "default": "var(--color-foreground)"
+    },
+    {
+      "type": "header",
+      "content": "Mission eyebrow typography"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Mission image"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_font",
+      "label": "Mission eyebrow font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-heading--family)"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_font_size",
+      "label": "Mission eyebrow size",
+      "options": [
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.25rem", "label": "20px" },
+        { "value": "1.5rem", "label": "24px" }
+      ],
+      "default": "1.5rem"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_line_height",
+      "label": "Mission eyebrow line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_letter_spacing",
+      "label": "Mission eyebrow letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_case",
+      "label": "Mission eyebrow case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_wrap",
+      "label": "Mission eyebrow wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "mission_eyebrow_color",
+      "label": "Mission eyebrow color",
+      "options": [
+        { "value": "#bb35ff", "label": "Purple" },
+        { "value": "#ffffff", "label": "White" },
+        { "value": "var(--color-primary)", "label": "Link" }
+      ],
+      "default": "#bb35ff"
+    },
+    {
+      "type": "header",
+      "content": "Mission heading typography"
+    },
+    {
+      "type": "select",
+      "id": "mission_heading_type_preset",
+      "label": "Preset",
+      "options": [
+        { "value": "h1", "label": "Heading 1" },
+        { "value": "h2", "label": "Heading 2" },
+        { "value": "h3", "label": "Heading 3" },
+        { "value": "h4", "label": "Heading 4" },
+        { "value": "h5", "label": "Heading 5" },
+        { "value": "h6", "label": "Heading 6" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "mission_heading_color",
+      "label": "Color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "Text" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" },
+        { "value": "var(--color-link)", "label": "Link" }
+      ],
+      "default": "var(--color-foreground-heading)"
+    },
+    {
+      "type": "header",
+      "content": "Mission copy typography"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_font",
+      "label": "Mission copy font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-body--family)"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_font_size",
+      "label": "Mission copy size",
+      "options": [
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.125rem", "label": "18px" },
+        { "value": "1.25rem", "label": "20px" }
+      ],
+      "default": "1.125rem"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_line_height",
+      "label": "Mission copy line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_letter_spacing",
+      "label": "Mission copy letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_case",
+      "label": "Mission copy case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_wrap",
+      "label": "Mission copy wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "mission_copy_color",
+      "label": "Mission copy color",
+      "options": [
+        { "value": "#ffffff", "label": "White" },
+        { "value": "rgb(255 255 255 / 0.92)", "label": "Soft white" },
+        { "value": "var(--color-foreground)", "label": "Text" }
+      ],
+      "default": "rgb(255 255 255 / 0.92)"
+    },
+    {
+      "type": "header",
+      "content": "Page body heading typography"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_font",
+      "label": "Body heading font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-heading--family)"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_font_size",
+      "label": "Body heading size",
+      "options": [
+        { "value": "1.5rem", "label": "24px" },
+        { "value": "2rem", "label": "32px" },
+        { "value": "2.5rem", "label": "40px" }
+      ],
+      "default": "2rem"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_line_height",
+      "label": "Body heading line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "tight"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_letter_spacing",
+      "label": "Body heading letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_case",
+      "label": "Body heading case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_wrap",
+      "label": "Body heading wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "body_heading_color",
+      "label": "Body heading color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "Text" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" },
+        { "value": "var(--color-primary)", "label": "Link" }
+      ],
+      "default": "var(--color-foreground-heading)"
+    },
+    {
+      "type": "header",
+      "content": "Page body copy typography"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_font",
+      "label": "Body copy font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-body--family)"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_font_size",
+      "label": "Body copy size",
+      "options": [
+        { "value": "0.875rem", "label": "14px" },
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.125rem", "label": "18px" },
+        { "value": "1.25rem", "label": "20px" }
+      ],
+      "default": "1rem"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_line_height",
+      "label": "Body copy line height",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_letter_spacing",
+      "label": "Body copy letter spacing",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_case",
+      "label": "Body copy case",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_wrap",
+      "label": "Body copy wrap",
+      "options": [
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap", "label": "None" }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "select",
+      "id": "body_copy_color",
+      "label": "Body copy color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "Text" },
+        { "value": "var(--color-foreground-heading)", "label": "Heading" },
+        { "value": "var(--color-primary)", "label": "Link" }
+      ],
+      "default": "var(--color-foreground)"
+    },
+    {
+      "type": "text",
+      "id": "mission_eyebrow",
+      "label": "Mission eyebrow",
+      "default": "Our Mission"
+    },
+    {
+      "type": "textarea",
+      "id": "mission_heading",
+      "label": "Mission heading",
+      "default": "Helping People Move Better, Get Stronger, and Live Healthier"
+    },
+    {
+      "type": "richtext",
+      "id": "mission_copy",
+      "label": "Mission copy",
+      "default": "<p>CrossFit is constantly varied functional movements performed at intensity. Our coaching and programming are designed to help people improve their health, fitness, and quality of life through measurable, repeatable training.</p><p>We welcome all ages, backgrounds, and experience levels. The goal is broad, general fitness that supports real life, not narrow specialisation.</p>"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Why CrossFit Page",
+      "blocks": {
+        "reason_1": {
+          "type": "reason",
+          "settings": {
+            "heading": "Expert Coaching",
+            "copy": "<p>Our experienced coaches guide every session, ensuring workouts are safe, effective, and tailored to all fitness levels.</p>"
+          }
+        },
+        "reason_2": {
+          "type": "reason",
+          "settings": {
+            "heading": "A Strong Community",
+            "copy": "<p>CrossFit is about more than workouts. Members support each other, celebrate progress, and train together in a positive environment.</p>"
+          }
+        },
+        "reason_3": {
+          "type": "reason",
+          "settings": {
+            "heading": "Proven Training Methods",
+            "copy": "<p>Our programming combines strength training, conditioning, and skill development to help you build real, functional fitness.</p>"
+          }
+        },
+        "reason_4": {
+          "type": "reason",
+          "settings": {
+            "heading": "Results That Improve Everyday Life",
+            "copy": "<p>The goal is not only performance in the gym, but feeling stronger, healthier, and more capable in daily life.</p>"
+          }
+        }
+      },
+      "block_order": ["reason_1", "reason_2", "reason_3", "reason_4"]
+    }
+  ]
+}
+{% endschema %}

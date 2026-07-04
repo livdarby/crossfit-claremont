@@ -11,9 +11,9 @@ export class PaginatedListAspectRatioHelper {
    * @type {Object.<string, string>}
    */
   #ASPECT_RATIOS = {
-    square: '1',
-    portrait: '0.8',
-    landscape: '1.778',
+    square: "1",
+    portrait: "0.8",
+    landscape: "1.778",
   };
 
   /**
@@ -32,7 +32,9 @@ export class PaginatedListAspectRatioHelper {
     if (!Shopify.designMode) return;
     // Wait for the DOM to update
     requestAnimationFrame(() => {
-      this.#imageRatioSetting === 'adapt' ? this.#fixAdaptiveAspectRatios() : this.#applyFixedAspectRatio();
+      this.#imageRatioSetting === "adapt"
+        ? this.#fixAdaptiveAspectRatios()
+        : this.#applyFixedAspectRatio();
     });
   }
 
@@ -41,7 +43,7 @@ export class PaginatedListAspectRatioHelper {
    * @param {HTMLElement} templateCard - The template card gallery element to get the image ratio from
    */
   #storeImageRatioSettings(templateCard) {
-    this.#imageRatioSetting = templateCard.getAttribute('data-image-ratio');
+    this.#imageRatioSetting = templateCard.getAttribute("data-image-ratio");
   }
 
   /**
@@ -57,22 +59,28 @@ export class PaginatedListAspectRatioHelper {
     newCardGalleries.forEach((gallery) => {
       if (!(gallery instanceof HTMLElement)) return;
 
-      const productId = gallery.getAttribute('data-product-id');
+      const productId = gallery.getAttribute("data-product-id");
       if (productId && productRatioCache.has(productId)) {
-        this.#applyAspectRatioToGallery(gallery, productRatioCache.get(productId));
+        this.#applyAspectRatioToGallery(
+          gallery,
+          productRatioCache.get(productId),
+        );
         return;
       }
 
-      const img = gallery.querySelector('img');
+      const img = gallery.querySelector("img");
       if (!img) {
-        this.#applyAspectRatioToGallery(gallery, '1');
+        this.#applyAspectRatioToGallery(gallery, "1");
         return;
       }
 
       const loadAndSetRatio = () => {
         if (!img.naturalWidth || !img.naturalHeight) return;
 
-        const imgRatio = this.#getSafeImageAspectRatio(img.naturalWidth, img.naturalHeight);
+        const imgRatio = this.#getSafeImageAspectRatio(
+          img.naturalWidth,
+          img.naturalHeight,
+        );
 
         if (productId) {
           productRatioCache.set(productId, imgRatio);
@@ -84,7 +92,7 @@ export class PaginatedListAspectRatioHelper {
       if (img.complete) {
         loadAndSetRatio();
       } else {
-        img.addEventListener('load', loadAndSetRatio, { once: true });
+        img.addEventListener("load", loadAndSetRatio, { once: true });
       }
     });
   }
@@ -140,9 +148,11 @@ export class PaginatedListAspectRatioHelper {
   #applyAspectRatioToGallery(gallery, aspectRatio) {
     if (!(gallery instanceof HTMLElement)) return;
 
-    gallery.style.setProperty('--gallery-aspect-ratio', aspectRatio);
+    gallery.style.setProperty("--gallery-aspect-ratio", aspectRatio);
 
-    const mediaContainers = gallery.querySelectorAll('.product-media-container');
+    const mediaContainers = gallery.querySelectorAll(
+      ".product-media-container",
+    );
     mediaContainers.forEach((container) => {
       if (container instanceof HTMLElement) {
         container.style.aspectRatio = aspectRatio;
@@ -157,7 +167,9 @@ export class PaginatedListAspectRatioHelper {
    * @returns {NodeListOf<Element>} List of unprocessed galleries
    */
   #getUnprocessedGalleries() {
-    return document.querySelectorAll('.card-gallery:not([data-aspect-ratio-applied])');
+    return document.querySelectorAll(
+      ".card-gallery:not([data-aspect-ratio-applied])",
+    );
   }
 
   /**
@@ -166,6 +178,6 @@ export class PaginatedListAspectRatioHelper {
    */
   #markAsProcessed(gallery) {
     if (!(gallery instanceof HTMLElement)) return;
-    gallery.setAttribute('data-aspect-ratio-applied', 'true');
+    gallery.setAttribute("data-aspect-ratio-applied", "true");
   }
 }

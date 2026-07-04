@@ -10,6 +10,20 @@
 
 {% assign block_settings = block.settings %}
 
+{%- style -%}
+  .{{ block_settings.style_class }}--{{ block.id }} {
+    padding-top: {{ block.settings.padding-block-start | default: 0 }}px;
+    padding-bottom: {{ block.settings.padding-block-end | default: 0 }}px;
+  }
+
+  {% if block_settings.style_class == 'link' and block_settings.override_link_color %}
+    .link.{{ block_settings.style_class }}--{{ block.id }}:hover {
+      color: {{ block_settings.link_color }};
+      text-decoration-color: transparent;
+    }
+  {% endif %}
+{%- endstyle -%}
+
 <a
   {% if link == blank %}
     role="link"
@@ -22,7 +36,7 @@
     {{ block_settings.style_class }}
     {{ block_settings.style_class }}--{{ block.id }}
   "
-  style="{% render 'size-style', settings: block_settings %}"
+  style="{% render 'size-style', settings: block_settings %}{% if block_settings.style_class == 'link' and block_settings.override_link_color %} color: {{ block_settings.link_color }};{% endif %}"
   {%- if block_settings.open_in_new_tab -%}
     target="_blank"
     rel="noopener noreferrer"

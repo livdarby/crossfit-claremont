@@ -1,0 +1,213 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "text_WGhm4E": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Real stories from members building strength, confidence, and consistency at CrossFit Claremont.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "desktop_max_width": 0,
+            "alignment": "left",
+            "desktop_position": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "disabled": true,
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_WGhm4E",
+        "page-content"
+      ],
+      "custom_css": [
+        "@media screen and (min-width: 769px) {.page-width-content {grid-template-columns: 99px 700px auto; }}"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "scheme-3",
+        "padding-block-start": 40,
+        "padding-block-end": 24
+      }
+    },
+    "metaobject_grid_testimonials": {
+      "type": "metaobject-grid",
+      "blocks": {
+        "static-metaobject-title": {
+          "type": "_metaobject-grid-title",
+          "name": "Title",
+          "static": true,
+          "settings": {
+            "text": "<p>TESTIMONIALS</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "desktop_max_width": 0,
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "background": false,
+            "background_color": "",
+            "corner_radius": 0,
+            "color": "",
+            "padding-block-start": 0,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "static-metaobject-card": {
+          "type": "_metaobject-grid-card",
+          "name": "Metaobject card",
+          "static": true,
+          "settings": {
+            "alignment": "left",
+            "gap": 14,
+            "content_overlay": false,
+            "inherit_color_scheme": true,
+            "color_scheme": "scheme-1",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image": {
+              "type": "_metaobject-grid-image",
+              "name": "Image",
+              "static": true,
+              "settings": {
+                "image_ratio": "square",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 16
+              },
+              "blocks": {}
+            },
+            "title": {
+              "type": "_heading",
+              "name": "Title",
+              "static": true,
+              "settings": {
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "text": "",
+                "read_only": false,
+                "alignment": "left",
+                "show_alignment": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "description": {
+              "type": "_metaobject-grid-description",
+              "name": "Description",
+              "static": true,
+              "settings": {
+                "text": "",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": []
+        }
+      },
+      "custom_css": [
+        "@media screen and (min-width: 769px) {.shopify-block, .metaobject-grid-card {margin-left: 56px; }}"
+      ],
+      "name": "Metaobject: Grid",
+      "settings": {
+        "metaobject_type": "testimonials",
+        "entry_limit": 12,
+        "title_field": "name",
+        "description_field": "copy",
+        "image_field": "image",
+        "link_field": "",
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "columns": 1,
+        "mobile_columns": "1",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 20,
+        "desktop_gap": 32,
+        "desktop_section_gap": 0,
+        "rows_gap": 28,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 0,
+        "color_scheme": "scheme-3",
+        "padding-block-start": 8,
+        "padding-block-end": 56
+      }
+    }
+  },
+  "order": [
+    "main",
+    "metaobject_grid_testimonials"
+  ]
+}

@@ -1,0 +1,115 @@
+{%- style %}
+  .{{ section.settings.section_name}}__section {
+    padding: {{ section.settings.padding_vertical }}px {{ section.settings.padding_horizontal }}px;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.row_gap }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .{{ section.settings.section_name}}__section {
+      padding: {{ section.settings.padding_vertical | times: 2  }}px {{ section.settings.padding_horizontal | times: 6 }}px;
+    }
+
+    .{{ section.settings.section_name}}__section .image-block {
+      max-height: 600px;
+    }
+
+    .{{ section.settings.section_name}}__section .group-block-content .group-block {
+      /* max-width: 584px; */
+    }
+
+    .meet-the-coaches__section {
+      padding: 0;
+    }
+
+    .meet-the-coaches__section .image-block {
+      /* max-width: 689px; */
+      max-height: 689px;
+    }
+
+    .meet-the-coaches__section .group-block-content .group-block {
+      max-width: 640px;
+    }
+
+    .meet-the-coaches__section .group-block-content {
+      gap: {{ section.settings.row_gap | times: 2.5 }}px;
+    }
+  }
+{%- endstyle %}
+
+<div class="{{ section.settings.section_name}}__section color-{{ section.settings.color_scheme }}">
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "About Us",
+  "settings": [
+    {
+      "type": "text",
+      "label": "Section Name",
+      "id": "section_name",
+      "info": "Used for custom CSS",
+      "default": "about-us"
+    },
+    {
+      "type": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "id": "color_scheme"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "t:settings.padding_vertical",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "t:settings.padding_horizontal",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "t:settings.horizontal_gap",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "button"
+    },
+    {
+      "type": "group"
+    },
+    {
+      "type": "_list-item"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Us"
+    }
+  ]
+}
+{% endschema %}

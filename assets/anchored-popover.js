@@ -1,5 +1,5 @@
-import { Component } from '@theme/component';
-import { debounce, requestIdleCallback } from '@theme/utilities';
+import { Component } from "@theme/component";
+import { debounce, requestIdleCallback } from "@theme/utilities";
 
 /**
  * A custom element that manages the popover + popover trigger relationship for anchoring.
@@ -27,16 +27,16 @@ import { debounce, requestIdleCallback } from '@theme/utilities';
  * @property {number | null} [popoverTrigger] - The timeout for the popover trigger
  */
 export class AnchoredPopoverComponent extends Component {
-  requiredRefs = ['popover', 'trigger'];
+  requiredRefs = ["popover", "trigger"];
   interaction_delay = 200;
   #popoverTrigger = /** @type {number | null} */ (null);
 
   #onTriggerEnter = () => {
     const { trigger, popover } = this.refs;
-    trigger.dataset.hoverActive = 'true';
-    if (!popover.matches(':popover-open')) {
+    trigger.dataset.hoverActive = "true";
+    if (!popover.matches(":popover-open")) {
       this.#popoverTrigger = setTimeout(() => {
-        if (trigger.matches('[data-hover-active]')) popover.showPopover();
+        if (trigger.matches("[data-hover-active]")) popover.showPopover();
       }, this.interaction_delay);
     }
   };
@@ -45,7 +45,7 @@ export class AnchoredPopoverComponent extends Component {
     const { trigger, popover } = this.refs;
     delete trigger.dataset.hoverActive;
     if (this.#popoverTrigger) clearTimeout(this.#popoverTrigger);
-    if (popover.matches(':popover-open')) {
+    if (popover.matches(":popover-open")) {
       this.#popoverTrigger = setTimeout(() => {
         popover.hidePopover();
       }, this.interaction_delay);
@@ -71,12 +71,18 @@ export class AnchoredPopoverComponent extends Component {
     const { popover, trigger } = this.refs;
     if (!popover || !trigger) return;
     const positions = trigger.getBoundingClientRect();
-    popover.style.setProperty('--anchor-top', `${positions.top}`);
-    popover.style.setProperty('--anchor-right', `${window.innerWidth - positions.right}`);
-    popover.style.setProperty('--anchor-bottom', `${window.innerHeight - positions.bottom}`);
-    popover.style.setProperty('--anchor-left', `${positions.left}`);
-    popover.style.setProperty('--anchor-height', `${positions.height}`);
-    popover.style.setProperty('--anchor-width', `${positions.width}`);
+    popover.style.setProperty("--anchor-top", `${positions.top}`);
+    popover.style.setProperty(
+      "--anchor-right",
+      `${window.innerWidth - positions.right}`,
+    );
+    popover.style.setProperty(
+      "--anchor-bottom",
+      `${window.innerHeight - positions.bottom}`,
+    );
+    popover.style.setProperty("--anchor-left", `${positions.left}`);
+    popover.style.setProperty("--anchor-height", `${positions.height}`);
+    popover.style.setProperty("--anchor-width", `${positions.width}`);
   };
 
   /**
@@ -85,7 +91,7 @@ export class AnchoredPopoverComponent extends Component {
    */
   #resizeListener = debounce(() => {
     const popover = /** @type {HTMLElement} */ (this.refs.popover);
-    if (popover && popover.matches(':popover-open')) {
+    if (popover && popover.matches(":popover-open")) {
       popover.hidePopover();
     }
   }, 100);
@@ -97,19 +103,21 @@ export class AnchoredPopoverComponent extends Component {
     super.connectedCallback();
     const { popover, trigger } = this.refs;
     if (this.dataset.closeOnResize) {
-      popover.addEventListener('beforetoggle', (event) => {
+      popover.addEventListener("beforetoggle", (event) => {
         const evt = /** @type {ToggleEvent} */ (event);
-        window[evt.newState === 'open' ? 'addEventListener' : 'removeEventListener']('resize', this.#resizeListener);
+        window[
+          evt.newState === "open" ? "addEventListener" : "removeEventListener"
+        ]("resize", this.#resizeListener);
       });
     }
     if (this.dataset.hoverTriggered) {
-      trigger.addEventListener('pointerenter', this.#onTriggerEnter);
-      trigger.addEventListener('pointerleave', this.#onTriggerLeave);
-      popover.addEventListener('pointerenter', this.#onPopoverEnter);
-      popover.addEventListener('pointerleave', this.#onPopoverLeave);
+      trigger.addEventListener("pointerenter", this.#onTriggerEnter);
+      trigger.addEventListener("pointerleave", this.#onTriggerLeave);
+      popover.addEventListener("pointerenter", this.#onPopoverEnter);
+      popover.addEventListener("pointerleave", this.#onPopoverLeave);
     }
-    if (!CSS.supports('position-anchor: --trigger')) {
-      popover.addEventListener('beforetoggle', () => {
+    if (!CSS.supports("position-anchor: --trigger")) {
+      popover.addEventListener("beforetoggle", () => {
         this.#updatePosition();
       });
       requestIdleCallback(() => {
@@ -123,10 +131,10 @@ export class AnchoredPopoverComponent extends Component {
    */
   disconnectedCallback() {
     super.disconnectedCallback();
-    window.removeEventListener('resize', this.#resizeListener);
+    window.removeEventListener("resize", this.#resizeListener);
   }
 }
 
-if (!customElements.get('anchored-popover-component')) {
-  customElements.define('anchored-popover-component', AnchoredPopoverComponent);
+if (!customElements.get("anchored-popover-component")) {
+  customElements.define("anchored-popover-component", AnchoredPopoverComponent);
 }

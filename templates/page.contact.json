@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "main": {
       "type": "main-page",
@@ -18,15 +19,17 @@
             "text": "<h1>{{ closest.page.title }}</h1>",
             "width": "100%",
             "max_width": "normal",
+            "desktop_max_width": 0,
             "alignment": "center",
-            "type_preset": "h2",
+            "desktop_position": "",
+            "type_preset": "h1",
             "font": "var(--font-primary--family)",
             "font_size": "",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
-            "color": "",
+            "color": "var(--color-foreground-heading)",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -44,7 +47,9 @@
             "text": "{{ closest.page.content }}",
             "width": "100%",
             "max_width": "narrow",
+            "desktop_max_width": 0,
             "alignment": "center",
+            "desktop_position": "",
             "type_preset": "rte",
             "font": "var(--font-primary--family)",
             "font_size": "",
@@ -71,7 +76,7 @@
       "settings": {
         "content_direction": "column",
         "gap": 32,
-        "color_scheme": "",
+        "color_scheme": "scheme-2",
         "padding-block-start": 40,
         "padding-block-end": 0
       }
@@ -79,6 +84,34 @@
     "form": {
       "type": "section",
       "blocks": {
+        "text_ede6Tg": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>Book Your 3 Class Trial</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "desktop_max_width": 0,
+            "alignment": "left",
+            "desktop_position": "",
+            "type_preset": "h3",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "contact_form_UwiCkQ": {
           "type": "contact-form",
           "settings": {
@@ -86,8 +119,12 @@
             "custom_width": 50,
             "width_mobile": "custom",
             "custom_width_mobile": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
+            "inherit_color_scheme": false,
+            "color_scheme": "scheme-1",
+            "placeholder_name": "",
+            "placeholder_email": "",
+            "placeholder_phone": "",
+            "placeholder_comment": "Let us know what you're looking for and when you'd like to come in for your free 3 day trial",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -112,6 +149,7 @@
         }
       },
       "block_order": [
+        "text_ede6Tg",
         "contact_form_UwiCkQ"
       ],
       "name": "t:names.contact_form",
@@ -127,7 +165,9 @@
         "section_width": "page-width",
         "section_height": "",
         "section_height_custom": 50,
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-2",
+        "desktop_image_height": 0,
+        "desktop_image_max_width": 0,
         "background_media": "none",
         "video_position": "cover",
         "background_image_position": "cover",
@@ -140,12 +180,50 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 32,
-        "padding-block-end": 84
+        "padding-block-end": 64
+      }
+    },
+    "map_DTPkVi": {
+      "type": "map",
+      "name": "Map",
+      "settings": {
+        "kicker": "",
+        "heading": "Find Us",
+        "text": "<p>Drive through Gate 8 on Ashton Av and enter the Showgrounds. We are located 50m in on the left with the sign 'CrossFit Claremont' out the front.</p>",
+        "location_name": "CrossFit Claremont",
+        "address": "<p>1 Graylands Road<br/>Claremont WA 6010<br/>Australia</p>",
+        "embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d16905.22739219772!2d115.77696383028115!3d-31.972531183224692!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2a32a45177e45465%3A0x7f2587d0bfae231b!2sCrossFit%20Claremont!5e1!3m2!1sen!2sau!4v1782297824423!5m2!1sen!2sau",
+        "directions_url": "https://maps.app.goo.gl/ouJ9RguPqmSwVfuV9",
+        "button_label": "Get Directions",
+        "map_height": 420,
+        "color_scheme": "",
+        "padding-block-start": 0,
+        "padding-block-end": 64,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0
+      }
+    },
+    "instagram_carousel_6KimFk": {
+      "type": "instagram-carousel",
+      "name": "Instagram carousel",
+      "settings": {
+        "kicker": "Instagram",
+        "heading": "Instagram Carousel",
+        "text": "<p>This is a placeholder section showing where the live Instagram feed carousel will appear once the app is connected.</p>",
+        "status_text": "Placeholder only until the Instagram app feed is connected",
+        "handle_label": "@crossfitclaremont",
+        "color_scheme": "",
+        "padding-block-start": 0,
+        "padding-block-end": 0,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0
       }
     }
   },
   "order": [
     "main",
-    "form"
+    "form",
+    "map_DTPkVi",
+    "instagram_carousel_6KimFk"
   ]
 }

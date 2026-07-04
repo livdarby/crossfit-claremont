@@ -2,63 +2,330 @@
 
 {% liquid
   assign max_items = section.settings.post_limit
+  assign paginate_blog_cards = section.settings.paginate_blog_cards
+  assign source_blog = section.settings.blog
+  assign card_button_label = 'Read more'
+  assign program_content_metafields = section.settings.program_content_metafields | default: 'crossfit_content,flow_content,hyrox_content,weightlifting_content,fitness_content'
+  assign program_content_metafield_keys = program_content_metafields | newline_to_br | replace: '<br />', ',' | split: ','
+
+  if request.page_type == 'blog'
+    if source_blog == blank or blog.handle == source_blog.handle
+      assign source_blog = blog
+    endif
+  endif
+
+  for block in section.blocks
+    if block.type == '_featured-blog-posts-card' and block.settings.button_label != blank
+      assign card_button_label = block.settings.button_label
+      break
+    endif
+  endfor
 %}
+
+<script
+  src="{{ 'featured-blog-posts.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 
-<div
-  class="
-    section
-    section--{{ section.settings.section_width }}
-    color-{{ section.settings.color_scheme }}
-    section-resource-list
-    spacing-style
-    gap-style
-  "
-  style="
-    {%- render 'spacing-style', settings: section.settings -%}
-    {%- render 'gap-style', value: section.settings.gap -%}
-  "
+<featured-blog-posts-component
+  section-id="{{ section.id }}"
+  data-button-label="{{ card_button_label | escape }}"
 >
-  {% content_for 'block', id: 'static-blog-title', type: '_featured-blog-posts-title' %}
+  <div
+    class="
+      featured-blog-posts-section
+      section
+      section--{{ section.settings.section_width }}
+      color-{{ section.settings.color_scheme }}
+      section-resource-list
+      spacing-style
+      gap-style
+    "
+    style="
+      {%- render 'spacing-style', settings: section.settings -%}
+      {%- render 'gap-style', value: section.settings.gap -%}
+    "
+  >
+    {% content_for 'block', id: 'static-blog-title', type: '_featured-blog-posts-title' %}
 
-  {% if section.settings.blog != blank and section.settings.blog.articles_count > 0 %}
-    {% paginate section.settings.blog.articles by max_items %}
-      {% assign section_articles = section.settings.blog.articles %}
-    {% endpaginate %}
-  {% else %}
-    {% assign section_articles = '' %}
-    {% for i in (1..max_items) %}
-      {% assign section_articles = section_articles | append: ', ' %}
-    {% endfor %}
-    {% assign section_articles = section_articles | split: ',' %}
-  {% endif %}
+    {% if source_blog != blank and source_blog.articles_count > 0 and paginate_blog_cards and section.settings.layout_type == 'grid' %}
+      {% paginate source_blog.articles by max_items %}
+        {% capture list_items %}
+          {% for article in source_blog.articles %}
+            {% assign fallback_excerpt = '' %}
+            {% for raw_metafield_key in program_content_metafield_keys %}
+              {% liquid
+                assign metafield_key = raw_metafield_key | strip
+                assign program_content = article.metafields.blog[metafield_key]
+              %}
+              {% if fallback_excerpt == blank and metafield_key != blank and metafield_key contains '_content' and program_content != blank %}
+                {% capture fallback_excerpt %}{{ program_content | metafield_tag | strip_html | strip_newlines | strip }}{% endcapture %}
+              {% endif %}
+            {% endfor %}
+            {% capture article_tag_handles %}
+              {% for tag in article.tags %}
+                {{ tag | handleize }}{% unless forloop.last %}|{% endunless %}
+              {% endfor %}
+            {% endcapture %}
+            <div
+              class="resource-list__item"
+              data-tags="{{ article_tag_handles | strip }}"
+              data-title="{{ article.title | strip_html | escape }}"
+              data-has-excerpt="{% if article.excerpt != blank %}true{% else %}false{% endif %}"
+              data-fallback-excerpt="{{ fallback_excerpt | escape }}"
+            >
+              {% content_for 'block', id: 'static-blog-post-card', type: '_featured-blog-posts-card', article: article, closest.article: article %}
+            </div>
+            {% unless forloop.last %}
+              <!--@list/split-->
+            {% endunless %}
+          {% endfor %}
+        {% endcapture %}
 
-  {% capture list_items %}
-    {% for article in section_articles limit: max_items %}
-      <div class="resource-list__item">
-        {% content_for 'block', id: 'static-blog-post-card', type: '_featured-blog-posts-card', article: article, closest.article: article %}
+        {% liquid
+          assign list_items_array = list_items | strip | split: '<!--@list/split-->'
+        %}
+
+        {% render 'resource-list',
+          list_items: list_items,
+          list_items_array: list_items_array,
+          settings: section.settings,
+          carousel_ref: 'featuredBlog',
+          slide_count: list_items_array.size,
+          content_type: 'articles',
+          test_id: 'featured-blog-posts'
+        %}
+        <div
+          ref="paginationMeta"
+          data-total-pages="{{ paginate.pages }}"
+          hidden
+        ></div>
+        {% render 'pagination-controls', paginate: paginate, on_click_handler: '/paginateBlogCards', ref: 'paginationNav' %}
+      {% endpaginate %}
+    {% else %}
+      {% if source_blog != blank and source_blog.articles_count > 0 %}
+        {% assign section_articles = source_blog.articles %}
+      {% else %}
+        {% assign section_articles = '' %}
+        {% for i in (1..max_items) %}
+          {% assign section_articles = section_articles | append: ', ' %}
+        {% endfor %}
+        {% assign section_articles = section_articles | split: ',' %}
+      {% endif %}
+
+      {% capture list_items %}
+        {% for article in section_articles limit: max_items %}
+          {% assign fallback_excerpt = '' %}
+          {% for raw_metafield_key in program_content_metafield_keys %}
+            {% liquid
+              assign metafield_key = raw_metafield_key | strip
+              assign program_content = article.metafields.blog[metafield_key]
+            %}
+            {% if fallback_excerpt == blank and metafield_key != blank and metafield_key contains '_content' and program_content != blank %}
+              {% capture fallback_excerpt %}{{ program_content | metafield_tag | strip_html | strip_newlines | strip }}{% endcapture %}
+            {% endif %}
+          {% endfor %}
+          {% capture article_tag_handles %}
+            {% for tag in article.tags %}
+              {{ tag | handleize }}{% unless forloop.last %}|{% endunless %}
+            {% endfor %}
+          {% endcapture %}
+          <div
+            class="resource-list__item"
+            data-tags="{{ article_tag_handles | strip }}"
+            data-title="{{ article.title | strip_html | escape }}"
+            data-has-excerpt="{% if article.excerpt != blank %}true{% else %}false{% endif %}"
+            data-fallback-excerpt="{{ fallback_excerpt | escape }}"
+          >
+            {% content_for 'block', id: 'static-blog-post-card', type: '_featured-blog-posts-card', article: article, closest.article: article %}
+          </div>
+          {% unless forloop.last %}
+            <!--@list/split-->
+          {% endunless %}
+        {% endfor %}
+      {% endcapture %}
+
+      {% liquid
+        assign list_items_array = list_items | strip | split: '<!--@list/split-->'
+      %}
+
+      {% render 'resource-list',
+        list_items: list_items,
+        list_items_array: list_items_array,
+        settings: section.settings,
+        carousel_ref: 'featuredBlog',
+        slide_count: list_items_array.size,
+        content_type: 'articles',
+        test_id: 'featured-blog-posts'
+      %}
+    {% endif %}
+
+    <p
+      class="featured-blog-posts__empty"
+      ref="emptyState"
+      hidden
+    >
+      No blog posts match this tag.
+    </p>
+
+    {% if section.settings.archive_link != blank and section.settings.archive_label != blank %}
+      <div class="featured-blog-posts__archive-link">
+        <a
+          class="button-secondary"
+          href="{{ section.settings.archive_link }}"
+        >
+          {{ section.settings.archive_label }}
+        </a>
       </div>
-      {% unless forloop.last %}
-        <!--@list/split-->
-      {% endunless %}
-    {% endfor %}
-  {% endcapture %}
+    {% endif %}
+  </div>
 
-  {% liquid
-    assign list_items_array = list_items | strip | split: '<!--@list/split-->'
-  %}
+  <div
+    class="featured-blog-posts__loading"
+    aria-hidden="true"
+  >
+    <div class="featured-blog-posts__spinner"></div>
+  </div>
+</featured-blog-posts-component>
 
-  {% render 'resource-list',
-    list_items: list_items,
-    list_items_array: list_items_array,
-    settings: section.settings,
-    carousel_ref: 'featuredBlog',
-    slide_count: max_items,
-    content_type: 'articles',
-    test_id: 'featured-blog-posts'
-  %}
-</div>
+{% stylesheet %}
+  featured-blog-posts-component {
+    position: relative;
+    display: block;
+  }
+
+  .featured-blog-posts .resource-list {
+    --resource-list-mobile-gap-max: var(--resource-list-column-gap-desktop);
+  }
+
+  .featured-blog-posts__loading {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgb(var(--color-background-rgb) / 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--hover-transition-duration) var(--hover-transition-timing);
+    z-index: 2;
+  }
+
+  .featured-blog-posts__empty {
+    margin: var(--gap-md) 0 0;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .featured-blog-posts__archive-link {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--gap-lg);
+  }
+
+  .featured-blog-posts-card--api {
+    height: 100%;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+  }
+
+  .featured-blog-posts-card--api .featured-blog-posts-card__inner {
+    height: 100%;
+    background: rgb(var(--color-background-rgb));
+    pointer-events: auto;
+  }
+
+  .featured-blog-posts-card__content--api {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem 0;
+  }
+
+  .featured-blog-posts-card--api .featured-blog-posts-card__image {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .featured-blog-posts-card--api .resource-image__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .featured-blog-posts-card__meta {
+    font-size: 0.875rem;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .featured-blog-posts-card__title {
+    margin: 0;
+    color: rgb(var(--color-foreground-rgb));
+  }
+
+  .featured-blog-posts-card__excerpt {
+    margin: 0;
+    color: rgb(var(--color-foreground-rgb) / 0.82);
+  }
+
+  .featured-blog-posts-card__excerpt--fallback {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .featured-blog-posts-card__button {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+
+  .featured-blog-posts-card__image--placeholder {
+    display: grid;
+    place-items: center;
+    min-height: 14rem;
+    background: rgb(var(--color-foreground-rgb) / 0.06);
+    color: rgb(var(--color-foreground-rgb) / 0.5);
+  }
+
+  featured-blog-posts-component[data-filtered='true'] .pagination {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .featured-blog-posts .featured-blog-posts-card h4,
+    .featured-blog-posts .featured-blog-posts-card__title {
+      /* font-size: 3.75rem; */
+      line-height: 0.95;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+  }
+
+  featured-blog-posts-component[aria-busy='true'] .featured-blog-posts__loading {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  featured-blog-posts-component[aria-busy='true'] .featured-blog-posts-section {
+    pointer-events: none;
+  }
+
+  .featured-blog-posts__spinner {
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 2px solid rgb(var(--color-foreground-rgb) / 0.15);
+    border-top-color: rgb(var(--color-foreground-rgb));
+    border-radius: 50%;
+    animation: featured-blog-posts-spinner 0.7s linear infinite;
+  }
+
+  @keyframes featured-blog-posts-spinner {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -124,6 +391,24 @@
       "max": 10,
       "step": 1,
       "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "paginate_blog_cards",
+      "label": "Paginate blog cards",
+      "default": false,
+      "visible_if": "{{ section.settings.layout_type == 'grid' }}"
+    },
+    {
+      "type": "url",
+      "id": "archive_link",
+      "label": "Archive link"
+    },
+    {
+      "type": "text",
+      "id": "archive_label",
+      "label": "Archive link label",
+      "default": "See all blogs"
     },
     {
       "type": "range",
@@ -281,6 +566,13 @@
       "id": "color_scheme",
       "label": "t:settings.color_scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "textarea",
+      "id": "program_content_metafields",
+      "label": "Program content metafields",
+      "info": "Comma or line separated keys from the blog namespace. First non-empty value is used as excerpt fallback.",
+      "default": "crossfit_content\nflow_content\nhyrox_content\nweightlifting_content\nfitness_content"
     },
     {
       "type": "header",

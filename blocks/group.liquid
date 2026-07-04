@@ -18,6 +18,9 @@
       "type": "@app"
     },
     {
+      "type": "_list-item"
+    },
+    {
       "type": "_divider"
     }
   ],
@@ -48,6 +51,23 @@
       "label": "t:settings.vertical_on_mobile",
       "default": true,
       "visible_if": "{{ block.settings.content_direction == 'row' }}"
+    },
+    {
+      "type": "select",
+      "id": "desktop_horizontal_direction",
+      "label": "Desktop direction",
+      "options": [
+        {
+          "value": "row",
+          "label": "Row"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Row reverse"
+        }
+      ],
+      "default": "row",
+      "visible_if": "{{ block.settings.content_direction == 'row' and block.settings.vertical_on_mobile }}"
     },
     {
       "type": "select",

@@ -1,5 +1,9 @@
-import { debounce, requestIdleCallback, viewTransition } from '@theme/utilities';
-import { Component } from '@theme/component';
+import {
+  debounce,
+  requestIdleCallback,
+  viewTransition,
+} from "@theme/utilities";
+import { Component } from "@theme/component";
 
 const OFFSET = 40;
 
@@ -14,7 +18,7 @@ export class FloatingPanelComponent extends Component {
     const rect = this.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
 
-    this.style.top = OFFSET + 'px';
+    this.style.top = OFFSET + "px";
 
     if (rect.right > viewportWidth) {
       const overflowAmount = rect.right - viewportWidth + OFFSET;
@@ -32,18 +36,18 @@ export class FloatingPanelComponent extends Component {
   #mutationObserver = new MutationObserver(this.#updatePosition);
 
   #resizeListener = debounce(() => {
-    const parent = this.closest('details');
-    const closeOnResize = this.dataset.closeOnResize === 'true';
+    const parent = this.closest("details");
+    const closeOnResize = this.dataset.closeOnResize === "true";
     if (parent instanceof HTMLDetailsElement && closeOnResize) {
       parent.open = false;
-      parent.removeAttribute('open');
+      parent.removeAttribute("open");
       this.#updatePosition();
     }
   }, 100);
 
   connectedCallback() {
     super.connectedCallback();
-    window.addEventListener('resize', this.#resizeListener);
+    window.addEventListener("resize", this.#resizeListener);
 
     requestIdleCallback(() => {
       this.#updatePosition();
@@ -53,11 +57,11 @@ export class FloatingPanelComponent extends Component {
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    window.removeEventListener('resize', this.#resizeListener);
+    window.removeEventListener("resize", this.#resizeListener);
     this.#mutationObserver.disconnect();
   }
 }
 
-if (!customElements.get('floating-panel-component')) {
-  customElements.define('floating-panel-component', FloatingPanelComponent);
+if (!customElements.get("floating-panel-component")) {
+  customElements.define("floating-panel-component", FloatingPanelComponent);
 }

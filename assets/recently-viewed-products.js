@@ -3,7 +3,7 @@
  */
 export class RecentlyViewed {
   /** @static @constant {string} The key used to store the viewed products in session storage */
-  static #STORAGE_KEY = 'viewedProducts';
+  static #STORAGE_KEY = "viewedProducts";
   /** @static @constant {number} The maximum number of products to store */
   static #MAX_PRODUCTS = 4;
 
@@ -14,7 +14,9 @@ export class RecentlyViewed {
   static addProduct(productId) {
     let viewedProducts = this.getProducts();
 
-    viewedProducts = viewedProducts.filter((/** @type {string} */ id) => id !== productId);
+    viewedProducts = viewedProducts.filter(
+      (/** @type {string} */ id) => id !== productId,
+    );
     viewedProducts.unshift(productId);
     viewedProducts = viewedProducts.slice(0, this.#MAX_PRODUCTS);
 
@@ -30,6 +32,6 @@ export class RecentlyViewed {
    * @returns {string[]} The list of viewed products.
    */
   static getProducts() {
-    return JSON.parse(localStorage.getItem(this.#STORAGE_KEY) || '[]');
+    return JSON.parse(localStorage.getItem(this.#STORAGE_KEY) || "[]");
   }
 }

@@ -1,5 +1,5 @@
-import { Component } from '@theme/component';
-import { ThemeEvents, VariantUpdateEvent } from '@theme/events';
+import { Component } from "@theme/component";
+import { ThemeEvents, VariantUpdateEvent } from "@theme/events";
 
 /**
  * A custom element that displays a product SKU.
@@ -15,18 +15,22 @@ import { ThemeEvents, VariantUpdateEvent } from '@theme/events';
  * @extends {Component<Refs>}
  */
 class ProductSkuComponent extends Component {
-  requiredRefs = ['skuContainer', 'sku'];
+  requiredRefs = ["skuContainer", "sku"];
 
   connectedCallback() {
     super.connectedCallback();
-    const target = this.closest('[id*="ProductInformation-"], [id*="QuickAdd-"], product-card');
+    const target = this.closest(
+      '[id*="ProductInformation-"], [id*="QuickAdd-"], product-card',
+    );
     if (!target) return;
     target.addEventListener(ThemeEvents.variantUpdate, this.updateSku);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    const target = this.closest('[id*="ProductInformation-"], [id*="QuickAdd-"], product-card');
+    const target = this.closest(
+      '[id*="ProductInformation-"], [id*="QuickAdd-"], product-card',
+    );
     if (!target) return;
     target.removeEventListener(ThemeEvents.variantUpdate, this.updateSku);
   }
@@ -40,28 +44,31 @@ class ProductSkuComponent extends Component {
       this.dataset.productId = event.detail.data.newProduct.id;
     }
 
-    if (event.target instanceof HTMLElement && event.target.dataset.productId !== this.dataset.productId) {
+    if (
+      event.target instanceof HTMLElement &&
+      event.target.dataset.productId !== this.dataset.productId
+    ) {
       return;
     }
 
     // Use the variant data from the event
     // The variant is in event.detail.resource
     if (event.detail.resource) {
-      const variantSku = event.detail.resource.sku || '';
+      const variantSku = event.detail.resource.sku || "";
 
       if (variantSku) {
         // Show the component and update the SKU
-        this.style.display = 'block';
+        this.style.display = "block";
         this.refs.sku.textContent = variantSku;
       } else {
         // Hide the entire component when SKU is empty
-        this.style.display = 'none';
-        this.refs.sku.textContent = '';
+        this.style.display = "none";
+        this.refs.sku.textContent = "";
       }
     }
   };
 }
 
-if (!customElements.get('product-sku-component')) {
-  customElements.define('product-sku-component', ProductSkuComponent);
+if (!customElements.get("product-sku-component")) {
+  customElements.define("product-sku-component", ProductSkuComponent);
 }

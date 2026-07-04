@@ -1,6 +1,6 @@
-import { Component } from '@theme/component';
-import { onAnimationEnd } from '@theme/utilities';
-import { ThemeEvents, CartUpdateEvent } from '@theme/events';
+import { Component } from "@theme/component";
+import { onAnimationEnd } from "@theme/utilities";
+import { ThemeEvents, CartUpdateEvent } from "@theme/events";
 
 /**
  * A custom element that displays a cart icon.
@@ -13,22 +13,22 @@ import { ThemeEvents, CartUpdateEvent } from '@theme/events';
  * @extends {Component<Refs>}
  */
 class CartIcon extends Component {
-  requiredRefs = ['cartBubble', 'cartBubbleText', 'cartBubbleCount'];
+  requiredRefs = ["cartBubble", "cartBubbleText", "cartBubbleCount"];
 
   /** @type {number} */
   get currentCartCount() {
-    return parseInt(this.refs.cartBubbleCount.textContent ?? '0', 10);
+    return parseInt(this.refs.cartBubbleCount.textContent ?? "0", 10);
   }
 
   set currentCartCount(value) {
-    this.refs.cartBubbleCount.textContent = value < 100 ? String(value) : '';
+    this.refs.cartBubbleCount.textContent = value < 100 ? String(value) : "";
   }
 
   connectedCallback() {
     super.connectedCallback();
 
     document.addEventListener(ThemeEvents.cartUpdate, this.onCartUpdate);
-    window.addEventListener('pageshow', this.onPageShow);
+    window.addEventListener("pageshow", this.onPageShow);
     this.ensureCartBubbleIsCorrect();
   }
 
@@ -36,7 +36,7 @@ class CartIcon extends Component {
     super.disconnectedCallback();
 
     document.removeEventListener(ThemeEvents.cartUpdate, this.onCartUpdate);
-    window.removeEventListener('pageshow', this.onPageShow);
+    window.removeEventListener("pageshow", this.onPageShow);
   }
 
   /**
@@ -55,7 +55,8 @@ class CartIcon extends Component {
    */
   onCartUpdate = async (event) => {
     const itemCount = event.detail.data?.itemCount ?? 0;
-    const comingFromProductForm = event.detail.data?.source === 'product-form-component';
+    const comingFromProductForm =
+      event.detail.data?.source === "product-form-component";
 
     this.renderCartBubble(itemCount, comingFromProductForm);
   };
@@ -65,22 +66,28 @@ class CartIcon extends Component {
    * @param {number} itemCount - The number of items in the cart.
    * @param {boolean} comingFromProductForm - Whether the cart update is coming from the product form.
    */
-  renderCartBubble = async (itemCount, comingFromProductForm, animate = true) => {
+  renderCartBubble = async (
+    itemCount,
+    comingFromProductForm,
+    animate = true,
+  ) => {
     // If the cart update is coming from the product form, we add to the current cart count, otherwise we set the new cart count
 
-    this.refs.cartBubbleCount.classList.toggle('hidden', itemCount === 0);
-    this.refs.cartBubble.classList.toggle('visually-hidden', itemCount === 0);
+    this.refs.cartBubbleCount.classList.toggle("hidden", itemCount === 0);
+    this.refs.cartBubble.classList.toggle("visually-hidden", itemCount === 0);
 
-    this.currentCartCount = comingFromProductForm ? this.currentCartCount + itemCount : itemCount;
+    this.currentCartCount = comingFromProductForm
+      ? this.currentCartCount + itemCount
+      : itemCount;
 
-    this.classList.toggle('header-actions__cart-icon--has-cart', itemCount > 0);
+    this.classList.toggle("header-actions__cart-icon--has-cart", itemCount > 0);
 
     sessionStorage.setItem(
-      'cart-count',
+      "cart-count",
       JSON.stringify({
         value: String(this.currentCartCount),
         timestamp: Date.now(),
-      })
+      }),
     );
 
     if (!animate || itemCount === 0) return;
@@ -89,10 +96,10 @@ class CartIcon extends Component {
     // Use requestAnimationFrame to ensure the browser sees the state change
     await new Promise((resolve) => requestAnimationFrame(resolve));
 
-    this.refs.cartBubble.classList.add('cart-bubble--animating');
+    this.refs.cartBubble.classList.add("cart-bubble--animating");
     await onAnimationEnd(this.refs.cartBubbleText);
 
-    this.refs.cartBubble.classList.remove('cart-bubble--animating');
+    this.refs.cartBubble.classList.remove("cart-bubble--animating");
   };
 
   /**
@@ -102,7 +109,7 @@ class CartIcon extends Component {
     // Ensure refs are available
     if (!this.refs.cartBubbleCount) return;
 
-    const sessionStorageCount = sessionStorage.getItem('cart-count');
+    const sessionStorageCount = sessionStorage.getItem("cart-count");
 
     // If no session storage data, nothing to check
     if (sessionStorageCount === null) return;
@@ -129,6 +136,6 @@ class CartIcon extends Component {
   };
 }
 
-if (!customElements.get('cart-icon')) {
-  customElements.define('cart-icon', CartIcon);
+if (!customElements.get("cart-icon")) {
+  customElements.define("cart-icon", CartIcon);
 }

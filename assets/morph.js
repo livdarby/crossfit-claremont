@@ -1,4 +1,4 @@
-import { Component } from '@theme/component';
+import { Component } from "@theme/component";
 
 /**
  * @typedef {Object} Options
@@ -10,7 +10,7 @@ import { Component } from '@theme/component';
  * @property {boolean} [hydrationMode] - If true, only morph subtrees whose elements have `data-hydration-key="<non-empty>"`, matched by that value
  */
 
-const HYDRATION_KEY_ATTRIBUTE = 'data-hydration-key';
+const HYDRATION_KEY_ATTRIBUTE = "data-hydration-key";
 
 /**
  * The options for the morph
@@ -20,13 +20,16 @@ export const MORPH_OPTIONS = {
   childrenOnly: true,
   hydrationMode: false,
   reject(oldNode, newNode) {
-    if (newNode.nodeType === Node.TEXT_NODE && newNode.nodeValue?.trim() === '') {
+    if (
+      newNode.nodeType === Node.TEXT_NODE &&
+      newNode.nodeValue?.trim() === ""
+    ) {
       return true;
     }
 
     if (
       newNode instanceof HTMLTemplateElement &&
-      newNode.shadowRootMode === 'open' &&
+      newNode.shadowRootMode === "open" &&
       oldNode.parentElement &&
       newNode.parentElement &&
       oldNode.parentElement.tagName === newNode.parentElement.tagName &&
@@ -36,7 +39,10 @@ export const MORPH_OPTIONS = {
       return true;
     }
 
-    if (newNode.nodeType === Node.COMMENT_NODE && newNode.nodeValue === 'shopify:rendered_by_section_api') {
+    if (
+      newNode.nodeType === Node.COMMENT_NODE &&
+      newNode.nodeValue === "shopify:rendered_by_section_api"
+    ) {
       // Remove a comment node injected by the Section Rendering API in the Theme Editor
       return true;
     }
@@ -45,7 +51,12 @@ export const MORPH_OPTIONS = {
   },
   onBeforeUpdate(oldNode, newNode) {
     if (oldNode instanceof Element && newNode instanceof Element) {
-      const attributes = ['product-grid-view', 'data-current-checked', 'data-previous-checked', 'cart-summary-sticky'];
+      const attributes = [
+        "product-grid-view",
+        "data-current-checked",
+        "data-previous-checked",
+        "cart-summary-sticky",
+      ];
 
       for (const attribute of attributes) {
         const oldValue = oldNode.getAttribute(attribute);
@@ -57,17 +68,21 @@ export const MORPH_OPTIONS = {
       }
 
       // Special case for elements that need to keep their style
-      const elements = ['floating-panel-component', 'fieldset.variant-option'];
+      const elements = ["floating-panel-component", "fieldset.variant-option"];
 
       for (const element of elements) {
         if (oldNode.matches(element) && newNode.matches(element)) {
-          const oldStyle = oldNode.getAttribute('style');
-          if (oldStyle) newNode.setAttribute('style', oldStyle);
+          const oldStyle = oldNode.getAttribute("style");
+          if (oldStyle) newNode.setAttribute("style", oldStyle);
         }
       }
 
       // Preserve temporary view transition name
-      if (oldNode instanceof HTMLElement && newNode instanceof HTMLElement && oldNode.style.viewTransitionName) {
+      if (
+        oldNode instanceof HTMLElement &&
+        newNode instanceof HTMLElement &&
+        oldNode.style.viewTransitionName
+      ) {
         newNode.style.viewTransitionName = oldNode.style.viewTransitionName;
       }
     }
@@ -88,18 +103,23 @@ export const MORPH_OPTIONS = {
  */
 export function morph(oldTree, newTree, options = MORPH_OPTIONS) {
   if (!oldTree || !newTree) {
-    throw new Error('Both oldTree and newTree must be provided');
+    throw new Error("Both oldTree and newTree must be provided");
   }
 
-  if (typeof newTree === 'string') {
-    const parsedNewTree = new DOMParser().parseFromString(newTree, 'text/html').body.firstChild;
+  if (typeof newTree === "string") {
+    const parsedNewTree = new DOMParser().parseFromString(newTree, "text/html")
+      .body.firstChild;
     if (!parsedNewTree) {
-      throw new Error('newTree string is not valid HTML');
+      throw new Error("newTree string is not valid HTML");
     }
     newTree = parsedNewTree;
   }
 
-  if (options.hydrationMode && oldTree instanceof Element && newTree instanceof Element) {
+  if (
+    options.hydrationMode &&
+    oldTree instanceof Element &&
+    newTree instanceof Element
+  ) {
     morphHydrationByKey(oldTree, newTree, options);
     return oldTree;
   }
@@ -110,7 +130,9 @@ export function morph(oldTree, newTree, options = MORPH_OPTIONS) {
   }
 
   if (newTree.nodeType === 11) {
-    throw new Error('newTree should have one root node (not a DocumentFragment)');
+    throw new Error(
+      "newTree should have one root node (not a DocumentFragment)",
+    );
   }
 
   return walk(newTree, oldTree, options);
@@ -157,7 +179,7 @@ function morphHydrationByKey(oldRoot, newRoot, options) {
 
   for (const oldTarget of oldTargets) {
     const key = oldTarget.getAttribute(HYDRATION_KEY_ATTRIBUTE);
-    if (key == null || key === '') continue;
+    if (key == null || key === "") continue;
 
     const existing = oldTargetsByKey.get(key) ?? [];
     existing.push(oldTarget);
@@ -166,7 +188,7 @@ function morphHydrationByKey(oldRoot, newRoot, options) {
 
   for (const newTarget of newTargets) {
     const key = newTarget.getAttribute(HYDRATION_KEY_ATTRIBUTE);
-    if (key == null || key === '') continue;
+    if (key == null || key === "") continue;
 
     const matches = oldTargetsByKey.get(key);
     const oldTarget = matches?.shift();
@@ -200,7 +222,7 @@ function walk(newNode, oldNode, options) {
   if (newNode.nodeType !== oldNode.nodeType) return newNode;
   if (newNode instanceof Element && oldNode instanceof Element) {
     // Skip morphing if the node is shopify-accelerated-checkout-cart https://shopify.dev/docs/storefronts/themes/pricing-payments/accelerated-checkout#implement-accelerated-checkout-buttons-on-cart
-    if (oldNode.tagName === 'SHOPIFY-ACCELERATED-CHECKOUT-CART') return oldNode;
+    if (oldNode.tagName === "SHOPIFY-ACCELERATED-CHECKOUT-CART") return oldNode;
 
     if (newNode.tagName !== oldNode.tagName) return newNode;
 
@@ -213,9 +235,9 @@ function walk(newNode, oldNode, options) {
   // We can morph, update the node and its children
   if (
     oldNode instanceof Element &&
-    oldNode.hasAttribute('data-skip-node-update') &&
+    oldNode.hasAttribute("data-skip-node-update") &&
     newNode instanceof Element &&
-    newNode.hasAttribute('data-skip-node-update')
+    newNode.hasAttribute("data-skip-node-update")
   ) {
     // This is a special case where we don't want to morph the node, but we want to morph the children
     updateChildren(newNode, oldNode, options);
@@ -239,21 +261,25 @@ function updateNode(newNode, oldNode, options) {
   options.onBeforeUpdate?.(oldNode, newNode);
 
   if (
-    (newNode instanceof HTMLDetailsElement && oldNode instanceof HTMLDetailsElement) ||
-    (newNode instanceof HTMLDialogElement && oldNode instanceof HTMLDialogElement)
+    (newNode instanceof HTMLDetailsElement &&
+      oldNode instanceof HTMLDetailsElement) ||
+    (newNode instanceof HTMLDialogElement &&
+      oldNode instanceof HTMLDialogElement)
   ) {
-    if (!newNode.hasAttribute('declarative-open')) {
+    if (!newNode.hasAttribute("declarative-open")) {
       newNode.open = oldNode.open;
     }
   }
 
   if (oldNode instanceof HTMLElement && newNode instanceof HTMLElement) {
-    for (const attr of ['slot', 'sizes']) {
+    for (const attr of ["slot", "sizes"]) {
       const oldValue = oldNode.getAttribute(attr);
       const newValue = newNode.getAttribute(attr);
 
       if (oldValue !== newValue) {
-        oldValue == null ? newNode.removeAttribute(attr) : newNode.setAttribute(attr, oldValue);
+        oldValue == null
+          ? newNode.removeAttribute(attr)
+          : newNode.setAttribute(attr, oldValue);
       }
     }
   }
@@ -269,11 +295,20 @@ function updateNode(newNode, oldNode, options) {
   }
 
   // Handle special elements
-  if (newNode instanceof HTMLInputElement && oldNode instanceof HTMLInputElement) {
+  if (
+    newNode instanceof HTMLInputElement &&
+    oldNode instanceof HTMLInputElement
+  ) {
     updateInput(newNode, oldNode);
-  } else if (newNode instanceof HTMLOptionElement && oldNode instanceof HTMLOptionElement) {
-    updateAttribute(newNode, oldNode, 'selected');
-  } else if (newNode instanceof HTMLTextAreaElement && oldNode instanceof HTMLTextAreaElement) {
+  } else if (
+    newNode instanceof HTMLOptionElement &&
+    oldNode instanceof HTMLOptionElement
+  ) {
+    updateAttribute(newNode, oldNode, "selected");
+  } else if (
+    newNode instanceof HTMLTextAreaElement &&
+    oldNode instanceof HTMLTextAreaElement
+  ) {
     updateTextarea(newNode, oldNode);
   }
 }
@@ -285,7 +320,10 @@ function updateNode(newNode, oldNode, options) {
  * @returns {string|number|undefined} The node's key if one exists
  */
 function getNodeKey(node, options) {
-  return options?.getNodeKey?.(node) ?? (node instanceof Element ? node.id : undefined);
+  return (
+    options?.getNodeKey?.(node) ??
+    (node instanceof Element ? node.id : undefined)
+  );
 }
 
 /**
@@ -298,7 +336,7 @@ function updateAttribute(newNode, oldNode, name) {
   if (newNode[name] !== oldNode[name]) {
     oldNode[name] = newNode[name];
     if (newNode[name] != null) {
-      oldNode.setAttribute(name, '');
+      oldNode.setAttribute(name, "");
     } else {
       oldNode.removeAttribute(name);
     }
@@ -316,10 +354,19 @@ function copyAttributes(newNode, oldNode) {
 
   // Update or add new attributes
   for (const attr of Array.from(newAttrs)) {
-    const { name: attrName, namespaceURI: attrNamespaceURI, value: attrValue } = attr;
+    const {
+      name: attrName,
+      namespaceURI: attrNamespaceURI,
+      value: attrValue,
+    } = attr;
     const localName = attr.localName || attrName;
 
-    if (attrName === 'src' || attrName === 'href' || attrName === 'srcset' || attrName === 'poster') {
+    if (
+      attrName === "src" ||
+      attrName === "href" ||
+      attrName === "srcset" ||
+      attrName === "poster"
+    ) {
       // Skip updating resource attributes when the value hasn't changed
       // to prevent unnecessary network requests
       if (oldNode.getAttribute(attrName) === attrValue) continue;
@@ -336,7 +383,7 @@ function copyAttributes(newNode, oldNode) {
       } else {
         const fromValue = oldNode.getAttribute(attrName);
         if (fromValue !== attrValue) {
-          if (attrValue === 'null' || attrValue === 'undefined') {
+          if (attrValue === "null" || attrValue === "undefined") {
             oldNode.removeAttribute(attrName);
           } else {
             oldNode.setAttribute(attrName, attrValue);
@@ -372,8 +419,8 @@ function copyAttributes(newNode, oldNode) {
 function updateInput(newNode, oldNode) {
   const newValue = newNode.value;
 
-  updateAttribute(newNode, oldNode, 'checked');
-  updateAttribute(newNode, oldNode, 'disabled');
+  updateAttribute(newNode, oldNode, "checked");
+  updateAttribute(newNode, oldNode, "disabled");
 
   // Handle indeterminate state (cannot be set via HTML attribute)
   if (newNode.indeterminate !== oldNode.indeterminate) {
@@ -381,21 +428,21 @@ function updateInput(newNode, oldNode) {
   }
 
   // Skip file inputs since they can't be changed programmatically
-  if (oldNode.type === 'file') return;
+  if (oldNode.type === "file") return;
 
   if (newValue !== oldNode.value) {
-    oldNode.setAttribute('value', newValue);
+    oldNode.setAttribute("value", newValue);
     oldNode.value = newValue;
   }
 
-  if (newValue === 'null') {
-    oldNode.value = '';
-    oldNode.removeAttribute('value');
+  if (newValue === "null") {
+    oldNode.value = "";
+    oldNode.removeAttribute("value");
   }
 
-  if (!newNode.hasAttributeNS(null, 'value')) {
-    oldNode.removeAttribute('value');
-  } else if (oldNode.type === 'range') {
+  if (!newNode.hasAttributeNS(null, "value")) {
+    oldNode.removeAttribute("value");
+  } else if (oldNode.type === "range") {
     // Update range input UI
     oldNode.value = newValue;
   }
@@ -414,7 +461,7 @@ function updateTextarea(newNode, oldNode) {
 
   const firstChild = oldNode.firstChild;
   if (firstChild?.nodeType === Node.TEXT_NODE) {
-    if (newValue === '' && firstChild.nodeValue === oldNode.placeholder) {
+    if (newValue === "" && firstChild.nodeValue === oldNode.placeholder) {
       return;
     }
     firstChild.nodeValue = newValue;
@@ -427,7 +474,7 @@ function updateTextarea(newNode, oldNode) {
  * @param {Element} container - The container element to search for app block scripts
  */
 function recreateAppBlockScripts(container) {
-  const scripts = container.querySelectorAll('.shopify-app-block script[src]');
+  const scripts = container.querySelectorAll(".shopify-app-block script[src]");
 
   for (const script of scripts) {
     if (!(script instanceof HTMLScriptElement)) continue;
@@ -435,7 +482,7 @@ function recreateAppBlockScripts(container) {
     const parent = script.parentElement;
     if (!parent) continue;
 
-    const newScript = document.createElement('script');
+    const newScript = document.createElement("script");
     for (const attr of Array.from(script.attributes)) {
       newScript.setAttribute(attr.name, attr.value);
     }
@@ -457,9 +504,9 @@ function recreateAppBlockScripts(container) {
 function updateChildren(newNode, oldNode, options) {
   if (
     oldNode instanceof Element &&
-    oldNode.hasAttribute('data-skip-subtree-update') &&
+    oldNode.hasAttribute("data-skip-subtree-update") &&
     newNode instanceof Element &&
-    newNode.hasAttribute('data-skip-subtree-update')
+    newNode.hasAttribute("data-skip-subtree-update")
   ) {
     return;
   }
@@ -521,7 +568,10 @@ function updateChildren(newNode, oldNode, options) {
       morphed = walk(newChild, oldMatch, options);
       if (morphed !== oldMatch) offset++;
       oldNode.insertBefore(morphed, oldChild);
-    } else if (!getNodeKey(newChild, options) && !getNodeKey(oldChild, options)) {
+    } else if (
+      !getNodeKey(newChild, options) &&
+      !getNodeKey(oldChild, options)
+    ) {
       morphed = walk(newChild, oldChild, options);
       if (morphed !== oldChild) {
         oldNode.replaceChild(morphed, oldChild);
@@ -552,7 +602,8 @@ function same(a, b, options) {
 
   // For elements, check tag name first
   if (a.nodeType === Node.ELEMENT_NODE) {
-    if (a instanceof Element && b instanceof Element && a.tagName !== b.tagName) return false;
+    if (a instanceof Element && b instanceof Element && a.tagName !== b.tagName)
+      return false;
 
     // Only compare keys if both nodes have them
     const aKey = getNodeKey(a, options);
@@ -564,7 +615,8 @@ function same(a, b, options) {
   if (a.nodeType === Node.TEXT_NODE && b.nodeType === Node.TEXT_NODE)
     // Trim whitespace to avoid false negatives
     return a.nodeValue?.trim() === b.nodeValue?.trim();
-  if (a.nodeType === Node.COMMENT_NODE && b.nodeType === Node.COMMENT_NODE) return a.nodeValue === b.nodeValue;
+  if (a.nodeType === Node.COMMENT_NODE && b.nodeType === Node.COMMENT_NODE)
+    return a.nodeValue === b.nodeValue;
 
   // If we get here and nodes are elements with same tag (and compatible keys), they're the same
   return true;

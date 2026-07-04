@@ -554,7 +554,7 @@
     --icon-size-xs: 0.85rem;
     --icon-size-sm: 1.25rem;
     --icon-size-md: 1.375rem;
-    --icon-size-lg: 1.5rem;
+    --icon-size-lg: 30px;
     --icon-stroke-width: {% if settings.icon_stroke == 'thin' %}1px{% elsif settings.icon_stroke == 'heavy' %}2px{% else %}1.5px{% endif %};
 
     /* Input */
@@ -587,8 +587,8 @@
     --button-size-sm: 30px;
     --button-size-md: 36px;
     --button-size: var(--minimum-touch-target);
-    --button-padding-inline: 24px;
-    --button-padding-block: 16px;
+    --button-padding-inline: 13px;
+    --button-padding-block: 10px;
 
     /* Button font-family */
     --button-font-family-primary: var(--font-{{ settings.type_font_button_primary }}--family);
@@ -659,6 +659,8 @@
     --height-medium: 11.5rem;
     --height-large: 13rem;
     --height-full: 100vh;
+
+    --button-height: 48px;
 
     @media screen and (min-width: 750px) {
       --height-small: 17.5rem;

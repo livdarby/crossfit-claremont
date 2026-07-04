@@ -23,13 +23,13 @@
 {% endcapture %}
 
 {% capture style %}
-  --ratio: {{ ratio }};
+  --ratio: var(--carousel-forced-ratio, {{ ratio }});
   {% render 'size-style', settings: block_settings %}
   {% render 'spacing-style', settings: block_settings %}
 {% endcapture %}
 
 {% capture image_border_style %}
-  --ratio: {{ ratio }};
+  --ratio: var(--carousel-forced-ratio, {{ ratio }});
   {% render 'border-override', settings: block_settings %}
 {% endcapture %}
 

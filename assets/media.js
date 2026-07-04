@@ -1,6 +1,6 @@
-import { Component } from '@theme/component';
-import { ThemeEvents, MediaStartedPlayingEvent } from '@theme/events';
-import { DialogCloseEvent } from '@theme/dialog';
+import { Component } from "@theme/component";
+import { ThemeEvents, MediaStartedPlayingEvent } from "@theme/events";
+import { DialogCloseEvent } from "@theme/dialog";
 
 /**
  * A deferred media element
@@ -20,8 +20,16 @@ class DeferredMedia extends Component {
     super.connectedCallback();
     const signal = this.#abortController.signal;
     // If we're to use deferred media for images, we will need to run this only when it's not an image type media
-    document.addEventListener(ThemeEvents.mediaStartedPlaying, this.pauseMedia.bind(this), { signal });
-    window.addEventListener(DialogCloseEvent.eventName, this.pauseMedia.bind(this), { signal });
+    document.addEventListener(
+      ThemeEvents.mediaStartedPlaying,
+      this.pauseMedia.bind(this),
+      { signal },
+    );
+    window.addEventListener(
+      DialogCloseEvent.eventName,
+      this.pauseMedia.bind(this),
+      { signal },
+    );
   }
 
   disconnectedCallback() {
@@ -36,11 +44,11 @@ class DeferredMedia extends Component {
   updatePlayPauseHint(isPlaying) {
     const toggleMediaButton = this.refs.toggleMediaButton;
     if (toggleMediaButton instanceof HTMLElement) {
-      toggleMediaButton.classList.remove('hidden');
-      const playIcon = toggleMediaButton.querySelector('.icon-play');
-      if (playIcon) playIcon.classList.toggle('hidden', isPlaying);
-      const pauseIcon = toggleMediaButton.querySelector('.icon-pause');
-      if (pauseIcon) pauseIcon.classList.toggle('hidden', !isPlaying);
+      toggleMediaButton.classList.remove("hidden");
+      const playIcon = toggleMediaButton.querySelector(".icon-play");
+      if (playIcon) playIcon.classList.toggle("hidden", isPlaying);
+      const pauseIcon = toggleMediaButton.querySelector(".icon-pause");
+      if (pauseIcon) pauseIcon.classList.toggle("hidden", !isPlaying);
     }
   }
 
@@ -58,24 +66,30 @@ class DeferredMedia extends Component {
    * @param {boolean} [focus] - Whether to focus the content
    */
   loadContent(focus = true) {
-    if (this.getAttribute('data-media-loaded')) return;
+    if (this.getAttribute("data-media-loaded")) return;
 
     this.dispatchEvent(new MediaStartedPlayingEvent(this));
 
-    const content = this.querySelector('template')?.content.firstElementChild?.cloneNode(true);
+    const content =
+      this.querySelector("template")?.content.firstElementChild?.cloneNode(
+        true,
+      );
 
     if (!content) return;
 
-    this.setAttribute('data-media-loaded', 'true');
+    this.setAttribute("data-media-loaded", "true");
     this.appendChild(content);
 
     if (focus && content instanceof HTMLElement) {
       content.focus();
     }
 
-    this.refs.deferredMediaPlayButton?.classList.add('deferred-media__playing');
+    this.refs.deferredMediaPlayButton?.classList.add("deferred-media__playing");
 
-    if (content instanceof HTMLVideoElement && content.getAttribute('autoplay')) {
+    if (
+      content instanceof HTMLVideoElement &&
+      content.getAttribute("autoplay")
+    ) {
       // force autoplay for safari
       content.play();
     }
@@ -94,16 +108,16 @@ class DeferredMedia extends Component {
 
   playMedia() {
     /** @type {HTMLIFrameElement | null} */
-    const iframe = this.querySelector('iframe[data-video-type]');
+    const iframe = this.querySelector("iframe[data-video-type]");
     if (iframe) {
       iframe.contentWindow?.postMessage(
-        iframe.dataset.videoType === 'youtube'
+        iframe.dataset.videoType === "youtube"
           ? '{"event":"command","func":"playVideo","args":""}'
           : '{"method":"play"}',
-        '*'
+        "*",
       );
     } else {
-      this.querySelector('video')?.play();
+      this.querySelector("video")?.play();
     }
     this.isPlaying = true;
     this.updatePlayPauseHint(this.isPlaying);
@@ -114,29 +128,29 @@ class DeferredMedia extends Component {
    */
   pauseMedia() {
     /** @type {HTMLIFrameElement | null} */
-    const iframe = this.querySelector('iframe[data-video-type]');
+    const iframe = this.querySelector("iframe[data-video-type]");
 
     if (iframe) {
       iframe.contentWindow?.postMessage(
-        iframe.dataset.videoType === 'youtube'
-          ? '{"event":"command","func":"' + 'pauseVideo' + '","args":""}'
+        iframe.dataset.videoType === "youtube"
+          ? '{"event":"command","func":"' + "pauseVideo" + '","args":""}'
           : '{"method":"pause"}',
-        '*'
+        "*",
       );
     } else {
-      this.querySelector('video')?.pause();
+      this.querySelector("video")?.pause();
     }
     this.isPlaying = false;
 
     // If we've already revealed the deferred media, we should toggle the play/pause hint
-    if (this.getAttribute('data-media-loaded')) {
+    if (this.getAttribute("data-media-loaded")) {
       this.updatePlayPauseHint(this.isPlaying);
     }
   }
 }
 
-if (!customElements.get('deferred-media')) {
-  customElements.define('deferred-media', DeferredMedia);
+if (!customElements.get("deferred-media")) {
+  customElements.define("deferred-media", DeferredMedia);
 }
 
 /**
@@ -150,8 +164,8 @@ class ProductModel extends DeferredMedia {
 
     Shopify.loadFeatures([
       {
-        name: 'model-viewer-ui',
-        version: '1.0',
+        name: "model-viewer-ui",
+        version: "1.0",
         onLoad: this.setupModelViewerUI.bind(this),
       },
     ]);
@@ -184,7 +198,7 @@ class ProductModel extends DeferredMedia {
 
     if (!Shopify.ModelViewerUI) return;
 
-    const element = this.querySelector('model-viewer');
+    const element = this.querySelector("model-viewer");
     if (!element) return;
 
     const signal = this.#abortController.signal;
@@ -199,20 +213,22 @@ class ProductModel extends DeferredMedia {
     let pointerStartY = 0;
 
     element.addEventListener(
-      'pointerdown',
+      "pointerdown",
       (/** @type {PointerEvent} */ event) => {
         pointerStartX = event.clientX;
         pointerStartY = event.clientY;
       },
-      { signal }
+      { signal },
     );
 
     element.addEventListener(
-      'click',
+      "click",
       (/** @type {PointerEvent} */ event) => {
         const distanceX = Math.abs(event.clientX - pointerStartX);
         const distanceY = Math.abs(event.clientY - pointerStartY);
-        const totalDistance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+        const totalDistance = Math.sqrt(
+          distanceX * distanceX + distanceY * distanceY,
+        );
 
         // Try to ensure that this is a tap, not a drag.
         if (totalDistance < 10) {
@@ -221,7 +237,7 @@ class ProductModel extends DeferredMedia {
           this.pauseMedia();
         }
       },
-      { signal }
+      { signal },
     );
   }
 
@@ -243,6 +259,6 @@ class ProductModel extends DeferredMedia {
   }
 }
 
-if (!customElements.get('product-model')) {
-  customElements.define('product-model', ProductModel);
+if (!customElements.get("product-model")) {
+  customElements.define("product-model", ProductModel);
 }
