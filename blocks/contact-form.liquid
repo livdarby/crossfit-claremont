@@ -174,10 +174,15 @@
     text-overflow: ellipsis;
     color: var(--color-input-text);
     background-color: var(--color-input-background);
+    transition: background-color var(--animation-speed) ease;
     padding: var(--padding-lg) var(--padding-xl);
     border-radius: var(--style-border-radius-inputs);
     border: var(--style-border-width-inputs) solid var(--color-input-border);
     -webkit-font-smoothing: antialiased;
+  }
+
+  .contact-form__input:is(:hover, :focus, :focus-visible) {
+    background-color: var(--color-input-hover-background);
   }
 
   .contact-form__input--textarea {

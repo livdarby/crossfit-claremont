@@ -145,12 +145,15 @@
   .why-crossfit-page__cards {
     display: grid;
     gap: 1.5rem;
+    align-items: stretch;
     margin-bottom: clamp(3rem, 6vw, 5rem);
   }
 
   .why-crossfit-page__card {
     display: grid;
+    grid-template-rows: auto auto 1fr;
     gap: 0.85rem;
+    height: 100%;
   }
 
   .why-crossfit-page__card-media {
@@ -190,6 +193,7 @@
     text-transform: var(--text-transform, none);
     text-wrap: var(--text-wrap, pretty);
     color: var(--color, rgb(var(--color-foreground-rgb) / 0.82));
+    height: 100%;
   }
 
   .why-crossfit-page__card-copy p,
