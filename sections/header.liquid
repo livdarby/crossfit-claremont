@@ -169,7 +169,7 @@
     assign bottom_row_blocks = bottom_row_blocks | append: 'menu,'
   endif
 
-  if section.settings.search_style != 'none'
+  if search_style != 'none'
     if section.settings.search_row == 'bottom'
       assign bottom_row_blocks = bottom_row_blocks | append: 'search,'
     endif

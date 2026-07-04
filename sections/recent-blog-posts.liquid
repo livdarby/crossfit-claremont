@@ -21,7 +21,7 @@
           {% break %}
         {% endif %}
 
-        <article class="recent-blog-post">
+        <article class="recent-blog-post color-{{ section.settings.article_color_scheme }}">
           <a class="recent-blog-post__image-link" href="{{ recent_article.url }}">
             {% if recent_article.image %}
               {{
@@ -198,6 +198,12 @@
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "color_scheme",
+      "id": "article_color_scheme",
+      "label": "Article color scheme",
       "default": "scheme-3"
     },
     {

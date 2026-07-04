@@ -232,7 +232,7 @@
                   "name": "t:names.button",
                   "settings": {
                     "label": "Book Your 3 Class Trial",
-                    "link": "shopify://collections/all",
+                    "link": "shopify://pages/contact",
                     "open_in_new_tab": false,
                     "style_class": "button",
                     "override_link_color": false,
@@ -1044,7 +1044,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Learn More",
-                "link": "shopify://pages/timetable",
+                "link": "/pages/timetable#classes-guide",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "override_link_color": false,
@@ -1191,7 +1191,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Learn More",
-                "link": "shopify://pages/timetable",
+                "link": "/pages/timetable#classes-guide",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "override_link_color": false,
@@ -1338,7 +1338,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Learn More",
-                "link": "shopify://pages/timetable",
+                "link": "/pages/timetable#classes-guide",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "override_link_color": false,
@@ -1485,7 +1485,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Learn More",
-                "link": "shopify://pages/timetable",
+                "link": "/pages/timetable#classes-guide",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "override_link_color": false,

@@ -12,7 +12,7 @@
     {% render 'spacing-style', settings: section.settings %}
   "
 >
-  {% render 'wod-password-gate', color_scheme: section.settings.color_scheme %}
+  {% render 'wod-password-gate' %}
   <div id="wod-page-content" class="wod-page-content">
     <header>
       {%- content_for 'block', id: 'blog-post-title', type: 'text' %}
@@ -141,6 +141,14 @@
     padding: 1.25rem 1.125rem;
     border-radius: 10px;
     background: #ebe7e0;
+  }
+
+  .wod-load-error {
+    padding: 1rem 1.125rem;
+    border: 1px solid rgb(180 35 24 / 0.18);
+    border-radius: 10px;
+    background: rgb(180 35 24 / 0.06);
+    color: #7a271a;
   }
 
   @keyframes wod-content-skeleton-shimmer {
@@ -718,13 +726,6 @@
         }
       ],
       "default": "link"
-    },
-    {
-      "type": "textarea",
-      "id": "program_content_metafields",
-      "label": "Program content metafields",
-      "info": "Comma or line separated keys from the blog namespace. Example: crossfit_content, fitness_content",
-      "default": "crossfit_content\nflow_content\nhyrox_content\nweightlifting_content\nfitness_content"
     },
     {
       "type": "header",
