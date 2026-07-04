@@ -142,9 +142,9 @@
               "name": "t:names.title",
               "static": true,
               "settings": {
-                "type_preset": "h3",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
+                "type_preset": "custom",
+                "font": "var(--font-heading--family)",
+                "font_size": "2rem",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
