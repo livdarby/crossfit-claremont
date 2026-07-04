@@ -70,6 +70,8 @@
 
   assign contact_section_id = 'contact-map'
   assign contact_link_href = section.settings.contact_link
+  assign contact_quick_link_style = section.settings.contact_style_class | default: 'link'
+  assign free_trial_quick_link_style = section.settings.free_trial_style_class | default: 'button'
   if contact_link_href != blank
     assign contact_link_href = contact_link_href | append: '#' | append: contact_section_id
   endif
@@ -79,7 +81,9 @@
       echo '<div class="header-quick-links mobile:hidden">'
 
       if contact_link_href != blank
-        echo '<a class="header-quick-links__link" href="'
+        echo '<a class="header-quick-links__link '
+        echo contact_quick_link_style
+        echo '" href="'
         echo contact_link_href
         echo '">'
         echo section.settings.contact_label | default: 'Contact' | escape
@@ -87,7 +91,9 @@
       endif
 
       if section.settings.free_trial_link != blank
-        echo '<a class="header-quick-links__link header-quick-links__link--cta" href="'
+        echo '<a class="header-quick-links__link '
+        echo free_trial_quick_link_style
+        echo '" href="'
         echo section.settings.free_trial_link
         echo '">'
         echo section.settings.free_trial_label | default: 'Free Trial' | escape
@@ -482,6 +488,11 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .header-quick-links__link.link {
       min-height: 2.5rem;
       padding: 0.45rem 0.8rem;
       font-family: var(--header-actions-font-family, var(--font-body--family));
@@ -489,26 +500,19 @@
       font-weight: var(--header-actions-font-weight, var(--font-body--weight));
       text-transform: var(--header-actions-text-case, none);
       color: var(--color-foreground);
-      text-decoration: none;
       border-radius: 999px;
       transition:
         background-color var(--animation-speed-fast) var(--animation-easing),
         color var(--animation-speed-fast) var(--animation-easing);
     }
 
-    .header-quick-links__link:hover {
+    .header-quick-links__link.link:hover {
       background: rgb(var(--color-foreground-rgb) / 0.06);
     }
 
-    .header-quick-links__link--cta {
-      background: rgb(var(--color-foreground-rgb));
-      color: rgb(var(--color-background-rgb));
-      padding-inline: 1rem;
-    }
-
-    .header-quick-links__link--cta:hover {
-      background: rgb(var(--color-foreground-rgb) / 0.82);
-      color: rgb(var(--color-background-rgb));
+    .header-quick-links__link.button,
+    .header-quick-links__link.button-secondary {
+      min-height: 2.5rem;
     }
   }
 
@@ -1596,6 +1600,26 @@
       "label": "Contact link"
     },
     {
+      "type": "select",
+      "id": "contact_style_class",
+      "label": "Contact style",
+      "options": [
+        {
+          "value": "button",
+          "label": "Primary"
+        },
+        {
+          "value": "button-secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "link",
+          "label": "Link"
+        }
+      ],
+      "default": "link"
+    },
+    {
       "type": "text",
       "id": "free_trial_label",
       "label": "Free trial label",
@@ -1605,6 +1629,26 @@
       "type": "url",
       "id": "free_trial_link",
       "label": "Free trial link"
+    },
+    {
+      "type": "select",
+      "id": "free_trial_style_class",
+      "label": "Free trial style",
+      "options": [
+        {
+          "value": "button",
+          "label": "Primary"
+        },
+        {
+          "value": "button-secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "link",
+          "label": "Link"
+        }
+      ],
+      "default": "button"
     },
     {
       "type": "select",

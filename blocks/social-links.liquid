@@ -149,6 +149,12 @@
     align-items: center;
     justify-content: center;
     height: var(--icon-size-lg);
+    transition: transform var(--animation-speed-fast) var(--animation-easing);
+    transform-origin: center;
+  }
+
+  .social-icons__icon-wrapper:hover {
+    transform: scale(1.08);
   }
 
   .social-icons__icon {

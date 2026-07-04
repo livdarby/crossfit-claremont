@@ -37,6 +37,13 @@
 
   .utilities a {
     color: var(--button-color);
+    transition:
+      color var(--animation-speed-fast) var(--animation-easing),
+      opacity var(--animation-speed-fast) var(--animation-easing);
+  }
+
+  .utilities a:hover {
+    color: var(--color-primary-hover);
   }
 
   .utilities > * {
